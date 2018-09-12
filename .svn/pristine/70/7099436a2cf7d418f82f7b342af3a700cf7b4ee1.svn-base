@@ -1,0 +1,108 @@
+package com.evaluationmanager.action;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.Evaluation;
+import com.evaluationmanager.entiy.Major;
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.service.DepartmentService;
+import com.evaluationmanager.service.EvaluationService;
+import com.evaluationmanager.service.MajorService;
+import com.evaluationmanager.service.PaperService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * @Author 陈彦磊
+ * @DateTime 2018年8月23日-下午5:20:48
+ * @Description 测评请求action
+ */
+@Controller("evaluationAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class EvaluationAction extends Action<Evaluation>  {
+
+	private static final long serialVersionUID = -6903287325220265172L;
+	private Evaluation evaluation = new Evaluation();
+	@Autowired
+	private EvaluationService evaluationService;
+	@Autowired
+	private PaperService paperService;
+	@Autowired
+	private MajorService majorService;
+	@Autowired
+	private DepartmentService departmentService;
+	
+	private List<Paper> paperList;
+	private List<Major> majorList;
+	private List<Code> deptList;
+
+	@Override
+	public Evaluation getModel() {
+		return evaluation;
+	}
+	/**
+	 * 添加evaluation信息
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月24日-上午2:39:02
+	 *
+	 * @return
+	 */
+	public String add() {
+		System.out.println(evaluation);
+		JSON_CHAR_DATA = evaluationService.insertEvaluation(evaluation) ? "1" : "添加失败";
+		return JSONOCHAR;
+	}
+	/**
+	 * 查询测评全部信息
+	 * @Author 邢燕蕊
+	 * @return
+	 */
+	public String paginAll(){
+		paperList = paperService.getAllPaper();
+		this.evaluationService.paginSearchEvaluation(paginMap, evaluation);
+		return "getall";
+	}
+	
+	/**
+	 * 测评统计
+	 * @return
+	 */
+	public String cartogram(){
+		majorList = this.majorService.getAllCode();
+		deptList = this.departmentService.getAllDeptNo();
+		return "cartogram";
+	}
+	
+	
+	//get、set方法
+	public List<Paper> getPaperList() {
+		return paperList;
+	}
+	public void setPaperList(List<Paper> paperList) {
+		this.paperList = paperList;
+	}
+	public Evaluation getEvaluation() {
+		return evaluation;
+	}
+	public void setEvaluation(Evaluation evaluation) {
+		this.evaluation = evaluation;
+	}
+	public List<Major> getMajorList() {
+		return majorList;
+	}
+	public void setMajorList(List<Major> majorList) {
+		this.majorList = majorList;
+	}
+	public List<Code> getDeptList() {
+		return deptList;
+	}
+	public void setDeptList(List<Code> deptList) {
+		this.deptList = deptList;
+	}
+	
+}

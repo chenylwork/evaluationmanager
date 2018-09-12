@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加试卷页面</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<style type="text/css">
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+body{
+
+}
+.top{
+	width: 100%;
+	height: 80px;
+	background: #F5F4F4;
+	font-size: 24px;
+	line-height: 80px;
+	text-align: center;
+	font-family: 宋体;
+	margin-top:5px; 
+}
+.container{
+	margin-top: 20px;
+}
+.footer{
+	width: 100%;
+	margin-top: 30px;
+	text-align: center;
+}
+</style>
+<script type="text/javascript">
+$(function(){
+//移到右边
+	$('#add').click(function(){
+//获取选中的选项，删除并追加给对方
+	$('#select1 option:selected').appendTo('#select2');
+});
+//移到左边
+$('#remove').click(function(){
+	$('#select2 option:selected').appendTo('#select1');
+});
+//双击选项
+$('#select1').dblclick(function(){//绑定双击事件
+//获取全部的选项，删除并追加给对方
+$("option:selected",this).appendTo('#select2');//追加给对方
+});
+//双击选项
+$('#select2').dblclick(function(){//绑定双击事件
+//获取全部的选项，删除并追加给对方
+$("option:selected",this).appendTo('#select1');//追加给对方
+});
+});
+</script>
+</head>
+<body>
+<div class="top">
+	<span>添加试卷</span>
+</div>
+<form role="form">
+<div class="container">
+	<div class="row">
+		<!--<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">	
+			  <div class="form-group">    
+			  	<label for="name">试卷名称</label> 
+			    <input type="text" class="form-control" id="name" placeholder="请输入名称" width="80%;">
+			  </div>
+		</div>
+		<div class="col-xs-6 col-sm-3 col-md-3 col-lg-3">	
+			  <div class="form-group">    
+			  	<label for="name">试卷类型</label> 
+			  	<select  class="form-control" id="lx">
+			  		<option>请选择</option>
+			  	</select>
+			  </div>
+		</div>-->
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">	
+			  <div class="form-group">    
+			  	<label for="name">被测评教师</label> 
+			  	<select  class="form-control" id="bcp">
+			  		<option>请选择</option>
+			  	</select>
+			  </div>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">	
+			  <div class="form-group">    
+			  	<label for="name">测试开始时间</label> 
+			    <input type="text" class="form-control" id="name" placeholder="请输入名称">
+			  </div>
+		</div>
+		<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">	
+			  <div class="form-group">    
+			  	<label for="name">测试结束时间</label> 
+			    <input type="text" class="form-control" id="name" placeholder="请输入名称">
+			  </div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">	
+			  <div class="form-group">    
+			  	<label for="name">可选择试题</label>
+			  	<select multiple id="select1" class="form-control">
+			  		<option value="1">是否按时上课</option>
+			  		<option value="2">是否符合教学标准</option>
+			  		<option value="3">是否体罚学生</option>
+			  	</select> 
+			   
+			  </div>
+		</div>
+		<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">	
+			  <div class="form-group" style="padding-top:20px;text-align:center;">    
+			  	<span id="add" class="btn btn-primary">添加选中题目&gt;&gt;</span>
+			  	<br><br>
+			  	<span id="remove" class="btn btn-warning">&lt;&lt;移除选中题目</span>
+			  </div>
+		</div>
+		<div class="clearfix visible-xs"></div>
+		<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">	
+			  <div class="form-group">    
+			  	<label for="name">已选择试题</label>
+			  	<select multiple id="select2" class="form-control">
+			  		
+			  	</select> 
+			  </div>
+		</div>
+	</div>
+	<div class="footer">
+		<button type="button" class="btn btn-default">清空</button>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<button type="button" class="btn btn-success">分配试卷</button>
+	</div>
+</div>
+</form>
+</body>
+</html>

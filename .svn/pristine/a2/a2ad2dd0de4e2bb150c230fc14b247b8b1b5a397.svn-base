@@ -1,0 +1,28 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Student;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:41:23
+ * @Description 描述信息：
+ *
+ */
+public interface StudentService {
+	//添加学生
+	public boolean add(Student student);
+	//修改学生
+	public boolean update(Student student);
+	//删除学生
+	public boolean delete(Student student);
+	//查询全部学生
+	public List<Student> getAll();
+	//根据ID查
+	public Student getStudentByID(long id);
+	//多条件查询
+
+
+}

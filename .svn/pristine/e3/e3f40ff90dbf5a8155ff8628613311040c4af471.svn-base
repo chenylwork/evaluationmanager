@@ -1,0 +1,5 @@
+package com.evaluationmanager.support;
+
+public interface DataDao<T> extends BasicDao<T>,PaginDao<T>,BatchDao<T>,DataSearchDao<T> {
+
+}

@@ -1,0 +1,99 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.StudentDao;
+import com.evaluationmanager.dao.UserDao;
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.service.StudentService;
+import com.evaluationmanager.support.AbstractService;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:49:09
+ * @Description 描述信息：
+ *
+ */
+@org.springframework.stereotype.Service("studentService")
+public class StudentServiceImpl  extends AbstractService<Student> implements StudentService {
+	
+	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private UserDao userDao;
+	
+
+	@Override
+	@Transactional
+	public boolean add(Student student,User user) {
+		return (studentDao.add(student)&&userDao.add(user));
+	}
+	
+	@Override
+	@Transactional
+	public int delete(String[] params) {
+		List<String[]> paramList = new ArrayList<>();
+		for(String string : params) {
+			System.out.println(string);
+			paramList.add(new String[]{string});
+		}
+		return studentDao.delete(paramList);
+	}
+	
+	@Override
+	@Transactional
+	public boolean update(Student student) {
+		return studentDao.update(student);
+	}
+
+	@Override
+	@Transactional
+	public Student getStudentByID(long id) {
+		return studentDao.getDataByID(id);
+	}
+
+	@Override
+	@Transactional
+	public List<Map<String, Object>> paginGet(Pagin<Map<String, Object>> pagin, String conditions, String... params) {
+		// 获取总个数
+		pagin.setCount(studentDao.size(conditions, params));
+		// 获取数据
+		return studentDao.paginGetMapDatas(pagin, conditions, params);
+	}
+
+	@Override
+	@Transactional
+	//根据stuNo查学生-外键
+	public Map<String, Object> stuNobyMap(String stuNo) {
+		Map<String, Object> studentbyNo = null;
+		try {
+			studentbyNo = this.studentDao.getMapDataByNo(stuNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return studentbyNo;
+	}
+
+	@Override
+	@Transactional
+	//根据classNo查学生-外键
+	public Map<String, Object> classNobyMap(String classNo) {
+		Map<String, Object> classNobyMap = null;
+		try {
+			classNobyMap = this.studentDao.getMapDataByNo(classNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return classNobyMap;
+	}
+
+}

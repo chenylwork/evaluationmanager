@@ -1,0 +1,78 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.evaluationmanager.annotation.Foreignkey;
+import com.evaluationmanager.annotation.No;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午10:55:59
+ * @Description 描述信息：权限信息实体类
+ *
+ */
+@Entity
+@Table(name="powerinfo",uniqueConstraints = {@UniqueConstraint(columnNames="powerInfoNo"),})
+public class PowerInfo {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id;
+	@No
+	private String powerInfoNo;
+	private String name;
+	private String uri;
+	@Foreignkey(foreignClass=PowerType.class,column="powerTypeNo")
+	private String type;
+	public PowerInfo() {
+		super();
+	}
+	public PowerInfo(int id, String powerInfoNo, String name, String uri, String type) {
+		super();
+		this.id = id;
+		this.powerInfoNo = powerInfoNo;
+		this.name = name;
+		this.uri = uri;
+		this.type = type;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPowerInfoNo() {
+		return powerInfoNo;
+	}
+	public void setPowerInfoNo(String powerInfoNo) {
+		this.powerInfoNo = powerInfoNo;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getUri() {
+		return uri;
+	}
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	@Override
+	public String toString() {
+		return "PowerInfo [id=" + id + ", powerInfoNo=" + powerInfoNo + ", name=" + name + ", uri=" + uri
+				+ ", type=" + type + "]";
+	}
+}

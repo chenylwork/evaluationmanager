@@ -1,0 +1,201 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>学生列表</title>
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+	<script type="text/javascript" src="../../js/admin/student/student_list.js"></script>
+	<!-- 上下页样式加js效果 -->
+    <link rel="stylesheet" href="../../css/pager.css"/>  
+	<script src="../../js/pager.js">  </script>  
+	  <script type="text/javascript">
+       $(function(){
+    	   $("#delAll").click(function(){
+    		   if($("[name='batchID']:checked").length == 0){
+    			   alert("请选择要删除的行!");
+    			   return false;
+    		   }else if( !confirm("确定要删除多行记录吗?")){
+    			   return false;
+    		   }   
+    	   });   
+       });
+    </script>
+</head>
+  <body class="layui-anim layui -anim-up">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">学生管理</a>
+        <a><cite>学生信息列表</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="${pageContext.request.contextPath}/admin/student/paginAll?paginMap.pageNo=1&paginMap.display=5" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form action="../student/paginAll" method="post" class="layui-col-md12 x-so">
+          <input type="hidden" value="${paginMap.display}" name="paginMap.display" />
+		  <input type="hidden" value="1" name="paginMap.pageNo" />
+		  <input type="text" name="no" placeholder="请输入学号" autocomplete="off" class="layui-input" value="${no}">
+          <input type="text" name="stuName" placeholder="请输入学生姓名" autocomplete="off" class="layui-input" value="${stuName}">
+           <div class="layui-input-inline" > 
+            <select name="major" id="major" style="width:227px;height:38px;">
+				<option value="">请选择专业</option>
+	       	  	<c:forEach var="m" items="${majorList}">
+              	<c:choose>
+              		<c:when test="${m.majorNo == major}">
+		              	<option value="${m.majorNo}" selected="selected">${m.name}</option>
+              		</c:when>
+              		<c:otherwise>
+		              	<option value="${m.majorNo}">${m.name}</option>
+              		</c:otherwise>
+              	</c:choose>
+			  </c:forEach>
+			</select>
+           </div>
+          <div class="layui-input-inline">
+             <select name="classNo" id="classes" style="width:227px;height:38px;">
+				<option value="">请选择班级</option>
+			 </select>
+          </div>
+           <div class="layui-input-inline" > 
+             <select name="state" class="required" id="state" style="height:38px;">
+				<option value="">请选择状态</option>
+	       	  	<c:forEach var="s" items="${stateList}">
+              	<c:choose>
+              		<c:when test="${s.codeNo == state}">
+		              	<option value="${s.codeNo}" selected="selected">${s.name}</option>
+              		</c:when>
+              		<c:otherwise>
+		              	<option value="${s.codeNo}">${s.name}</option>
+              		</c:otherwise>
+              	</c:choose>
+                </c:forEach>
+			 </select>
+           </div>
+            <input class="layui-input" name="joinTime" placeholder="入学日期" id="start" value="${joinTime}">
+          <button class="layui-btn" lay-submit="" lay-filter="sreach"><i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+       <form action="../student/delete" method="post">
+      <xblock>
+        <button class="layui-btn layui-btn-danger" id="delAll"><i class="layui-icon"></i>批量删除</button>
+        <button class="layui-btn" type="button" onclick="exportFun();"><i class="layui-icon">&#xe621;</i>导出学生信息</button>
+        <button class="layui-btn" type="button" onclick="window.location.href='http://localhost:8080/evaluationmanager/admin/student/import.jsp'"><i class="layui-icon"></i>导入学生信息</button>
+        <span class="x-right" style="line-height:40px">共有数据：${paginMap.count }条</span>
+      </xblock>
+      	<input type="hidden" value="${paginMap.display}" name="paginMap.display" />
+	    <input type="hidden" value="${paginMap.pageNo}" name="paginMap.pageNo" />
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" onclick="selectAll()" />
+            </th>
+            <th>学号</th>
+            <th>用户名</th>
+            <th>性别</th>
+            <th>年龄</th>
+            <th>专业</th>
+            <th>班级</th>
+            <th>入学时间</th>
+            <th>状态</th>
+            <c:if test="${LOGINED_USER.role == '0001'}">
+	            <th>操作</th>
+            </c:if>
+          </tr>
+        </thead>
+        <tbody>
+         <c:forEach var="s" items="${paginMap.data}">
+          <tr>
+            <td>
+               <input type="checkbox" value="${s.no}" name="batchID" />
+            </td>
+            <td>${s.no }</td>
+            <td>${s.name }</td>
+            <td>${s.sex }</td>
+            <td>${s.age }</td>
+            <td>${s.majorName }</td>
+            <td>${s.className}</td>
+            <td>${s.joinTime }</td>
+            <td>${s.stateName }</td>
+             <c:if test="${LOGINED_USER.role == '0001'}">
+            <td>
+            <a onclick="x_admin_show('学生详情','../student/details?stuNo=${s.no}')" href="javascript:;" target="frame" >详情</a>
+            &nbsp;&nbsp;<a href="../student/resetPwd?account=${s.no }&paginMap.pageNo=${paginMap.pageNo}&paginMap.display=${paginMap.display}" onclick="return confirm('确定要重置密码？');">重置密码</a>
+            &nbsp;&nbsp;<a href="../student/delete?batchID=${s.no }&paginMap.pageNo=${paginMap.pageNo}&paginMap.display=${paginMap.display}" onclick="return confirm('确定要删除？');" >删除</a>
+            &nbsp;&nbsp;<a href="../student/getStuByNo?stuNo=${s.no}&paginMap.pageNo=${paginMap.pageNo}&paginMap.display=${paginMap.display}" >修改</a>  
+            </td>
+            </c:if>
+          </tr>
+          </c:forEach>
+        </tbody>
+      </table>
+      </form>
+      <!-- 分页 -->
+	    <div class="page">
+		<ul class="pagination" id="page2">
+	    </ul>
+		<div class="pageJump">
+			<span>跳转到</span>
+			<input type="text"/>
+			<span>页</span>
+			<button type="button" class="button">确定</button>
+		</div>
+		</div>
+    </div>
+    <script type="text/javascript">
+    	function exportFun() {
+    		if(confirm('你确定要导出全部学生信息?')) {
+    			window.location.href = "http://localhost:8080/evaluationmanager/admin/student/download?fileName=学生信息.xls";
+    		}
+    	}
+	    Page({
+			num:parseInt("${paginMap.pages}"),					//页码数
+			startnum:parseInt("${paginMap.pageNo}"),		    //指定页码
+			elem:$('#page2'),		    //指定的元素
+			callback:function(n){	    //回调函数
+				window.location.href = "http://localhost:8080/evaluationmanager/admin/student/paginAll?paginMap.pageNo="+n+"&paginMap.display=5";
+			}
+		});
+	    //
+		$(function(){
+		  if($("#major").val() != null) {
+			 $("#major").change();
+		 }
+	    });
+		$("#major").change(function() {
+			$.ajax({
+				url : "http://localhost:8080/evaluationmanager/admin/class/classByMajor",
+				data :{"major":$(this).val()},
+				type: "get",
+				success : function(data) {
+					var jsonArray ={}; 
+					if(data != "") {
+						jsonArray = eval('('+data+')').classes;
+						$(".classes").remove();
+					}
+					var initHtml = "";
+					for(var i in jsonArray) {
+						var classes = jsonArray[i];
+						if(classes.classNo == "${studentMap.classNo.classNo}") {
+							initHtml += "<option value="+classes.classNo+" class='classes' selected='selected'>"+classes.name+"</option>";
+						} else {
+							initHtml += "<option value="+classes.classNo+" class='classes'>"+classes.name+"</option>";
+						}
+					}
+					$("#classes").append(initHtml);
+				},
+			});
+		});
+	</script>
+  </body>
+</html>

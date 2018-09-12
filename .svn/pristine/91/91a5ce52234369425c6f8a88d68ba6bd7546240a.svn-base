@@ -1,0 +1,6 @@
+
+/*红色文字*/
+.c_red{color: red;}
+.error{background-color: red; color: #ffffff;}
+
+.cursor_default{cursor: default;}

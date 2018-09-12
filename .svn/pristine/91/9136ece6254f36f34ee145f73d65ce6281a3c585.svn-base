@@ -1,0 +1,85 @@
+package com.evaluationmanager.unit;
+
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.lang.reflect.Field;
+import java.util.Collection;
+
+import org.springframework.stereotype.Component;
+
+import jxl.Workbook;
+import jxl.write.Label;
+import jxl.write.WritableSheet;
+import jxl.write.WritableWorkbook;
+/**
+ * 
+ * @author chenyl
+ * @Date 2018年7月19日-下午12:49:16
+ * @Description  分页对象，主要用来对数据分页操作
+ * @param <T> 对象中存储的数据对应的实体类对应的类
+ */
+@Component("excelUnit")
+public class ExcelUnit<T> {
+	/**
+	 * 导入Excel文件
+	 * @param fileInputStream 需要导入的Excel文件输入流
+	 * @return Collection<T>
+	 * 返回Excel文件内数据对应的数据集合
+	 */
+	public Collection<T> importExcel(FileInputStream fileInputStream){
+		
+		return null;
+	}
+	/**
+	 * 导出Excel文件
+	 * @param collection 需要导出为Excel文件的数据集合
+	 * @param title 导出的Excel文件的标题
+	 * @return FileOutputStream
+	 * 返回数据集合组成的Excel文件输出流
+	 */
+	public void exportExcel(Collection<T> collection,String title,String url,String[] headerName) {
+		WritableWorkbook book=null;
+		File file = new File(url+"/File/userOut.xls");
+		if (file.exists()) {
+            // 如果指定文件存在，则新建该文件
+            file.delete();
+        }
+		 try {
+			book = Workbook.createWorkbook(file);
+			WritableSheet sheet = book.createSheet("sheet1", 1);
+			//插入标题
+			Label label=new Label(0,0,title);
+			sheet.addCell(label);
+			//插入表头
+			for(int i=0;i<headerName.length;i++){
+				//编写内容，第一个参数是列，第二个参数是行，第三个参数是内容
+				Label lable=new Label(i,1,headerName[i]);
+				sheet.addCell(lable);
+			}
+			//插入内容
+			//循环获取collection中对象的属性名
+			collection.iterator().forEachRemaining((data) -> {
+				//data.getClass(); 获取对象类型
+				Field[] fields=data.getClass().getDeclaredFields();
+				int i=0; i++;
+				for(int j=0;j<fields.length;j++){
+				 //编写内容，第一个参数是列，第二个参数是行，第三个参数是内容
+				 Label lable=new Label(j,i+1,String.valueOf(PropertyUtil.invokeGet(data, fields[j].getName())));
+					try {
+						sheet.addCell(lable);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			});
+			book.write();
+            book.close();// 关闭
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}// 创建一个新的写入工作簿
+	}
+
+}

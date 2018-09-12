@@ -1,0 +1,196 @@
+package com.evaluationmanager.support;
+
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.common.Pagin;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.opensymphony.xwork2.ActionSupport;
+import com.opensymphony.xwork2.ModelDriven;
+/**
+ * 所有Action类的父类
+ * 定义Action类中方法的返回值信息，用于struts配置文件的配置
+ * @author chenyl
+ * @DateTime 2018年7月25日-上午10:25:24
+ *
+ */
+public abstract class Action<T> extends ActionSupport implements ModelDriven<T>{
+
+	/**
+	 * 序列化号
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	protected Gson gson;
+	
+	protected Pagin<T> pagin;
+	
+	protected Pagin<Map<String,Object>> paginMap;
+	/**
+	 * 返回的json数组数据，该变量中存储的本次请求的json数组数据。
+	 */
+	protected JsonArray JSON_ARRAY_DATA = null;
+	
+	/**
+	 * 返回的json字符串数据，该变量中存储的本次请求的json字符串型数据。
+	 */
+	
+	protected String JSON_CHAR_DATA = "";
+	
+	/**
+	 * 跳转登录返回配置
+	 */
+	protected static String LOGIN = "login";
+	/**
+	 * 返回信息为jsonzi字符串的配置返回
+	 */
+	protected static String JSONOCHAR = "json";
+	
+	protected static String JSONARRAY = "jsonArray";
+	
+	
+	/**
+	 * 
+	 * @Author 邢燕蕊
+	 * @Datetime 2018年7月27日-下午2:09:23
+	 * @Description 描述信息：student模块的返回值struts
+	 *
+	 */
+	protected static String INSERT_STUDENT = "addstu";
+	protected static String GETALL_STUDENT = "all";
+	protected static String SELECT_TYPES= "seltype";
+	protected static String DETAILS_STUDENT="details";
+	protected static String BYNO_STUDENT="byNo";
+	/**
+	 * 
+	 * @Author 邢燕蕊
+	 * @Datetime 2018年7月27日-下午4:39:23
+	 * @Description 描述信息：role模块的返回值struts
+	 *
+	 */
+	protected static String INSERT_ROLE = "addrole";
+	protected static String GETALL_ROLE = "all";
+	protected static String BYNO_ROLE = "byNo";
+
+	/**
+	 * @Author 张鼎瑜
+	 * @DateTime 2018年7月27日-下午15:31:43
+	 * @Description 定义Action类中方法的返回信息，用于Struts配置文件中的配置
+	 */
+	protected static String INSERT_DEPT = "addDept";
+	protected static String DELETE_DEPT = "deleteDept";
+	protected static String UPDATE_DEPT = "updateDept";
+	protected static String ALL_DEPT = "allDept";
+	protected static String MAJOR_DEPT = "majorDept";
+	protected static String BYNO_DEPT = "noByDept";
+	
+	/**
+	 * @author 韩笑
+	 * @DateTime 2018年7月27日-下午14:35:10
+	 * 定义TeacherAction类中方法的返回值信息，用于struts-teacher配置文件的配置
+	 */
+	protected static String SELECT_ADD = "addTea";
+	protected static String UPDATE_TEACHER = "updateTea";
+	protected static String SELECT_TEACHER = "selectTea";
+	protected static String SELECT_TYPE = "selectType";
+	protected static String TEACHER_DETAIL = "detail";
+	protected static String UPDATE_SELECT = "updateSelect";
+	
+	/**
+	 * @author 韩笑
+	 * @DateTime 2018年7月27日-下午16:20:26
+	 * 定义OptionAction类中方法的返回值信息，用于struts-option配置文件的配置
+	 */
+	protected static String INSERT_OPTION = "addOpt";
+	protected static String DELETE_OPTION = "deleteOpt";
+	protected static String UPDATE_OPTION = "updateOpt";
+
+	
+	/**
+	 * @author 韩笑
+	 * @DateTime 2018年7月30日-下午10:54:09
+	 * 定义PaperAction类中方法的返回值信息，用于struts-paper配置文件的配置
+	 */
+	protected static String INSERT_PAPER = "addPap";
+	protected static String DELETE_PAPER = "deletePap";
+	protected static String UPDATE_PAPER = "updatePap";
+	protected static String RAND_PAPER = "randPap";
+	protected static String GETALLQUES = "getAllQues";
+	
+	/**
+	 * @author 韩笑
+	 * @DateTime 2018年8月09日-下午15:44:34
+	 * 定义PermissionAction类中方法的返回值信息，用于struts-permission配置文件的配置
+	 */
+	protected static String GETALLROLE = "allRole"; 
+	protected static String GETALLINFO = "allInfo";
+	protected static String GETALLUSER = "allUser";
+	protected static String UPDATEPERMISSION = "update";
+	
+
+	/**
+	 *	@author 任少华
+	 * @DateTime 2018年7月30日-上午11:10:10
+	 * 定义MajorAction类中方法的返回值信息，用于struts-teacher配置文件的配置
+	 */
+	protected static String INSERT_MAJOR="addMaj";
+	protected static String DELETE_MAJOR="deleteMaj";
+	protected static String UPDATE_MAJOR="updateMaj";
+	protected static String DETAIL_MAJOR = "detail";
+	protected static String GETBYID_MAJOR = "getByIdMaj";
+	/**
+	 * dadsadasdas
+	 */
+	protected static String GETALL_MAJOR="allMaj";
+	/**
+	 * 
+	 * @Author 任少华
+	 * @Datetime 2018年7月30日-下午2:45:23
+	 * @Description 描述信息：LoginLog模块的返回值struts
+	 *
+	 */
+	protected static String INSERT_LOGINLOG="addLog";
+	protected static String DELETE_LOGINLOG="deleteLog";
+	protected static String UPDATE_LOGINLOG="updateLog";
+	protected static String GETALL_LOGINLOG="allLog";
+	/**
+	 * 
+	 * @Author 任少华
+	 * @Datetime 2018年7月30日-下午2:45:23
+	 * @Description 描述信息：LoginLog模块的返回值struts
+	 *
+	 */
+	protected static String INSERT_OPERATIONLOG="addOlog";
+	protected static String DELETE_OPERATIONLOG="deleteOlog";
+	protected static String UPDATE_OPERATIONLOG="updateOlog";
+	protected static String GETALL_OPERATIONLOG="allOlog";
+	
+	public JsonArray getJSON_ARRAY_DATA() {
+		return JSON_ARRAY_DATA;
+	}
+	public void setJSON_ARRAY_DATA(JsonArray jSON_ARRAY_DATA) {
+		JSON_ARRAY_DATA = jSON_ARRAY_DATA;
+	}
+	public String getJSON_CHAR_DATA() {
+		return JSON_CHAR_DATA;
+	}
+	public void setJSON_CHAR_DATA(String jSON_CHAR_DATA) {
+		JSON_CHAR_DATA = jSON_CHAR_DATA;
+	}
+	public Pagin<T> getPagin() {
+		return pagin;
+	}
+	public void setPagin(Pagin<T> pagin) {
+		this.pagin = pagin;
+	}
+	public Pagin<Map<String, Object>> getPaginMap() {
+		return paginMap;
+	}
+	public void setPaginMap(Pagin<Map<String, Object>> paginMap) {
+		this.paginMap = paginMap;
+	}
+}
+

@@ -1,0 +1,73 @@
+package com.evaluationmanager.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.EvaluationDao;
+import com.evaluationmanager.entiy.Evaluation;
+import com.evaluationmanager.entiy.view.EvaluationView;
+import com.evaluationmanager.exception.DataException;
+import com.evaluationmanager.support.AbstractDataDao;
+import com.evaluationmanager.support.DataDao;
+/**
+ * 测评操作接口
+ * @Author 陈彦磊
+ * @DateTime 2018年8月24日-上午2:28:45
+ * @Description 作用描述
+ *
+ */
+@Repository("evaluationDao")
+public class EvaluationDaoImpl extends AbstractDataDao<Evaluation> implements EvaluationDao{
+	
+	@Autowired
+	private EvaluationViewDao evaluationViewDao;
+	
+	@Repository("evaluationViewDao")
+	private class EvaluationViewDao extends AbstractDataDao<EvaluationView> implements DataDao<EvaluationView>{}
+
+	@Override
+	public List<Map<String, Object>> paginSearchEvaluation(Pagin<Map<String, Object>> pagin, Evaluation ev) {
+		String sql = "1=1";
+		List<String> paramsList = new ArrayList<>();
+		if(ev != null && ev.getPaper() != null && !"".equals(ev.getPaper())){
+			sql += " and this.paper = ?";
+			paramsList.add(ev.getPaper());
+		}
+		if(ev != null && ev.getUser() != null && !"".equals(ev.getUser())) {
+			sql += " and this.user like ? ";
+			paramsList.add("%"+ev.getUser()+"%");
+		}
+		if(ev != null && ev.getTime() != null && !"".equals(ev.getTime())){
+			sql += " and this.time = ?";
+			paramsList.add(ev.getTime());
+		}
+		if(ev != null && ev.getTeacher() != null && !"".equals(ev.getTeacher())){
+			sql += " and this.teacher = ?";
+			paramsList.add(ev.getTeacher());
+		}
+		String[] array = paramsList.toArray(new String[]{});
+		pagin.setCount(evaluationViewDao.size(sql, array));
+		return evaluationViewDao.paginGetMapDatas(pagin, sql, array);
+	}
+	
+	@Override
+	public EvaluationView getEvaluation(String teacherAccount) {
+		try {
+			return evaluationViewDao.getDataByNo(teacherAccount);
+		} catch (DataException e) {
+			e.printStackTrace();
+			return null;
+		}
+	} 
+	
+	public Map<String, Object> getEvaluationMap(String teacherAccount) {
+		return evaluationViewDao.getMapDataByNo(teacherAccount);
+	}
+	
+	
+}

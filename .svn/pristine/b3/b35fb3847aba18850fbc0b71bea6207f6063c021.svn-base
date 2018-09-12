@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：邢燕蕊 -->
+<!--创建时间：2018年7月27日-下午4:53:42 -->
+<!--配置信息：role角色模块的配置信息 -->
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <package name="role" namespace="/admin/role" extends="json-default">
+        <!-- 角色模块-->
+         <action name="*" class="roleAction" method="{1}">
+             <!--添加-->
+            <result name="addrole">role_add.jsp</result>
+             <!--分页列表 -->
+            <result name="all">role_list.jsp</result>
+             <!--登录-->
+            <result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+			 <!--修改-根据No查 -->
+			<result name="byNo">role_add.jsp</result>
+         </action>
+    </package>
+</struts>

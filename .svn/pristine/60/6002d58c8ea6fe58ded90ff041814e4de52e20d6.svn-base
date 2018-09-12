@@ -1,0 +1,111 @@
+@CHARSET "UTF-8";
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	background: #e9f2ff;
+}
+.height{
+	 width: 100%;
+	 height:350px;
+	 margin:0 auto;
+
+}
+.top{
+	width: 100%;
+	height: 180px;
+	padding-top: 10px;
+	background: #afceef;
+	position: relative;
+
+}
+.left{
+	margin-left:50px;
+	padding-top: 100px;
+	float:left;
+}
+.right{
+	padding-right: 50px;
+	padding-top: 110px;
+	float: right;
+}
+
+.tu{
+
+	width: 100%;
+	height:270px;
+	padding-top: 10px;
+	background: url(../images/bg.png) repeat-x;
+	text-align: center;
+	position: absolute; 
+	overflow: hidden;
+}
+.tu img{
+border:3px solid #fff;
+border-radius: 5px;
+}
+#zz{
+    position: absolute;
+    top: 220px;
+    left: 150px;
+    z-index: 9999;
+}
+.dl ul li{
+	list-style: none;
+	width: 380px;
+	height: 40px;
+}
+.dl ul li input{
+	vertical-align: middle;
+}
+.required{
+	border-radius: 3px;
+	border:#333;
+	height:25px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+.select{
+	border-radius: 3px;
+	border:#333;
+	height:22px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+
+.deng{
+	padding-right: 62px;
+	text-align:center;
+}
+.deng a{
+	font-weight: bold;
+	text-shadow:1PX 1PX 10PX #FFFFFF;
+	color:#5d98ec;
+}
+.footer{
+	margin-top: 130px;
+	width: 100%;
+	height: 100px;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+.formtips{
+	font-size: 12px;
+	color: #666;
+}
+.formtips{
+	font-size: 12px;
+	color: #666;
+}
+.onError{
+	color: #666;
+    background: url(../images/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+	color: #fff;
+    background: url(../images/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}

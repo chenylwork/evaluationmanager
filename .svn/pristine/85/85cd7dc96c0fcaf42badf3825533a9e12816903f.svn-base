@@ -1,0 +1,9 @@
+package com.evaluationmanager.annotation;
+/**
+ * @Author 陈彦磊
+ * @DateTime 2018年7月25日-下午3:48:49
+ * @Description 对象外键注解
+ */
+public @interface Foreignkey {
+	public Class<? extends Object> value();
+}

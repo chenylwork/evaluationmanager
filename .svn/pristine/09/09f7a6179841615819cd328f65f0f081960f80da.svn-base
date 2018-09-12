@@ -1,0 +1,37 @@
+package com.evaluationmanager.dao.impl;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.PowerRoleDao;
+import com.evaluationmanager.entiy.PowerRole;
+import com.evaluationmanager.support.AbstractDataDao;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月16日-上午10:10:47
+ * @Description 描述信息：角色权限操作实现
+ *
+ */
+@Repository("PowerRoleDao")
+public class PowerRoleDaoImpl extends AbstractDataDao<PowerRole> implements PowerRoleDao {
+	/**
+     * 清除权限
+     * @Author 邢燕蕊
+     */
+	@Override
+	public int remove(List<String[]> params) {
+		String sql = "delete from role_power where role = ?";
+		try {
+			return batchModification(sql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+
+}

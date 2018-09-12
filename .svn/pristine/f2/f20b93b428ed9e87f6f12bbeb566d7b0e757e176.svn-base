@@ -1,0 +1,167 @@
+package com.evaluationmanager.action;
+
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.service.DepartmentService;
+import com.evaluationmanager.service.MajorService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 张鼎瑜
+ * @Datetime 2018年7月27日-下午3:22:43
+ * @Description 描述信息:院系操作action类
+ *
+ */
+@Controller("deptAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class DeptAction extends Action<Code> {
+
+	private static final long serialVersionUID = 1L;
+
+	public HttpSession getSession() {
+		HttpSession session = getRequest().getSession();
+		return session;
+	}
+
+	public HttpServletRequest getRequest() {
+		HttpServletRequest request = ServletActionContext.getRequest();
+		return request;
+	}
+
+	@Autowired
+	private DepartmentService departmentService;
+	@Autowired
+	private MajorService majorService;
+
+	private Code code = new Code();
+	private List<Code> deptList;
+	private List<Map<String, Object>> majorList;
+	private Map<String, Object> deptMap;
+	private String[] batchID; 
+
+	private long id;
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+	
+	public String[] getBatchID() {
+		return batchID;
+	}
+
+	public void setBatchID(String[] batchID) {
+		this.batchID = batchID;
+	}
+
+	public Map<String, Object> getDeptMap() {
+		return deptMap;
+	}
+
+	public void setDeptMap(Map<String, Object> deptMap) {
+		this.deptMap = deptMap;
+	}
+
+	public List<Code> getDeptList() {
+		return deptList;
+	}
+
+	public void setDeptList(List<Code> deptList) {
+		this.deptList = deptList;
+	}
+
+	public Code getCode() {
+		return code;
+	}
+
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
+	public List<Map<String, Object>> getMajorList() {
+		return majorList;
+	}
+
+	public void setMajorList(List<Map<String, Object>> majorList) {
+		this.majorList = majorList;
+	}
+
+	@Override
+	public Code getModel() {
+		// TODO Auto-generated method stub
+		return code;
+	}
+	
+	//添加院系
+	public String saveDept() {
+		code.setTypeNo("1");
+		this.departmentService.save(code);
+		return paginAll();
+	}
+	
+	//修改院系
+	public String updateDept() {
+		code.setTypeNo("1");
+		this.departmentService.update(code);
+		return paginAll();
+	}
+	
+	//删除院系
+	public String deleteDept() {
+		this.departmentService.delete(code);
+		return paginAll();
+	}
+
+	//获取全部院系
+	public String allDept() {
+		deptList = this.departmentService.getAllDeptNo();
+		return ALL_DEPT;
+	}
+	
+	//查询该院系下的所有专业
+	public String allMajor() {
+		String deptNo = getRequest().getParameter("deptId");
+		majorList = this.majorService.getMajorBydeptNo(deptNo);
+		return MAJOR_DEPT;
+	}
+	
+	//分页查询全部院系
+	public String paginAll() {
+		try {
+			departmentService.paginSearch(pagin, code);
+			System.out.println(pagin);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ALL_DEPT;
+	}
+	
+	//查询该系的详情信息
+	public String deptByNo() {
+		deptMap=this.departmentService.getDeptByNo(code.getCodeNo());
+		return BYNO_DEPT;
+	}
+	
+	//批量删除
+	public String batch() {
+		System.out.println(departmentService.batchDelete(batchID));
+		this.departmentService.batchDelete(batchID);
+		return paginAll();
+	}
+
+}

@@ -1,0 +1,83 @@
+package com.evaluationmanager.action;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.service.StudentService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:52:31
+ * @Description 描述信息：
+ *
+ */
+public class StudentAction extends Action<Student>{
+	
+	private static final long serialVersionUID = 423709953794339294L;
+	@Autowired
+	private StudentService studentService;
+	private long id;
+	private Student student=new Student();
+	private List<Student> studentList;
+	
+	@Override
+	public Student getModel() {
+		return student;
+	}
+	
+	public String add(){
+		this.studentService.add(student);
+		return INSERT_STUDENT;
+	}
+	
+	public String update(){
+		this.studentService.update(student);
+		return UPDATE_STUDENT;
+	}
+	
+	public String delete(){
+		this.studentService.delete(student);
+		return DELETE_STUDENT;
+	}
+	
+	public String getAll(){
+		studentList=studentService.getAll();
+		return GETALL_STUDENT;
+	}
+	
+	public long getStudentByID(){
+		return id;
+	}
+	
+	//get、set方法
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
+	public List<Student> getStudentList() {
+		return studentList;
+	}
+
+	public void setStudentList(List<Student> studentList) {
+		this.studentList = studentList;
+	}
+	
+
+}

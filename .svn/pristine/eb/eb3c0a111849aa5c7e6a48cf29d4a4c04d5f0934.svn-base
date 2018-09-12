@@ -1,0 +1,62 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+
+import javax.management.relation.Role;
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.dao.RoleDao;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.service.RoleService;
+import com.evaluationmanager.support.Service;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-下午4:25:35
+ * @Description 描述信息：
+ *
+ */
+@org.springframework.stereotype.Service("roleService")
+public class RoleServiceImpl extends Service<Code> implements RoleService  {
+	
+	private RoleDao roleDao;
+	@Autowired
+	public void setDataDao(RoleDao roleDao) {
+		super.setDataDao(roleDao);
+	}
+
+	@Override
+	@Transactional
+	public boolean add(Code code) {
+		return roleDao.add(code);
+	}
+
+	@Override
+	@Transactional
+	public boolean update(Code code) {
+		return roleDao.update(code);
+	}
+
+	@Override
+	@Transactional
+	public boolean delete(Code code) {
+		return roleDao.delete(code);
+	}
+
+	@Override
+	@Transactional
+	public List<Code> getAll() {
+		List<Code> code=roleDao.getAll();
+		return code;
+	}
+
+	@Override
+	@Transactional
+	public Code getCodeByID(long id) {
+		return roleDao.getDataByID(id);
+	}
+
+}

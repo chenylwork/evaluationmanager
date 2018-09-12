@@ -1,0 +1,50 @@
+package com.evaluationmanager.action;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.entiy.Class;
+import com.evaluationmanager.service.ClassService;
+import com.evaluationmanager.support.Action;
+import com.google.gson.Gson;
+
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午3:22:15
+ * @description 班级信息操作action类
+ */
+public class ClassAction extends Action<Class>{
+	@Autowired
+    private ClassService classService;
+	
+    private Class classes=new Class();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public Class getModel() {
+		return classes;
+	}
+	
+   public String add(){
+	   RESULT_JSON_DATA=super.gson.toJson(classService.add(classes));
+	   return JSONDATA;
+   }
+   public String update(){
+	   RESULT_JSON_DATA=super.gson.toJson(classService.update(classes));
+	   return JSONDATA;
+   }
+   public String delete(){
+	try {
+		classService.delete(classes);
+		return "delete";
+	} catch (Exception e) {
+		e.printStackTrace();
+		return "error";
+	}
+   }
+   
+}

@@ -1,0 +1,19 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.PermisTypeDao;
+import com.evaluationmanager.entiy.PermissionType;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:21:35
+ * @Description 描述信息：权限类别操作实现
+ *
+ */
+@Repository("permisTypeDao")
+public class PermisTypeDaoImpl extends DataDaoImpl<PermissionType> implements PermisTypeDao {
+
+}

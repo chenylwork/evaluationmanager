@@ -1,0 +1,32 @@
+package com.evaluationmanager.dao.impl;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.StudentDao;
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:36:14
+ * @Description 描述信息：
+ *
+ */
+@Repository("studentDao")
+public class StudentDaoImpl extends DataDaoImpl<Student> implements StudentDao{
+	//学生单条、批量删除
+	public int delete(List<String[]> params) {
+		String sql = "delete from student where stuNo = ?";
+		try {
+			return batchModification(sql, params);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+}

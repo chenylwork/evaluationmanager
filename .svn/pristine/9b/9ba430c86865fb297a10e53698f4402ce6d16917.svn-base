@@ -1,0 +1,46 @@
+package com.evaluationmanager.service.impl;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.dao.ClassDao;
+import com.evaluationmanager.entiy.Class;
+import com.evaluationmanager.service.ClassService;
+import com.evaluationmanager.support.Service;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午3:15:14
+ * @description 班级信息业务操作实现
+ */
+@org.springframework.stereotype.Service("classService")
+public class ClassServiceImpl extends Service<Class> implements ClassService{
+     private ClassDao classDao;
+     @Autowired
+	public void setClassDao(ClassDao classDao) {
+		this.classDao = classDao;
+	}
+
+	@Override
+	@Transactional
+	public Class add(Class classes) {
+		super.changeData(classes, SAVE);
+		return classes;
+	}
+
+	@Override
+	@Transactional
+	public Class update(Class classes) {
+		super.changeData(classes, UPDATE);
+		return classes;
+	}
+
+	@Override
+	@Transactional
+	public Class delete(Class classes) {
+		super.changeData(classes, DELETE);
+		return classes;
+	}
+
+}

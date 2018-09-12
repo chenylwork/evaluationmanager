@@ -1,0 +1,19 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.OptionDao;
+import com.evaluationmanager.entiy.Option;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-下午3:51:58
+ * @Description 描述信息：试题选项操作实现类
+ *
+ */
+@Repository("optionDao")
+public class OptionDaoImpl extends DataDaoImpl<Option> implements OptionDao {
+
+}

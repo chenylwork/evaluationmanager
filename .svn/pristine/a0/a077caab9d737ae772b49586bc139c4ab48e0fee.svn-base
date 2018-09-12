@@ -1,0 +1,52 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.dao.PermisInfoDao;
+import com.evaluationmanager.dao.PermissRoleDao;
+import com.evaluationmanager.dao.PermissUserDao;
+import com.evaluationmanager.entiy.PermissRole;
+import com.evaluationmanager.entiy.PermissUser;
+import com.evaluationmanager.entiy.PermissionInfo;
+import com.evaluationmanager.service.PermisInfoService;
+import com.evaluationmanager.support.AbstractService;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:23:09
+ * @Description 描述信息：权限信息业务操作实现
+ *
+ */
+@org.springframework.stereotype.Service("permisInfoService")
+public class PermisInfoServiceImpl extends AbstractService<PermissionInfo> implements PermisInfoService {
+
+	@Autowired
+	private PermisInfoDao permisInfoDao;
+	@Autowired
+	private PermissRoleDao permissRoleDao;
+	@Autowired
+	private PermissUserDao permissUserDao;
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<PermissionInfo> getAll() {
+		return this.permisInfoDao.getDatas("");
+	}
+
+	@Override
+	@Transactional
+	public boolean addPr(PermissRole pr) {
+		return this.permissRoleDao.add(pr);
+	}
+
+	@Override
+	@Transactional
+	public boolean addPu(PermissUser pu) {
+		return this.permissUserDao.add(pu);
+	}
+
+}

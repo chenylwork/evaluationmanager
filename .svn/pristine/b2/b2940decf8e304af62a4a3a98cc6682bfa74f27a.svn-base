@@ -1,0 +1,19 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.PermissRoleDao;
+import com.evaluationmanager.entiy.PermissRole;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月10日-上午11:09:00
+ * @Description 描述信息：角色权限操作实现
+ *
+ */
+@Repository("PermissRoleDao")
+public class PermissRoleDaoImpl extends DataDaoImpl<PermissRole> implements PermissRoleDao {
+
+}

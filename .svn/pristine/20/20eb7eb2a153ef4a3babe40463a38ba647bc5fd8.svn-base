@@ -1,0 +1,42 @@
+//备份数据库
+
+$(function(){
+	function exportData(){
+		var message;
+		$.ajax({
+	    		url:"http://localhost:8080/evaluationmanager/admin/data/exportDatabase",
+	    		data:{},
+	    		type:"post",
+	    		async:false,
+	    		success:function(data){
+	    			message=eval('('+data+')');
+	    			alert(message);
+	    		}
+	    	});
+		return message;
+	}
+
+//还原数据库
+	function importData(){
+		var message;
+		$.ajax({
+	    		url:"http://localhost:8080/evaluationmanager/admin/data/importDatabase",
+	    		data:{},
+	    		type:"post",
+	    		async:false,
+	    		success:function(data){
+	    			message=eval('('+data+')');
+	    			alert(message);
+	    		}
+	    	});
+		return message;
+	}
+
+	$("#export").click(function(){
+		exportData();
+	});
+	$("#import").click(function(){
+		importData();
+	})
+	
+})

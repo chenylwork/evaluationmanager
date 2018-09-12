@@ -1,0 +1,75 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月26日-上午9:08:13
+ * @description 评测记录信息表对应类
+ */
+@Entity
+@Table(name = "evaluation_record")
+public class EvaluationRecord {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;// 编号
+	private String startTime;// 测评开始时间
+	private String endTime;// 测评结束时间
+	private String paper;// 测评试卷
+
+	public EvaluationRecord() {
+		super();
+	}
+
+	public EvaluationRecord(int id, String startTime, String endTime, String paper) {
+		super();
+		this.id = id;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.paper = paper;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
+	public String getPaper() {
+		return paper;
+	}
+
+	public void setPaper(String paper) {
+		this.paper = paper;
+	}
+
+	@Override
+	public String toString() {
+		return "Evaluation_Record [id=" + id + ", startTime=" + startTime + ", endTime=" + endTime + ", paper=" + paper
+				+ "]";
+	}
+
+}

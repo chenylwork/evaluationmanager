@@ -1,0 +1,13 @@
+package com.evaluationmanager.dao;
+
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.support.DataDao;
+/**
+ * 
+ * @Author 陈彦磊
+ * @DateTime 2018年7月26日-上午10:24:54
+ * @Description 问题信息操作接口
+ */
+public interface QuestionDao extends DataDao<Question>{
+	
+}

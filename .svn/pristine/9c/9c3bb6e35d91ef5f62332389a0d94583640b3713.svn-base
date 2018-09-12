@@ -1,0 +1,239 @@
+package com.evaluationmanager.action;
+
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.*;
+import com.evaluationmanager.service.*;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:52:31
+ * @Description 描述信息：
+ *
+ */
+@Controller("studentAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class StudentAction extends Action<Student>{
+	
+	private static final long serialVersionUID = 423709953794339294L;
+	@Autowired
+	private StudentService studentService;
+	@Autowired
+	private CodeService codeService;
+	@Autowired
+	private MajorService majorService;
+	@Autowired
+    private UserService userService;
+	private Student student=new Student();
+	private User user = new User();
+	private Code code =new Code();
+
+	private Map<String, Object> studentMap;
+	private List<Code> sexList;
+	private List<Major> majorList;
+	private List<Code> stateList;
+	//user部分
+	private int userID;
+	private String account;
+	private String password;
+	private String name;
+	private String sex;
+	private int age;
+	private String pid;
+	private String[] batchID; 
+
+	@Override
+	public Student getModel() {
+		return student;
+	}
+	//添加学生页面遍历性别、专业、状态
+	public String selectType(){
+		majorList = this.majorService.getAllCode();
+		sexList = this.codeService.getSex();
+		stateList = this.codeService.getStudentState();
+		return SELECT_TYPES;
+	}
+	
+	public String add(){
+		student.setUser(student.getStuNo());
+		student.setRole("Y04");;
+		user.setRole("R03");
+		user.setAccount(student.getStuNo());
+		user.setPassword(password);
+		user.setName(name);
+		user.setSex(sex);
+		user.setAge(age);
+		user.setPid(pid);
+	    this.studentService.add(student,user);
+		return INSERT_STUDENT;
+	}
+	public String delete(){
+		this.userService.BatchDelete(batchID);
+		this.studentService.delete(batchID);
+		return paginAll();
+	}
+	public String update(){
+		student.setUser(student.getStuNo());
+		student.setRole("Y04");;
+		user.setId(userID);
+		user.setRole("R03");
+		user.setAccount(student.getStuNo());
+		user.setPassword(password);
+		user.setName(name);
+		user.setSex(sex);
+		user.setAge(age);
+		user.setPid(pid);
+		this.studentService.update(student);
+		this.userService.update(user);
+		return paginAll();
+	}
+	
+	public String paginAll(){
+		majorList = this.majorService.getAllCode();
+		sexList = this.codeService.getSex();
+		stateList = this.codeService.getStudentState();
+		 List<Map<String, Object>> a =this.studentService.paginGet(paginMap, "");
+		 System.out.println("--------------"+a);
+		return GETALL_STUDENT;
+	}
+	
+	public String details(){
+		studentMap=this.studentService.stuNobyMap(student.getStuNo());
+		return DETAILS_STUDENT;
+	}
+	
+	public String resetPwd(){
+		int count=userService.resetPwd(account);
+		if (count>0) {
+			return paginAll();
+		}else{
+			return ERROR;
+		}
+	}
+	public String getStuByNo(){
+		studentMap=this.studentService.stuNobyMap(student.getStuNo());
+		majorList = this.majorService.getAllCode();
+		sexList = this.codeService.getSex();
+		stateList = this.codeService.getStudentState();
+		System.err.print(studentMap.get("user"));
+		return BYNO_STUDENT;
+	}
+	
+	//get、set方法
+	public Student getStudent() {
+		return student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+	
+	public User getUser() {
+		return user;
+	}
+	
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
+	public Code getCode() {
+		return code;
+	}
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
+	public List<Code> getSexList() {
+		return sexList;
+	}
+
+	public void setSexList(List<Code> sexList) {
+		this.sexList = sexList;
+	}
+
+	public List<Major> getMajorList() {
+		return majorList;
+	}
+	public void setMajorList(List<Major> majorList) {
+		this.majorList = majorList;
+	}
+	public List<Code> getStateList() {
+		return stateList;
+	}
+
+	public void setStateList(List<Code> stateList) {
+		this.stateList = stateList;
+	}
+	
+	public String getAccount() {
+		return account;
+	}
+	public void setAccount(String account) {
+		this.account = account;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getSex() {
+		return sex;
+	}
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+	public int getAge() {
+		return age;
+	}
+	public void setAge(int age) {
+		this.age = age;
+	}
+	public String getPid() {
+		return pid;
+	}
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+
+	public Map<String, Object> getStudentMap() {
+		return studentMap;
+	}
+	public void setStudentMap(Map<String, Object> studentMap) {
+		this.studentMap = studentMap;
+	}
+	public UserService getUserService() {
+		return userService;
+	}
+	public void setUserService(UserService userService) {
+		this.userService = userService;
+	}
+	public String[] getBatchID() {
+		return batchID;
+	}
+	public void setBatchID(String[] batchID) {
+		this.batchID = batchID;
+	}
+	public int getUserID() {
+		return userID;
+	}
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+	
+}

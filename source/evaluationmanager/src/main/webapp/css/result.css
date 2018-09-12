@@ -1,0 +1,7 @@
+/* css样式重置设置文件 */
+/*
+ * @Author 陈彦磊 
+ */
+@CHARSET "UTF-8";
+
+table td,table th{text-align:center;}

@@ -1,0 +1,27 @@
+package com.evaluationmanager.dao.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.CodeDao;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月2日-下午2:47:15
+ * @Description 描述信息：
+ *
+ */
+@Repository("codeDao")
+public class CodeDaoImpl extends DataDaoImpl<Code> implements CodeDao {
+
+	@Override
+	public List<Map<String, Object>> getPaperType() {
+		return getMapDatas("typeNo.name = ?", "试卷类型");
+	}
+	
+}

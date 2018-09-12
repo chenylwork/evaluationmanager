@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：陈彦磊-->
+<!--创建时间：2018年7月30日-下午17:10:00-->
+<!--配置信息：测评配置-->
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <package name="evaluation" namespace="/admin/evaluation" extends="json-default">
+         <action name="*" class="evaluationAction" method="{1}">
+            <result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+			<!--  -->
+			<result name="getall">results.jsp</result>
+			<!-- 点添加页面获取所需参数 -->
+			<result name="cartogram">cartogram.jsp</result>
+         </action>
+    </package>
+</struts>

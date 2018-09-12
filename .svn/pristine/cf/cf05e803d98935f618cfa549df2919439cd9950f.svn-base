@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：耿佳康-->
+<!--创建时间：2018年7月30日-下午17:10:00-->
+<!--配置信息：用户登录，个人信息的配置信息 -->
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <package name="user" namespace="/admin/user" extends="json-default">
+        <!-- 学生模块-->
+         <action name="*" class="userAction" method="{1}">
+            <result name="loginadmin">/admin/index.jsp</result>
+            <result name="login">/index.jsp</result>
+            <result name="error">/error.jsp</result>
+            <result name="updateUser">/admin/user/user_list.jsp</result>
+            <result name="resetpwd">/admin/user/user_list.jsp</result>
+            <result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+         </action>
+    </package>
+</struts>

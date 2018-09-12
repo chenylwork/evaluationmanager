@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：任少华 -->
+<!--创建时间：2018年7月30日-下午:3:25:10 -->
+<!--配置信息：major问题模块的配置信息 -->
+<struts>
+<constant name="struts.devMode" value="true" />
+  
+    <package name="olog" namespace="/admin/olog" extends="struts-default">
+        <!-- 学生模块-->
+       <action name="*" class="com.evaluationmanager.action.OlogAction" method="{1}">
+         	<!-- 删除登录日志 -->
+            <result name="deleteOLog"></result>
+            <result name="allOlog">/admin/logfile/operation_log_list.jsp</result>
+  
+         </action>
+         
+         
+    </package>
+</struts>

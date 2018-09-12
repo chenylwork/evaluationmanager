@@ -1,0 +1,87 @@
+package com.evaluationmanager.dao.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.ClassDao;
+import com.evaluationmanager.entiy.Class;
+import com.evaluationmanager.support.DataDaoImpl;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午1:53:40
+ * @description 班级信息操作实现
+ */
+@Repository("classDao")
+public class ClassDaoImpl extends DataDaoImpl<Class> implements ClassDao{
+
+	@Override
+	public Class renameClassbyNo(String classNo) {
+		return template.execute(new HibernateCallback<Class>() {
+
+			@Override
+			public Class doInHibernate(Session session) throws HibernateException {
+				Class classes=null;
+				String hql="from Class where classNo=?";
+				@SuppressWarnings("unchecked")
+				Query<Class> query=session.createQuery(hql);
+				query.setParameter(0, classNo);
+				List<Class> list=query.list();
+				if (list.size()>0) {
+					classes=list.get(0);
+				}
+				return classes;
+			}
+		});
+		
+	}
+
+	@Override
+	public List<Map<String, Object>> paginSearchClass(Pagin<Map<String, Object>> pagin, Class classes) {
+		 String moditions = "1=1 ";
+			List<String> paramsList = new ArrayList<>();
+			if(classes !=null && classes.getName() != null && !"".equals(classes.getName())) {
+				moditions += " and name like ? ";
+				paramsList.add("%"+classes.getName()+"%");
+			}
+			if(classes !=null && classes.getMajor() !=null && !"".equals(classes.getMajor())){
+				
+				moditions += " and major = ? ";
+				paramsList.add(classes.getMajor());
+			}
+			if (classes!=null && classes.getClassNo()!=null && !"".equals(classes.getClassNo())) {
+				moditions +=" and classNo = ?";
+				paramsList.add("%"+classes.getClassNo()+"%");
+			}
+		return super.paginGetMapDatas(pagin, moditions, paramsList.toArray(new String[]{}));
+	}
+
+	@Override
+	public long size(Class classes) {
+        String moditions = "1=1 ";
+		List<String> paramsList = new ArrayList<>();
+		if(classes !=null && classes.getName() != null && !"".equals(classes.getName())) {
+			moditions += " and name like ? ";
+			paramsList.add("%"+classes.getName()+"%");
+		}
+		if(classes !=null && classes.getMajor() !=null && !"".equals(classes.getMajor())){
+			
+			moditions += " and major = ? ";
+			paramsList.add(classes.getMajor());
+		}
+		if (classes!=null && classes.getClassNo()!=null && !"".equals(classes.getClassNo())) {
+			moditions +=" and classNo = ?";
+			paramsList.add("%"+classes.getClassNo()+"%");
+		}
+		return super.size(moditions, paramsList.toArray(new String[]{}));
+	}
+
+}

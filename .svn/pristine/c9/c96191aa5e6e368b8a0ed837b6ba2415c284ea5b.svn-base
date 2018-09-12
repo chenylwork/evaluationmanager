@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>添加班级页面</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<style type="text/css">
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+body{
+
+}
+ul li{
+	width: 800px;
+	height: 70px;
+	list-style: none;
+	padding-left: 25px;
+}
+	
+.main{
+	width: 100%;
+	height: 550px;
+	padding-top: 50px;
+	float: left;
+	
+}
+.left{
+	width:350px;
+	height: 350px;
+	padding-left: 50px;
+	margin-top: -20px;
+	float: left;
+}
+.right{
+	width:500px;
+	height: 350px;
+	float: left;
+}
+.required{
+	width: 300px;
+	border-radius: 3px;
+	border:1px solid #ccc;
+	height:35px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+
+.onError{
+	color: #666;
+    background: url(images/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+	color: #fff;
+    background: url(images/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.btn1{
+	width:80px;
+	height:25px;
+	background-color:#000;
+	color:#FFFFFF;
+	border-radius:5px;
+	font-size:14px;
+	font-weight:bold;
+}
+
+</style>
+<script type="text/javascript">
+
+
+</script>
+</head>
+<body>
+
+<span><h3 style="background: #e9f2ff;padding-left:10px;">Add class information</h3></span>
+<span style="font-size:18px;padding-left:10px;">添加班级信息</span>
+
+<div class="main">
+<div class="left"><img src="images/b8.jpg"></div>
+	<div class="right">
+	<!--班级编号，班级名称，所属专业-->
+		<form action="" method="post">
+		<ul>
+			<li>班级编号：<input type="text" name="" id="Id" class="required" placeholder="请输入班级编号"></li>
+				<li>所属专业：
+				<select class="required" id="major" style="color:#999;">
+					<option>请选择</option>
+					<option>java</option>
+					<option>php编码</option>
+					<option>程序网络</option>
+				</select>
+			</li>
+			<li>班级名称：<input type="text" name="" id="name" class="required" placeholder="请输入你的名称"></li>
+			<li style="text-align:left;padding-left:100px;">
+			<input type="button" name="" id="zxc" class="btn1" value="提交">
+			&nbsp;&nbsp;&nbsp;&nbsp;<input type="reset" value="重置" class="btn1"> </li>
+		</ul>
+		</form>
+		</div>
+</div>
+</body>
+</html>
+
+<script type="text/javascript">
+
+$(function(){
+	//如果是必填的，则加红星表标识
+	$("form :input.required").each(function() {
+        var $required=$("<strong class='high'>*</strong>");//创建元素
+		$(this).parent().append($required);//然后将它追加到文档中
+    });
+	//文本框失去焦点后
+	$('form :input').blur(function(){
+		var $parent=$(this).parent();
+		$parent.find(".formtips").remove();
+
+		if($(this).is('#Id')){
+			if(this.value==""){
+				var errorMsg='班级编号不能为空';
+				$parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+			}else{
+				
+				$parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+				}
+				}
+			if($(this).is('#name')){
+			if(this.value==""){
+				var errorMsg='请输入正确的班级名称';
+				$parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+			}else{
+				
+				$parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+				}
+				}
+			if($(this).is('#major')){
+			if(this.value==""||this.value.length==3){
+				var errorMsg='请输入正确的专业';
+				$parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+			}else{
+				var okMsg='输入正确';
+				$parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+				}
+				}
+		
+				
+		}).keyup(function(){
+			$(this).triggerHandler("blur");
+		}).focus(function(){
+			$(this).triggerHandler("blur");
+		});
+			//提交
+		$('#zxc').click(function(){
+			$("form :input.required").trigger('blur');
+			var numError=$('form.onError').length;
+			if(numError){
+				return false;
+			}
+		if(($(".onError").length)>0){
+				console.log($(".onSuccess").length);
+			} else{
+				$("form").submit();
+			}
+		
+			});
+			
+	})
+</script>

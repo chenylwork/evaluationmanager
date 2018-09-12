@@ -1,0 +1,121 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="java.util.Date" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>后台欢迎页面</title>
+	<link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/font.css">
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/css/xadmin.css">
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/xadmin.js"></script>
+    <script type="text/javascript">
+    function getCount(){
+		var count;
+		$.ajax({
+			url:"http://localhost:8080/evaluationmanager/admin/user/translate",
+			data:{},
+			type:"post",
+			async:false,
+			success:function(data){
+				count = data;
+			   console.log(count);
+			}
+		})
+		return count;
+	}
+	
+	function initCount(){
+	    var data=eval('('+getCount()+')');
+	    console.log(data);
+	    $("#count_size").remove();
+	    var initHtml = " <ul class='layui-row layui-col-space10 layui-this' id='count_size'>";
+	    initHtml+=" <li class='layui-col-xs2'><a href='javascript:;' class='x-admin-backlog-body'><h3>院系数</h3><p><cite>"+data.count.deptNo+"</cite></p></a></li>";
+	    initHtml+=" <li class='layui-col-xs2'><a href='javascript:;' class='x-admin-backlog-body'><h3>专业数</h3><p><cite>"+data.count.majorSize+"</cite></p></a></li>";
+	    initHtml+=" <li class='layui-col-xs2'><a href='javascript:;' class='x-admin-backlog-body'><h3>老师数</h3><p><cite>"+data.count.teacherSize+"</cite></p></a></li>";
+	    initHtml+=" <li class='layui-col-xs2'><a href='javascript:;' class='x-admin-backlog-body'><h3>学生数</h3><p><cite>"+data.count.studentSize+"</cite></p></a></li>";
+	    initHtml+=" <li class='layui-col-xs2'><a href='javascript:;' class='x-admin-backlog-body'><h3>评教数</h3><p><cite>"+data.count.evaluationSize+"</cite></p></a></li>";
+	    $("#count_div").append(initHtml);
+	    
+	}
+
+    $(function(){
+    	initCount();
+    })
+    	
+    </script>
+</head>
+<body>
+	<div class="x-body layui-anim layui-anim-up">
+        <blockquote class="layui-elem-quote">欢迎管理员：
+            <span class="x-red">${LOGINED_USER.name}</span>！当前时间:
+            	<% 
+			        //定义当前日期
+			        SimpleDateFormat now = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+			        out.print(now.format(new Date()));
+	     		%>
+            </blockquote>
+        <fieldset class="layui-elem-field">
+            <legend>数据统计</legend>
+            <div class="layui-field-box">
+                <div class="layui-col-md12">
+                    <div class="layui-card">
+                        <div class="layui-card-body">
+                            <div class="layui-carousel x-admin-carousel x-admin-backlog" lay-anim="" lay-indicator="inside" lay-arrow="none" style="width: 100%; height: 90px;">
+                                <div carousel-item="" id="count_div">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>校园动态</legend>
+            <div class="layui-field-box">
+                <table class="layui-table" lay-skin="line">
+                    <tbody>
+                        <tr>
+                            <td >
+                                <a class="x-a" href="http://www.sjzpt.edu.cn/info/1049/4474.htm" target="_blank">经济贸易系学生党支部赴中央统战部旧址参观学习</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <a class="x-a" href="http://www.sjzpt.edu.cn/info/1049/4471.htm" target="_blank">我院领导班子在全省高校考核中荣获优秀</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td >
+                                <a class="x-a" href="http://www.sjzpt.edu.cn/info/1049/4468.htm" target="_blank">我院举办“第十五届河北省运动会”志愿者开营仪式</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+        <fieldset class="layui-elem-field">
+            <legend>开发团队</legend>
+            <div class="layui-field-box">
+                <table class="layui-table">
+                    <tbody>
+                        <tr>
+                            <th>版权所有</th>
+                            <td>软件一班 2组</td>
+                        </tr>
+                        <tr>
+                            <th>开发者</th>
+                            <td>软件一班 2组</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </fieldset>
+    </div>
+</body>
+</html>

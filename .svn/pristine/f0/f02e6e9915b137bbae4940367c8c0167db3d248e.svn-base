@@ -1,0 +1,48 @@
+package com.evaluationmanager.test;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.service.QuestionService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-bean.xml" })
+public class TypeTest extends Student{
+	
+	@Autowired
+	private QuestionService questionService;
+	
+	@Test
+	public void addTest() {
+		Question q = new Question();
+		q.setQuestionNO("q1");
+		q.setQuestion("问题的信息");
+		q.setDescription("问题描述");
+		questionService.save(q);
+	}
+	@Test
+	public void updateTest() {
+		Question q = questionService.getQuestionByNo("q1");
+		q.setQuestion("修改后的问题的信息");
+		q.setDescription("问题描述");
+		questionService.update(q);
+	}
+	@Test
+	public void deleteTest() {
+		Question question = questionService.getQuestionByNo("q1");
+		questionService.delete(question);
+	}
+	
+	public void print(Class<? extends Object> o) {
+		System.out.println(o.getSimpleName());
+	}
+	public static void main(String[] args) {
+		new TypeTest().print(TypeTest.class);
+	}
+	
+}

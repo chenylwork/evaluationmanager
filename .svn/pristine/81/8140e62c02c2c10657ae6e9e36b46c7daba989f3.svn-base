@@ -1,0 +1,49 @@
+package com.evaluationmanager.service;
+
+import com.evaluationmanager.entiy.Question;
+
+/**
+ * @author chenyl
+ * @Date 2018年7月19日-下午1:31:09
+ * @Description  问题信息业务操作接口
+ *
+ */
+public interface QuestionService{
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午2:39:09
+	 * @Description 作用描述
+	 * @param 添加一个新试题
+	 * @return Question 
+	 */
+	public Question save(Question question);
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午2:53:07
+	 * @Description 修改试题信息
+	 * @param question
+	 * @return Question 修改之后的Question对象
+	 */
+	public Question update(Question question);
+	/**
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午2:53:56
+	 * @Description 删除问题信息
+	 * @return Question 删除的对象
+	 */
+	public Question delete(Question question);
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:05:53
+	 * @Description 根据问题ID获取问题信息
+	 * @param questionID
+	 * @return 
+	 */
+	public Question getQuestionByNo(String questionNo);
+	
+	
+	
+}

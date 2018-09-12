@@ -1,0 +1,418 @@
+package com.evaluationmanager.action;
+
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.common.ExcelModel;
+import com.evaluationmanager.common.ExcelModel.Node;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.Course;
+import com.evaluationmanager.entiy.Major;
+import com.evaluationmanager.entiy.OperationLog;
+import com.evaluationmanager.entiy.Role;
+import com.evaluationmanager.entiy.Teacher;
+import com.evaluationmanager.entiy.TeacherCourse;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.entiy.view.TeacherView;
+import com.evaluationmanager.exception.DataException;
+import com.evaluationmanager.service.CodeService;
+import com.evaluationmanager.service.MajorService;
+import com.evaluationmanager.service.OlogService;
+import com.evaluationmanager.service.TeacherService;
+import com.evaluationmanager.service.UserService;
+import com.evaluationmanager.support.Action;
+import com.evaluationmanager.unit.Md5Unit;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:13:09
+ * @Description 描述信息：教师操作action类
+ *
+ */
+@Controller("teacherAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class TeacherAction extends Action<Teacher> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	HttpServletRequest request = ServletActionContext.getRequest();
+
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private MajorService majorService;
+	@Autowired
+	private CodeService codeService;
+	@Autowired
+	private UserService userService;
+	@Autowired
+    private OlogService ologService;
+	
+	private Teacher teacher = new Teacher();
+	private User user = new User();
+	private Course course = new Course();
+	private TeacherCourse tc = new TeacherCourse();
+	private TeacherView tv = new TeacherView();
+	private Map<String, Object> teacherMap;
+	private List<Major> majorList;
+	
+	private List<Code> sexList;
+	private List<Role> roleList;
+	private List<Code> stateList;
+	//Course
+	private String courseNo;
+	
+	//User
+	private int userID;
+	private String account;
+	private String name;
+	private String password;
+	private String sex;
+	private int age;
+	private String pid;
+	private String username;
+	
+	//批量删除
+	private String[] batchID;
+	
+	/**
+	 * 添加教师页面遍历性别、专业、角色、状态
+	 * @return
+	 */
+	public String selectType(){
+		sexList = this.codeService.getSex();
+		roleList = this.codeService.getTeacherRole();
+		majorList = this.majorService.getAllCode();
+		stateList = this.codeService.getTeacherState();
+		return SELECT_TYPE;
+	}
+	
+	/**
+	 * 同时添加用户、教师以及教师课程关系
+	 * @return
+	 */
+	public String add(){
+		//添加用户
+		user.setAccount(teacher.getTeacherNo());
+		user.setName(name);
+		String password=Md5Unit.encodeByMD5("123456");
+		user.setPassword(password);
+		user.setAge(age);
+		user.setSex(sex);
+		user.setPid(pid);
+		user.setRole(teacher.getRole());
+		
+		//添加教师
+		teacher.setUser(teacher.getTeacherNo());
+		
+		this.teacherService.add(user,teacher);
+		return selectType();
+	}
+	/**
+	 * 删除教师信息
+	 * @return
+	 */
+	public String delete(){
+		//OperationLog operation = new OperationLog("","删除教师","失败");
+		this.userService.BatchDelete(batchID);
+		this.teacherService.BatchDelete(batchID);
+		//operation.setState("成功");
+//		try {
+//			ologService.add(request, operation);
+//		} catch (DataException e) {
+//			e.printStackTrace();
+//		}
+		return select();
+	}
+	/**
+	 * 修改时遍历信息
+	 * @return
+	 */
+	public String updateSelect(){
+		teacherMap = this.teacherService.teacherNobyMap(teacher.getTeacherNo());
+		sexList = this.codeService.getSex();
+		roleList = this.codeService.getTeacherRole();
+		majorList = this.majorService.getAllCode();
+		stateList = this.codeService.getTeacherState();
+		return UPDATE_SELECT;
+	}
+	/**
+	 * 修改的保存操作
+	 * @return
+	 */
+	public String update(){
+		OperationLog operation = new OperationLog("","修改教师","失败");
+		//修改用户
+		user.setRole(teacher.getRole());
+		user.setAccount(teacher.getTeacherNo());
+		
+		user.setId(userID);
+		user.setName(name);
+		user.setPassword(password);
+		user.setAge(age);
+		user.setSex(sex);
+		user.setPid(pid);
+		//修改教师
+		teacher.setUser(teacher.getTeacherNo());
+		this.teacherService.update(user,teacher);
+		operation.setState("成功");
+		try {
+			ologService.add(request, operation);
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
+		teacher=null;user=null;
+		return select();
+	}
+
+	/**
+	 * 获取全部教师信息
+	 * @return
+	 */
+	public String select(){
+		stateList=this.codeService.getTeacherState();
+		roleList=this.codeService.getTeacherRole();
+		majorList = this.majorService.getAllCode();
+		
+		if(username != null && username != ""){
+			user.setName(username);
+		} 
+		
+		this.teacherService.paginSearchTeacher(paginMap,teacher,user);
+		return SELECT_TEACHER;
+	}
+	
+	/**
+	 * 查看详情操作
+	 * @return
+	 */
+	public String detail(){
+		teacherMap = this.teacherService.teacherNobyMap(teacher.getTeacherNo());
+		return TEACHER_DETAIL;
+	}
+	
+	/**
+	 * 重置密码
+	 * @return
+	 */
+	public String resetPwd(){
+		OperationLog operation = new OperationLog("","重置教师密码","失败");
+		this.userService.resetPwd(account);
+		operation.setState("成功");
+		try {
+			ologService.add(request, operation);
+		} catch (DataException e) {
+			e.printStackTrace();
+		}
+		return select();
+	}
+	/***************************************/
+	/***************************************/
+	/***************************************/
+	// 我们需要提供一个方法，这个方法是一个标准的get方法，如getXxx
+	// 并通过这个方法创建并返回一个InputStream给struts
+	// struts就会根据这个输入流读取文件，并写回客户端
+	public InputStream getInputStream() throws Exception {
+		String path = ExcelModel.getPath()+decode(fileName);
+		// 根据路径结合提交过来的文件名，创建一个File对象
+		String realPath = ServletActionContext.getServletContext().getRealPath("/"+path);
+		// 创建InputStream对象
+		BufferedInputStream stream = new BufferedInputStream(new FileInputStream(new File(realPath)));
+		// 返回这个输入流给struts
+		return stream;
+	}
+	public String download() {
+		for (Node node : ExcelModel.getFiles()) {
+			if (decode(fileName).equals(node.fileName) ) {
+				return SUCCESS;
+			}
+		}
+		message = "没有找到需要下载的文件";
+		return ERROR;
+	}
+	/***************************************/
+	/***************************************/
+	/***************************************/
+
+	
+	@Override
+	public Teacher getModel() {
+		return teacher;
+	}
+
+	public List<Code> getSexList() {
+		return sexList;
+	}
+
+	public void setSexList(List<Code> sexList) {
+		this.sexList = sexList;
+	}
+
+	public List<Role> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Role> roleList) {
+		this.roleList = roleList;
+	}
+
+	public List<Major> getMajorList() {
+		return majorList;
+	}
+
+	public void setMajorList(List<Major> majorList) {
+		this.majorList = majorList;
+	}
+
+	public List<Code> getStateList() {
+		return stateList;
+	}
+
+	public void setStateList(List<Code> stateList) {
+		this.stateList = stateList;
+	}
+
+	public Teacher getTeacher() {
+		return teacher;
+	}
+
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public Map<String, Object> getTeacherMap() {
+		return teacherMap;
+	}
+
+	public void setTeacherMap(Map<String, Object> teacherMap) {
+		this.teacherMap = teacherMap;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
+	}
+
+	public TeacherCourse getTc() {
+		return tc;
+	}
+
+	public void setTc(TeacherCourse tc) {
+		this.tc = tc;
+	}
+
+	public String getCourseNo() {
+		return courseNo;
+	}
+
+	public void setCourseNo(String courseNo) {
+		this.courseNo = courseNo;
+	}
+
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getSex() {
+		return sex;
+	}
+
+	public void setSex(String sex) {
+		this.sex = sex;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public String getPid() {
+		return pid;
+	}
+
+	public void setPid(String pid) {
+		this.pid = pid;
+	}
+
+	public int getUserID() {
+		return userID;
+	}
+
+	public void setUserID(int userID) {
+		this.userID = userID;
+	}
+
+	public String[] getBatchID() {
+		return batchID;
+	}
+
+	public void setBatchID(String[] batchID) {
+		this.batchID = batchID;
+	}
+
+	public TeacherView getTv() {
+		return tv;
+	}
+
+	public void setTv(TeacherView tv) {
+		this.tv = tv;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+}

@@ -1,0 +1,9 @@
+package com.evaluationmanager.annotation;
+/**
+ * 
+ * @Author 陈彦磊
+ * @DateTime 2018年7月27日-下午3:16:44
+ * @Description 标识该属性为数据的no字段信息
+ */
+public @interface EntityNo {
+}

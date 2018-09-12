@@ -1,0 +1,63 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Option;
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.entiy.Question;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-上午10:41:35
+ * @Description 描述信息：试卷信息业务操作接口
+ *
+ */
+public interface PaperService {
+	
+	/**
+	 * 添加试卷
+	 * @param p
+	 * @return
+	 */
+	public boolean add(String data);
+	
+	/**
+	 * 修改试卷
+	 * @param p
+	 * @return
+	 */
+	public boolean update(Paper p);
+	
+	/**
+	 * 删除试卷
+	 * @param p
+	 * @return
+	 */
+	public boolean delete(Paper p);
+	/**
+	 * 获取试题类型
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午3:55:46
+	 * @Description 作用描述
+	 *
+	 * @return
+	 */
+	public String getPaperType();
+	/**
+	 * 随机抽取试题
+	 * @return
+	 */
+	public List<Question> getRand();
+	/**
+	 * 查询全部试题
+	 * @return
+	 */
+	public List<Question> getAllQues();
+	/**
+	 * 查询全部选项
+	 * @return
+	 */
+	public List<Option> getAllOption();
+
+}

@@ -1,0 +1,20 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.DepartmentDao;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 张鼎瑜
+ * @Datetime 2018年7月27日-下午2:21:33
+ * @Description 描述信息：院系操作实现类
+ *
+ */
+
+@Repository("departmentDao")
+public class DepartmentDaoImpl extends DataDaoImpl<Code> implements DepartmentDao{
+
+}

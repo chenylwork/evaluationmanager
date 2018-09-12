@@ -1,0 +1,44 @@
+-- 创建教师信息视图start
+DROP VIEW IF EXISTS v_teacher;
+CREATE VIEW v_teacher AS 
+SELECT 
+t.teacherNo NO,u.account,u.name,u.password,u.sex,u.age,u.pid,t.role roleNo,r.name roleName,t.major majorNo,m.name majorName,t.state,m.deptNo,c.name deptName
+FROM USER u, teacher t,major m ,CODE c,role r WHERE t.user = u.account AND t.major = m.majorNo AND m.deptNo = c.codeNo AND u.role = r.no
+
+SELECT * FROM v_teacher;
+-- 创建教师信息视图end
+
+
+-- 创建试卷教师关系视图start
+DROP VIEW IF EXISTS v_paper_teacher;
+CREATE VIEW v_paper_teacher AS          
+SELECT 
+`p`.`paperNo`     AS `paperNo`,
+  `p`.`type`        AS `TYPE`,
+  `p`.`description` AS `description`,
+  `p`.`startTime`   AS `startTime`,
+  `p`.`endTime`     AS `endTime`,
+  `t`.`teacherNo`   AS `teacherNo`,
+  `t`.`name`        AS `NAME`,
+  `t`.`role`        AS `role`,
+  `t`.`major`       AS `major`,
+  `t`.`state`       AS `state`,
+  `m`.`deptNo`      AS `dept`
+FROM paper p ,
+(SELECT 
+`t`.`id`           AS `id`,
+`t`.`teacherNo`    AS `teacherNo`,
+`t`.`USER`         AS `USER`,
+`t`.`role`         AS `role`,
+`t`.`major`        AS `major`,
+`t`.`state`        AS `state`,
+`u`.`NAME`         AS `NAME` FROM teacher t ,USER u WHERE t.`USER` = u.`account`) t ,major m WHERE t.`major` = m.`majorNo`
+-- 创建试卷教师关系视图end
+
+--创建学生视图
+SELECT 
+*
+FROM 
+USER u, student s,major m ,CODE c,role r ,class cl
+WHERE s.user = u.account AND s.major = m.majorNo AND m.deptNo = c.codeNo AND u.role = r.no AND s.classNo = cl.classNo
+-- 创建学生视图

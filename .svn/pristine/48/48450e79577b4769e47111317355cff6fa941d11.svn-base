@@ -1,0 +1,60 @@
+package com.evaluationmanager.service.impl;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.dao.QuestionDao;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.exception.DataException;
+import com.evaluationmanager.service.QuestionService;
+import com.evaluationmanager.support.Service;
+
+/**
+ * @Author 陈彦磊
+ * @DateTime 2018年7月26日-上午10:32:36
+ * @Description 问题信息操作业务实现类
+ */
+@org.springframework.stereotype.Service("questionService")
+public class QuestionServiceImpl extends Service<Question> implements QuestionService {
+	
+	private QuestionDao questionDao;
+	
+	@Autowired
+	public void setDataDao(QuestionDao questionDao) {
+		this.questionDao = questionDao;
+		super.setDataDao(questionDao);
+	}
+
+	@Override
+	@Transactional
+	public Question save(Question question) {
+		changeData(question, SAVE);
+		return question;
+	}
+
+	@Override
+	public Question update(Question question) {
+		changeData(question, UPDATE);
+		return question;
+	}
+
+	@Override
+	public Question delete(Question question) {
+		changeData(question, DELETE);
+		return question;
+	}
+
+	@Override
+	public Question getQuestionByNo(String questionNo) {
+		try {
+			questionDao.getDataByNo(questionNo);
+		} catch (DataException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+}

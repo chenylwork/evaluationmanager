@@ -1,0 +1,672 @@
+package com.evaluationmanager.support;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.Id;
+import javax.sql.DataSource;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.SessionFactoryUtils;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+
+import com.evaluationmanager.annotation.Foreignkey;
+import com.evaluationmanager.annotation.No;
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.exception.DataException;
+
+/**
+ * 数据操作抽象类
+ * 
+ * @author chenyl
+ * @Date 2018年7月12日
+ * @Description
+ */
+public class AbstractDataDao<T> extends HibernateDaoSupport implements DataDao<T> {
+
+	/**
+	 * 数据操作对象
+	 */
+	protected HibernateTemplate template;
+	
+	@Autowired
+	public void setSuperSessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+		this.template = super.getHibernateTemplate();
+	}
+	public AbstractDataDao() {
+		init();
+	}
+	
+	private Class<T> entityClass = getEntityClass();
+
+	private String entityClassSimpleName = getEntityClass().getSimpleName();
+
+	private String entityClassIdName = getFieldNameByAnnotation(entityClass, Id.class);
+
+	private String entityClassNoName = getFieldNameByAnnotation(entityClass, No.class);
+
+	//private Map<String,String> tables;
+	
+	private List<Map<Table, String>> tables;
+	
+	private int tableNo = 1;
+
+	private StringBuffer columns;
+
+	private StringBuffer join;
+	
+	private boolean formartHql = true;
+	private String line = formartHql ? "\n" : "";
+
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月26日-上午10:04:40
+	 * @Description 获取泛型类
+	 * @return Class<? extends Object>
+	 */
+	@SuppressWarnings("unchecked")
+	private Class<T> getEntityClass() {
+		return (Class<T>) (((ParameterizedType) (this.getClass().getGenericSuperclass())).getActualTypeArguments()[0]);
+	}
+
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 根据属性是否含有某Annotation注解获取该属性名称
+	 * @param entityClass
+	 *            需要获取的对象
+	 * @param annotationClass
+	 *            含有的注解
+	 * @return String 需要获取的对象属性名称
+	 */
+	private String getFieldNameByAnnotation(Class<? extends Object> entityClass,
+			Class<? extends Annotation> annotationClass) {
+		Field[] fields = entityClass.getDeclaredFields();
+		for (Field field : fields) {
+			// 指示反射的对象，取消 Java 语言访问检查
+			field.setAccessible(true);
+			if (field.getAnnotation(annotationClass) != null) {
+				return field.getName();
+			}
+		}
+		return null;
+	}
+	/**
+	 * 获取实体类对应的数据表
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午5:27:46
+	 * @param entityClass
+	 * @return
+	 */
+	public String getEntityTable(Class<? extends Object> entityClass) {
+		javax.persistence.Table table = entityClass.getAnnotation(javax.persistence.Table.class);
+		if(table!=null) {
+			return table.name();
+		} else {
+			try {
+				throw new DataException(entityClass.getName()+" 没有 javax.persistence.Table 注解");
+			} catch (DataException e) {
+				e.printStackTrace();
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 获取当前泛型类对应的Map对象
+	 * @return Map<String,Object> 当前对象泛型所对应的对象的Map对象
+	 */
+	private Map<String, Object> getMapFromEntityClass() {
+		return getMapFromClass(getEntityClass());
+	}
+
+	/**
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 将普通Class转换为Map对象
+	 *
+	 * @param entityClass
+	 *            需要转换的Class类
+	 * @return Map<String,Object> Class 转换后的Map对象
+	 */
+	protected Map<String, Object> getMapFromClass(Class<? extends Object> entityClass) {
+		Map<String, Object> result = new HashMap<String,Object>();
+		Field[] entityClassFields = entityClass.getDeclaredFields();
+		for (Field field : entityClassFields) {
+			// 指示反射的对象，取消 Java 语言访问检查
+			field.setAccessible(true);
+			
+			String key = field.getName();
+			Object value = null;
+			
+			Annotation[] fieldAnnotations = field.getAnnotations();
+			for (Annotation annotation : fieldAnnotations) {
+				if (annotation instanceof Foreignkey) {
+					Class<?> foreignClass = (Class<? extends Object>) ((Foreignkey) annotation).foreignClass();
+					//key = CharacterUnit.toFristLetterLowerCase(foreignClass.getSimpleName());
+					value = getMapFromClass(foreignClass);
+				}
+			}
+			result.put(key, value);
+		}
+		return result;
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 获取本类对应泛型类的具体类的map查询hql语句
+	 * @return 返回本类中对应泛型类的具体类 的map查询hql语句
+	 */
+	private String getMapSearchHql(String conditions) {
+		return getMapSearchHql(entityClass,conditions);
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 作用描述：获取数据类对应的map查询的hql语句
+	 *
+	 * @param entityClass 需要获取hql语句的类
+	 * @return 返回entityClass 参数对应类 的map查询hql语句
+	 */
+	public String getMapSearchHql(Class<? extends Object> entityClass,String conditions){
+		StringBuffer hql = new StringBuffer();
+		init(entityClass);
+		// 修改约束语句
+		conditions = initConditions(conditions);
+		// 实例查询数据表部分语句 
+		hql.append(initMapSearchHql(columns));
+		hql.append(initTableHql(tables));
+		hql.append(initWhereHql(join,conditions));
+		
+//		System.out.println(hql);
+		return hql.toString();
+	}
+	
+	private void init() {
+		init(entityClass);
+	}
+	
+	private void init(Class<? extends Object> entityClass) {
+		// 初始化填充对象
+		tables = new ArrayList<>();
+		columns = new StringBuffer();
+		join = new StringBuffer();
+		// 创建并添加初始的table
+		Map<Table, String> entityTable = new HashMap<>();
+		entityTable.put(Table.name, entityClass.getSimpleName());
+		entityTable.put(Table.alias, "t"+tableNo);
+		entityTable.put(Table.param, "this");
+		tables.add(entityTable);
+		// 获取填充对象
+		getMapSearchHql(entityClass,"",entityTable);
+		tableNo = 1;
+	}
+	/**
+	 * 初始from部分的hql语句
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午4:58:49
+	 * @param tables
+	 * @return 
+	 */
+	public String initTableHql(List<Map<Table, String>> tables) {
+		StringBuffer tableBuffer = new StringBuffer();
+		// 实例查询数据表部分语句 
+		tables.forEach((table) -> {
+			tableBuffer.append(table.get(Table.name)+" "+table.get(Table.alias)+",");
+		});
+		return line+" from " + tableBuffer.substring(0,tableBuffer.lastIndexOf(",")).toString();
+	}
+	/**
+	 * 初始select部分的hql语句
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午4:59:25
+	 * @param columns
+	 * @return
+	 */
+	public String initMapSearchHql(StringBuffer columns) {
+		return "select new map(" + columns.substring(0, columns.lastIndexOf(",")) + ") ";
+	}
+	/**
+	 * 初始where部分的hql语句
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午4:59:43
+	 * @Description 作用描述
+	 * @param join
+	 * @param conditions
+	 * @return
+	 */
+	public String initWhereHql(StringBuffer join,String conditions) {
+		return (line+" where 1=1 " + join + conditions);
+	}
+	/**
+	 * 初始where部分的约束部分的hql语句
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午4:59:54
+	 * @param conditions
+	 * @return
+	 */
+	public String initConditions(String conditions) {
+		// 修改约束语句
+		conditions = conditions.replace("this", "t1");
+		if(conditions != null && !"".equals(conditions)) {
+			for(Map<Table, String> table : tables) {
+				conditions = conditions.replace(table.get(Table.param)+".", table.get(Table.alias)+".");
+			}
+			conditions = line+" and "+conditions;
+			conditions = conditions.replace("and", "and");
+		}
+		return conditions;
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 作用描述：获取数据类对应的map查询的hql语句
+	 * 该方法只提供给本类中的getMapSearchHql(Class<? extends Object> entityClass)方法调用。
+	 * 直接调用本方法会产生异常信息。因该方法中使用的某些变量需要重置。
+	 * 重置功能由getMapSearchHql(Class<? extends Object> entityClass)方法完成。
+	 * 若需要使用本功能，只需调用getMapSearchHql(Class<? extends Object> entityClass)方法即可
+	 * 
+	 * @param entityClass 需要获取hql语句的类
+	 * 
+	 * @param tableNo 数据表的编号
+	 * 该参数由方法内部递归调用时具体传入。
+	 * 若该方法由其他方法调用时传入1即可,
+	 * 
+	 * @param foreignkeyClassSimpleName 外键连接类的简单名称
+	 * 该参数由方法内部递归调用时具体传入
+	 * 该参数由方法外部调用传入空字符串即可 并非 null
+	 * 
+	 * @return 返回entityClass 参数对应类 的map查询hql语句
+	 */
+	private void getMapSearchHql(Class<? extends Object> entityClass, String columnHead,Map<Table, String> table) {
+		Field[] declaredFields = entityClass.getDeclaredFields();
+		
+		String tableName = table.get(Table.alias);
+		
+		columnHead = "".equals(columnHead) ? "" : columnHead + "_" ;
+		for (Field field : declaredFields) {
+			String fieldName = field.getName();
+
+			Annotation[] annotations = field.getAnnotations();
+			for (Annotation an : annotations) {
+				if (an instanceof Foreignkey) {
+					// 创建新查询表字段，加入tables
+					Class<?> foreignClass = ((Foreignkey) an).foreignClass();
+					String nextTableName = "t" + (++tableNo);
+					
+					Map<Table, String> foreignTable = new HashMap<>();
+					foreignTable.put(Table.name, foreignClass.getSimpleName());
+					foreignTable.put(Table.alias, nextTableName);
+					foreignTable.put(Table.param, columnHead.replace("_", ".")+fieldName);
+					tables.add(foreignTable);
+					
+					String foreignKeyColumn = ((Foreignkey) an).column();
+					join.append(line+"and " + tableName + "." + fieldName + " = " + nextTableName + "." + foreignKeyColumn);
+					getMapSearchHql(foreignClass, columnHead + fieldName,foreignTable);
+				}
+			}
+			columns.append(line+" "+tableName + "." + fieldName + " as " + columnHead + fieldName + ",");
+		}
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月1日-上午11:01:50
+	 * @Description 作用描述:map数据集合转换，将数据库中查出的map类型数据，进行转换
+	 * 转换为数据对象对应格式的map类型数据
+	 * 提供给本类中的泛型具体类的数据转换使用
+	 * @param outDataMapList 数据输出map类型数据的list集合
+	 * @return List<Map<String, Object>> 经过转换后的map类型数据的list集合
+	 * 该集合将含有外键对象的value值，将被修改为map<String,Object>类型对象，
+	 * 依次类推外检对象转换为map<String,Object>类型对象，普通属性value转换为String类型数据
+	 */
+	private List<Map<String, Object>> replaceDataMapList(List<Map<String, Object>> outDataMapList) {
+		return replaceDataMapList(outDataMapList,getMapFromEntityClass());
+	}
+	/**
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月1日-上午11:13:12
+	 * @Description 作用描述：map数据集合转换，将数据库中查出的map类型数据，进行转换
+	 * 转换为数据对象对应格式的map类型数据
+	 * @param outDataMapList 数据输出map类型数据的list集合
+	 * @param inDataMap 数据输出对应的对象的map类型的对象
+	 * @return 经过转换后map类型数据的list集合，该集合中的元素为具体对象的map类型对象
+	 * 并且每个value值都会使用 outDataMapList 中的数据进行填充
+	 */
+	public List<Map<String, Object>> replaceDataMapList(List<Map<String, Object>> outDataMapList,Map<String,Object> inDataMapModel) {
+		List<Map<String, Object>> resultDataMapList = new ArrayList<>();
+		for(int i=0; i<outDataMapList.size(); i++) {
+			Map<String, Object> map = outDataMapList.get(i);
+			resultDataMapList.add(replaceDataMap(map,inDataMapModel));
+		}
+		return resultDataMapList;
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 作用描述:数据map转换 
+	 *
+	 * 提供外部服务
+	 * @param outDataMap
+	 * @param inDataMap
+	 * @return
+	 */
+	public Map<String, Object> replaceDataMap(Map<String, Object> outDataMap,Map<String, Object> inDataMap) {
+		return replaceDataMap(outDataMap,inDataMap,"");
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 作用描述 ： 数据map转换 
+	 * 仅供本类数据查询使用
+	 * @param dataMap
+	 * @return
+	 */
+	protected Map<String, Object> replaceDataMap(Map<String, Object> dataMap) {
+		return replaceDataMap(dataMap,getMapFromEntityClass());
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 数据map转换 
+	 * 该功能的具体事项
+	 * @param outDataMap 数据输出map
+	 * @param inDataMap 数据接收map
+	 * @param keyHead 键标头
+	 * @return map类型的数据对象
+	 */
+	@SuppressWarnings("unchecked")
+	private Map<String, Object> replaceDataMap(Map<String, Object> outDataMap,Map<String, Object> inDataMapModel,String keyHead) {
+		Map<String, Object> inDataMap = new HashMap<>(inDataMapModel);
+		final String keyHeadStr = "".equals(keyHead) ? "" : keyHead + "_";
+		// 填充外键表的信息
+		inDataMap.forEach((key,value) -> {
+			if(value instanceof Map) {
+				value = replaceDataMap(outDataMap,(Map<String, Object>)value,keyHeadStr+key);
+			} else {
+				value = outDataMap.get(keyHeadStr+key);
+			}
+			inDataMap.put(key, value);
+		});
+		return inDataMap;
+	}
+
+	@Override
+	public int batchModification(String sql,List<String[]> paramList) throws SQLException {
+		
+		int position = 0;
+		Connection jdbcCOnnection = getJdbcCOnnection();
+		try {
+			PreparedStatement prepareStatement = jdbcCOnnection.prepareStatement(sql);
+			jdbcCOnnection.setAutoCommit(false);
+			
+			for(int i = 0; i<paramList.size(); i++ ) {
+				position = i + 1;
+				// sql占位符赋值
+				String[] params = paramList.get(i);
+				for(int j=0; j<params.length; j++) {
+					prepareStatement.setString(j+1, params[j]);
+				}
+				// 添加到批处理中
+				prepareStatement.addBatch();
+				// 没500 条处理一次
+			    if (i % 500 == 0) {
+			    	prepareStatement.executeBatch();
+			        jdbcCOnnection.commit();
+			    }
+			}
+			prepareStatement.executeBatch();
+			jdbcCOnnection.commit();
+			return position;
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			jdbcCOnnection.rollback();
+			return position;
+		}
+	}
+	@Override
+	public boolean add(T t) {
+		try {
+			return template.save(t) != null;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean update(T t) {
+		try {
+			template.update(t);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delete(T t) {
+		try {
+			template.delete(t);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public T getDataByID(long id) {
+		try {
+			return (T) template.get(entityClass, id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public T getDataByNo(String no) throws DataException {
+		String entityNoFieldName = entityClassNoName;
+		if (entityNoFieldName == null) {
+			throw new DataException("该对象没有no属性。可能原因：entity实体类中对应的no属性中没有添加EntityNo注解");
+		}
+		return template.execute(new HibernateCallback<T>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public T doInHibernate(Session session) throws HibernateException {
+				// 获取对象no属性的名称
+				String hql = "from " + entityClassSimpleName + " where " + entityNoFieldName + " = ?";
+				Query<T> query = session.createQuery(hql);
+				query.setParameter(0, no);
+				return query.uniqueResult();
+			}
+		});
+	}
+
+	@Override
+	public List<T> getDatas(String conditions, final String... params){
+		
+		return template.execute(new HibernateCallback<List<T>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public List<T> doInHibernate(Session session) throws HibernateException {
+				String hql = " from "+entityClassSimpleName+" t1 where 1=1 "+initConditions(conditions);
+				Query<T> query = session.createQuery(hql);
+				for(int i=0; i < params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				return query.list();
+			}
+		});
+	}
+	@Override
+	public boolean isHas(String conditions, String... params){
+		return template.execute(new HibernateCallback<Boolean>() {
+			@Override
+			public Boolean doInHibernate(Session session) throws HibernateException {
+				String hql = "from "+entityClassSimpleName+" t1 where 1=1 "+initConditions(conditions);
+				Query<?> query = session.createQuery(hql);
+				query.setMaxResults(1);
+				for(int i=0; i < params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				return query.uniqueResult() != null;
+			}
+		});
+	}
+	@Override
+	public long size(String conditions, String... params) {
+		return template.execute(new HibernateCallback<Long>() {
+			@Override
+			public Long doInHibernate(Session session) throws HibernateException {
+				String hql = "select count(t1) from "+entityClassSimpleName+" t1 where 1=1 "+initConditions(conditions);
+				Query<?> query = session.createQuery(hql);
+				for(int i=0; i< params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				return (long) query.uniqueResult();
+			}
+		});
+	}
+	@Override
+	public List<T> paginSearchData(Pagin<T> pagin, String conditions, String... params) {
+		return template.execute(new HibernateCallback<List<T>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public List<T> doInHibernate(Session session) throws HibernateException {
+				String hql = "from " + entityClassSimpleName + " t1 where 1=1 "+ initConditions(conditions);
+				Query<T> query = session.createQuery(hql);
+				for (int i = 0; i < params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				query.setFirstResult((int) ((pagin.getPageNo() - 1) * pagin.getDisplay()));
+				query.setMaxResults((int) pagin.getDisplay());
+				return (List<T>) pagin.setData(query.list());
+			}
+		});
+	}
+
+	@Override
+	public Map<String, Object> getMapDataById(long id) {
+
+		return template.execute(new HibernateCallback<Map<String, Object>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public Map<String, Object> doInHibernate(Session session) throws HibernateException {
+				//String hql = getMapSearchHql(entityClassSimpleName+"."+entityClassIdName+" = ?");
+				String hql = getMapSearchHql("t1."+entityClassIdName+" = ?");
+				Query<Map<String, Object>> query = session.createQuery(hql);
+				query.setParameter(0, id);
+				return replaceDataMap(query.uniqueResult());
+			}
+		});
+	}
+
+	@Override
+	public Map<String, Object> getMapDataByNo(String no) {
+		return template.execute(new HibernateCallback<Map<String, Object>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public Map<String, Object> doInHibernate(Session session) throws HibernateException {
+				//String hql = getMapSearchHql(entityClassSimpleName+"."+entityClassNoName + " = ?");
+				String hql = getMapSearchHql("t1."+entityClassNoName + " = ?");
+				Query<Map<String, Object>> query = session.createQuery(hql);
+				query.setParameter(0, no);
+				return replaceDataMap(query.uniqueResult());
+			}
+		});
+	}
+
+	@Override
+	public List<Map<String, Object>> getMapDatas(String conditions, String... params) {
+		return template.execute(new HibernateCallback<List<Map<String, Object>>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public List<Map<String, Object>> doInHibernate(Session session) throws HibernateException {
+				String hql = getMapSearchHql(conditions);
+				Query<Map<String, Object>> query = session.createQuery(hql);
+				for (int i = 0; i < params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				return replaceDataMapList(query.list());
+			}
+		});
+	}
+
+	@Override
+	public List<Map<String, Object>> paginGetMapDatas(Pagin<Map<String, Object>> pagin, String conditions, String... params) {
+		return template.execute(new HibernateCallback<List<Map<String, Object>>>() {
+			@Override
+			@SuppressWarnings("unchecked")
+			public List<Map<String, Object>> doInHibernate(Session session) throws HibernateException {
+				String hql = getMapSearchHql(conditions);
+				Query<Map<String, Object>> query = session.createQuery(hql);
+				for (int i = 0; i < params.length; i++) {
+					query.setParameter(i, params[i]);
+				}
+				query.setFirstResult((int) ((pagin.getPageNo()-1) * pagin.getDisplay()));
+				query.setMaxResults((int) pagin.getDisplay());
+				return (List<Map<String, Object>>) pagin.setData(replaceDataMapList(query.list()));
+			}
+		});
+	}
+	/**
+	 * 通过hibernate数据源获取JDBC链接，Connection
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月6日-下午5:13:15
+	 * @Description 作用描述
+	 * @return
+	 */
+	protected Connection getJdbcCOnnection() {
+		SessionFactory sessionFactory = template.getSessionFactory();
+		DataSource dataSource = SessionFactoryUtils.getDataSource(sessionFactory);
+		try {
+			return dataSource.getConnection();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	private enum Table{
+		name,alias,param
+	}
+	@Override
+	public T getData(String conditions, String... params) {
+		List<T> datas = getDatas(conditions, params);
+		return (datas != null && !datas.isEmpty()) ? datas.get(0) : null;
+	}
+	@Override
+	public Map<String, Object> getMapData(String conditions, String... params) {
+		List<Map<String, Object>> mapDatas = getMapDatas(conditions, params);
+		return (mapDatas != null && !mapDatas.isEmpty()) ? mapDatas.get(0) : null;
+	}
+}

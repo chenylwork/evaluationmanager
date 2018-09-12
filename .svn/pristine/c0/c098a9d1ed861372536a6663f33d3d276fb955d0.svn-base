@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files path="WEB-INF/excelModel/">
+	<file name="class">班级信息模板.xls</file>
+	<file name="teacher">教师信息模板.xls</file>
+	<file name="student">学生信息模板.xls</file>
+	<file name="department">院系信息模板.xls</file>
+	<file name="major">专业信息模板.xls</file>
+</files>

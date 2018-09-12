@@ -1,0 +1,32 @@
+package com.evaluationmanager.support;
+
+import java.util.Collection;
+import java.util.Map;
+
+/**
+ * 批量数据操作接口
+ * @author chenyl
+ * @Date 2018年7月12日
+ * @Description  
+ *
+ */
+public interface BatchDao<T> {
+	/**
+	 * 批量数据的添加
+	 * @param Collection 需要添加的数据集合
+	 * @return Map<String,Collection<T>>
+	 * 返回值为Map<String,Collection<T>>,
+	 * 该集合中存储，添加数据的成功数据，失败数据，重复的数据对应的集合
+	 */
+	public Map<String,Collection<T>> batchInsert(Collection<T> Collection);
+	
+	/**
+	 * 批量数据的删除
+	 * @param Collection 需要删除的数据集合
+	 * @return Map<String,Collection<T>>
+	 * 返回值为Map<String,Collection<T>>,
+	 * 该集合中存储，删除数据的成功数据，失败数据
+	 */
+	public Map<String,Collection<T>> batchDelete(Collection<T> Collection);
+
+}

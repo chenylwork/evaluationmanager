@@ -1,0 +1,32 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.DeptMajor;
+/**
+ * 
+ * @Author 张鼎瑜
+ * @Datetime 2018年7月27日-下午2:32:08
+ * @Description 描述信息:院系管理业务操作接口
+ *
+ */
+
+public interface DepartmentService {
+	//添加院系
+	public boolean save(Code c);
+	
+	//修改院系
+	public boolean update(Code c);
+	
+	//删除院系
+	public boolean delete(Code c);
+	
+	//查询全部院系
+	public List<Code> getAllCode();
+	
+	//根据院系Id查询院系信息
+	public Code getDeptByID(long deptNo);
+	
+	
+}

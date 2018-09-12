@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+<!-- 		<property name="connection.url">jdbc:mysql://localhost:3306/evaluationmanager?characterEncoding=utf8</property> -->
+		<property name="connection.url">jdbc:mysql://localhost:3306/evaluationmanager?characterEncoding=utf8</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+		
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+		<property name="show_sql">true</property>
+		<!-- <property name="format_sql">true</property> -->
+		<property name="hbm2ddl.auto">update</property>
+		<property name="connection.autocommit">true</property>
+
+		<property name="javax.persistence.validation.mode">none</property>
+		
+		<property name="hibernate.connection.provider_class">
+			org.hibernate.connection.C3P0ConnectionProvider
+		</property>
+
+		<mapping class="com.evaluationmanager.entiy.Class"/>
+		<mapping class="com.evaluationmanager.entiy.Code"/>
+		<mapping class="com.evaluationmanager.entiy.Course"/>
+		<mapping class="com.evaluationmanager.entiy.DeptMajor"/>
+		<mapping class="com.evaluationmanager.entiy.Evaluation"/>
+		<mapping class="com.evaluationmanager.entiy.EvaluationRecord"/>
+		<mapping class="com.evaluationmanager.entiy.LoginLog"/>
+		<mapping class="com.evaluationmanager.entiy.OperationLog"/>
+		<mapping class="com.evaluationmanager.entiy.Option"/>
+		<mapping class="com.evaluationmanager.entiy.Paper"/>
+		<mapping class="com.evaluationmanager.entiy.PaperQuestion"/>
+		<mapping class="com.evaluationmanager.entiy.Question"/>
+		<mapping class="com.evaluationmanager.entiy.QuestionOption"/>
+		<mapping class="com.evaluationmanager.entiy.RolePower"/>
+		<mapping class="com.evaluationmanager.entiy.Student"/>
+		<mapping class="com.evaluationmanager.entiy.StudentClass"/>
+		<mapping class="com.evaluationmanager.entiy.Teacher"/>
+		<mapping class="com.evaluationmanager.entiy.TeacherClassCourse"/>
+		<mapping class="com.evaluationmanager.entiy.TeacherCourse"/>
+		<mapping class="com.evaluationmanager.entiy.Type"/>
+		<mapping class="com.evaluationmanager.entiy.User"/>
+		
+	</session-factory>
+</hibernate-configuration>

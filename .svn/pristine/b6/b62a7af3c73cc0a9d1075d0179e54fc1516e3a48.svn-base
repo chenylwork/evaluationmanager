@@ -1,0 +1,27 @@
+package com.evaluationmanager.support;
+
+import java.util.List;
+import java.util.Map;
+
+import com.evaluationmanager.common.Pagin;
+
+/**
+ * @author chenyl 
+ * @Date 2018年7月12日 
+ * @Description  分页获取数据操作接口
+ *
+ */
+public interface PaginDao<T> {
+	
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月25日-下午5:40:31
+	 * @Description 分页查询数据信息
+	 * @param pagin 分页对象
+	 * @param hql 查询hql语句
+	 * @param params 为hql语句内占位符，填充信息的参数集合
+	 * @return 
+	 */
+	public List<Map<String,Object>> paginSearchData(Pagin<T> pagin,String hql,String... params);
+}

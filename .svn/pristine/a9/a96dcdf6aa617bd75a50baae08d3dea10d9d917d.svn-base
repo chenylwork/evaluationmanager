@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：韩笑 -->
+<!--创建时间：2018年7月30日-上午10:57:27 -->
+<!--配置信息：paper模块的配置信息 -->
+<struts>
+	<package name="default" namespace="/admin/paper" extends="myStruts">
+		<action name="*" class="paperAction" method="{1}">
+			<!-- 随机抽取试题 -->
+			<result name="allPaper">paper_list.jsp</result>
+			
+			<!-- 随机抽取试题 -->
+			<result name="randPap">paper.jsp</result>
+			<!-- 查询全部试题 -->
+			<result name="getAllQues">paper_addCustom.jsp</result>
+			<result name="evaluation">/evaluation.jsp</result>
+			<!-- 添加试卷信息 -->
+			<result name="addPap"></result>
+			<!-- 删除试卷信息 -->
+			<result name="deletePap"></result>
+			<!-- 修改试卷信息 -->
+			<result name="updatePap"></result>
+			<!-- 分配试卷页面 -->
+			<result name="paper_appoint">paper_appoint.jsp</result>
+			<result name="evaluation_list">/evaluationList.jsp</result>
+			<result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+			
+		</action>
+	</package>
+</struts>

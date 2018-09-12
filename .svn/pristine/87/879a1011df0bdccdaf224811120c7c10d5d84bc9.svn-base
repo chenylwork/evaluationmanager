@@ -1,0 +1,63 @@
+package com.evaluationmanager.dao.impl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.OlogDao;
+import com.evaluationmanager.entiy.OperationLog;
+import com.evaluationmanager.support.DataDaoImpl;
+
+@Repository("OlogDao")
+public class OlogDaoImpl extends DataDaoImpl<OperationLog> implements OlogDao{
+	public int batchDelete(List<String[]> params) {
+		String sql = "delete from operation_log where id = ?";
+		try {
+			return batchModification(sql, params);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public List<Map<String, Object>> paginSearchMajor(Pagin<Map<String, Object>> pagin, OperationLog oLog) {
+		String moditions = "1=1 ";
+		List<String> paramsList = new ArrayList<>();
+		if(oLog !=null && oLog.getUser() != null 
+				&& !"".equals(oLog.getUser())) {
+			moditions += " and this.user like ? ";
+			paramsList.add("%"+oLog.getUser()+"%");
+		}
+		if(oLog !=null && oLog.getOperationTime() !=null && !"".equals(oLog.getOperationTime())){
+			
+			moditions += " and this.operationTime = ? ";
+			paramsList.add(oLog.getOperationTime());
+		}
+		System.err.println(oLog);
+		return super.paginGetMapDatas(pagin, moditions, paramsList.toArray(new String[]{}));
+			
+	}
+	@Override
+	public long size(OperationLog oLog) {
+		String moditions = "1=1 ";
+		System.err.println(oLog);
+		List<String> paramsList = new ArrayList<>();
+		if(oLog !=null && oLog.getUser() != null 
+				&& !"".equals(oLog.getUser())) {
+			moditions += " and this.user like ? ";
+			paramsList.add("%"+oLog.getUser()+"%");
+		}
+		if(oLog !=null && oLog.getOperationTime() !=null && !"".equals(oLog.getOperationTime())){
+			
+			moditions += " and this.operationTime = ? ";
+			paramsList.add(oLog.getOperationTime());
+		}
+		return super.size(moditions, paramsList.toArray(new String[]{}));
+	}
+}

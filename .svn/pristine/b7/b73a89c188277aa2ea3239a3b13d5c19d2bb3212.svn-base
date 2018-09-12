@@ -1,0 +1,58 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+import com.evaluationmanager.annotation.No;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午10:31:49
+ * @Description 描述信息：权限类别实体类
+ *
+ */
+
+@Entity
+@Table(name="permissiontype",uniqueConstraints = {@UniqueConstraint(columnNames="permisTypeNo"),})
+public class PermissionType {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id; // 编号
+	@No
+	private String permisTypeNo; // 权限类别编号
+	private String name;
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPermisTypeNo() {
+		return permisTypeNo;
+	}
+	public void setPermisTypeNo(String permisTypeNo) {
+		this.permisTypeNo = permisTypeNo;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return "PermissionType [id=" + id + ", permisTypeNo=" + permisTypeNo + ", name=" + name + "]";
+	}
+	
+	
+	
+}

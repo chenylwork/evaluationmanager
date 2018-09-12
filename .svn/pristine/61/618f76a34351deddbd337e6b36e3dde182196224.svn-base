@@ -1,0 +1,100 @@
+package com.evaluationmanager.action;
+
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.service.RoleService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-下午4:31:22
+ * @Description 描述信息：
+ *
+ */
+@Controller("roleAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class RoleAction extends Action<Code>{
+	
+	private static final long serialVersionUID = 423709953794339294L;
+	@Autowired
+	private RoleService roleService;
+	private Code code=new Code();
+	private List<Code> codeList;
+	private Map<String, Object> roleMap;
+
+	@Override
+	public Code getModel() {
+		return code;
+	}
+	public String add(){
+		code.setTypeNo("8");
+		this.roleService.add(code);
+		return INSERT_ROLE;
+	}
+	public String update(){
+		code.setTypeNo("8");
+		this.roleService.update(code);
+		return getRole();
+	}
+	public String delete(){
+		this.roleService.delete(code);
+		return getRole();
+	}
+
+	public String getRole(){
+		codeList=roleService.getRole();
+		return GETALL_ROLE;
+	}
+
+	public String getAllLogin(){
+		codeList=roleService.getAll();
+		JSON_CHAR_DATA=super.gson.toJson(codeList);
+		return JSONOCHAR;
+	}
+	public String roleByNo() {
+		roleMap=this.roleService.getRoleByNo(code.getCodeNo());
+		return BYNO_ROLE;
+	}
+	//get、set方法
+	public RoleService getRoleService() {
+		return roleService;
+	}
+
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	public Code getCode() {
+		return code;
+	}
+
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
+	public List<Code> getCodeList() {
+		return codeList;
+	}
+
+	public void setCodeList(List<Code> codeList) {
+		this.codeList = codeList;
+	}
+	public Map<String, Object> getRoleMap() {
+		return roleMap;
+	}
+	public void setRoleMap(Map<String, Object> roleMap) {
+		this.roleMap = roleMap;
+	}
+	
+	
+
+}

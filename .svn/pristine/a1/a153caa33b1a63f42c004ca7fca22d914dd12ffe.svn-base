@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：陈彦磊 -->
+<!--创建时间：2018年7月27日-下午1:49:42 -->
+<!--配置信息：question问题模块的配置信息 -->
+<struts>
+	<package name="questionPack" namespace="/question" extends="json-default">
+		<action name="*" class="questionAction" method="{1}">
+			<result type="json" name="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+		</action>
+	</package>
+	<package name="optionPack" namespace="/option" extends="json-default">
+		<action name="*" class="optionAction" method="{1}">
+			<result type="json" name="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+		</action>
+	</package>
+</struts>

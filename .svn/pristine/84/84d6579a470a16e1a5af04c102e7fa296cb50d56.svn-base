@@ -1,0 +1,21 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.PermissionType;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:25:30
+ * @Description 描述信息：权限类别业务操作接口
+ *
+ */
+public interface PermisTypeService {
+	/**
+	 * 查询全部
+	 * @param pt
+	 * @return
+	 */
+	public List<PermissionType> select();
+}

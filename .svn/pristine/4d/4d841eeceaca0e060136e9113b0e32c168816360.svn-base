@@ -1,0 +1,73 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月26日-上午9:27:20
+ * @description 操作日志信息对应类
+ */
+@Entity
+@Table(name="operation_log")
+public class OperationLog {
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id; // 编号
+	private String user; // 操作者
+	private String operation; // 操作信息
+	private String operationTime; // 操作时间
+	private String state; // 操作状态编号
+	public OperationLog() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public OperationLog(int id, String user, String operation, String operationTime, String state) {
+		super();
+		this.id = id;
+		this.user = user;
+		this.operation = operation;
+		this.operationTime = operationTime;
+		this.state = state;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getOperation() {
+		return operation;
+	}
+	public void setOperation(String operation) {
+		this.operation = operation;
+	}
+	public String getOperationTime() {
+		return operationTime;
+	}
+	public void setOperationTime(String operationTime) {
+		this.operationTime = operationTime;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	@Override
+	public String toString() {
+		return "OperationLog [id=" + id + ", user=" + user + ", operation=" + operation + ", operationTime="
+				+ operationTime + ", state=" + state + "]";
+	}
+
+}

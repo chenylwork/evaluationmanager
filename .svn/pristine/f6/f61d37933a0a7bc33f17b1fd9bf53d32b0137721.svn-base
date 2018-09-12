@@ -1,0 +1,214 @@
+package com.evaluationmanager.action;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.Major;
+import com.evaluationmanager.service.DepartmentService;
+import com.evaluationmanager.service.MajorService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * 
+ * @Author 任少华
+ * @Datetime 2018年7月30日-上午10:28:09
+ * @Description 描述信息：专业操作信息action
+ *
+ */
+@Controller("majorAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class MajorAction extends Action<Major>{
+
+	private static final long serialVersionUID = 1L;
+	@Autowired
+	private MajorService majorService;
+	@Autowired
+	private DepartmentService departmentService;
+	
+	private String[] batchID; 
+	//系别集合
+	private List<Code> deptList;
+	
+	private Map<String, Object> majorMap;
+	//Major实例化
+	private Major major=new Major();
+	//查询集合
+	private List<Major> majorList;
+	private List<Map<String, Object>> majorMaplist;
+	private long id;
+	
+	public Map<String, Object> getMajorMap() {
+		return majorMap;
+	}
+	public void setMajorMap(Map<String, Object> majorMap) {
+		this.majorMap = majorMap;
+	}
+	public List<Code> getDeptList() {
+		return deptList;
+	}
+	public void setDeptList(List<Code> deptList) {
+		this.deptList = deptList;
+	}
+
+
+	@Override
+	public Major getModel() {
+		return major;
+	}
+	//添加
+	public String add(){
+		System.out.println(major);
+		this.majorService.save(major);
+		return pagin();
+	}
+	//修改
+	public String update(){
+		this.majorService.update(major);
+		return pagin();
+	}
+	//删除
+	public String delete(){
+		this.majorService.delete(major);
+		System.out.println(major);
+		return pagin();
+	}
+	//查询全部
+	public String getAll(){
+		majorList=majorService.getAllCode();
+		return GETALL_MAJOR;
+	}
+
+	public String getAllMajor(){
+		majorList=majorService.getAllCode();
+		Map<String, Object> map=new HashMap<>();
+		map.put("majors", majorList);
+		JSON_CHAR_DATA=super.gson.toJson(map);
+		return JSONOCHAR;
+	}
+	/**
+	 * 根据No查询
+	 * @return
+	 */
+	public String getMajorByNo(){
+		//this.majorService.getAllCode();
+		majorMap=this.majorService.majorIdbyMap(major.getMajorNo());
+		deptList=this.departmentService.getAllDeptNo();
+		return GETBYID_MAJOR;
+	}
+
+	//多条件带分页查询
+	public String pagin() {
+		//majorService.paginGet(paginMap,major);
+		try {
+			majorService.paginSearch(paginMap, major);
+			deptList=this.departmentService.getAllDeptNo();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return GETALL_MAJOR;
+	}
+	//查看详情操作
+	public String detail(){
+		majorMap = this.majorService.majorIdbyMap(major.getMajorNo());
+		System.out.println(majorMap);
+		return DETAIL_MAJOR;
+	}
+	public long getRoleByID(){
+		return id;
+	}
+	//查询全部专业
+	public String allDept(){
+		deptList=this.departmentService.getAllDeptNo();
+		return INSERT_MAJOR;
+	} 
+	
+	public String batch() {
+		System.out.println(majorService.batchDelete(batchID));
+		majorService.batchDelete(batchID);
+		return pagin();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	//get、set方法
+	
+	public MajorService getMajorService() {
+		return majorService;
+	}
+
+	public void setMajorService(MajorService majorService) {
+		this.majorService = majorService;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public List<Major> getMajorList() {
+		return majorList;
+	}
+	public void setMajorList(List<Major> majorList) {
+		this.majorList = majorList;
+	}
+	public Major getMajor() {
+		return major;
+	}
+	public void setMajor(Major major) {
+		this.major = major;
+	}
+	public DepartmentService getDepartmentService() {
+		return departmentService;
+	}
+	public void setDepartmentService(DepartmentService departmentService) {
+		this.departmentService = departmentService;
+	}
+	public List<Map<String, Object>> getMajorMaplist() {
+		return majorMaplist;
+	}
+	public void setMajorMaplist(List<Map<String, Object>> majorMaplist) {
+		this.majorMaplist = majorMaplist;
+	}
+	public String[] getBatchID() {
+		return batchID;
+	}
+	public void setBatchID(String[] batchID) {
+		this.batchID = batchID;
+	}
+	
+}

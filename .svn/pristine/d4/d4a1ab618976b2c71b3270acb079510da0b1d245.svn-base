@@ -1,0 +1,30 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Teacher;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:10:58
+ * @Description 描述信息：教师信息业务操作接口
+ *
+ */
+public interface TeacherService {
+	
+	//添加老师信息
+	public boolean add(Teacher t);
+	
+	//修改老师信息
+	public boolean update(Teacher t);
+	
+	//删除老师信息
+	public boolean delete(Teacher t);
+	
+	//查询全部老师
+	public List<Teacher> getAll();
+	
+	//根据Id查询老师
+	public Teacher getTeacherByID(long id); 
+}

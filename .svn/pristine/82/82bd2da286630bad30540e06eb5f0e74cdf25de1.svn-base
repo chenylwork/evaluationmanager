@@ -1,0 +1,49 @@
+package com.evaluationmanager.action;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.service.DepartmentService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 张鼎瑜
+ * @Datetime 2018年7月27日-下午3:22:43
+ * @Description 描述信息:院系操作action类
+ *
+ */
+public class DeptAction extends Action<Code> {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Autowired
+	private DepartmentService departmentService;
+	
+	private Code code = new Code();
+	
+	@Override
+	public Code getModel() {
+		// TODO Auto-generated method stub
+		return code;
+	}
+	
+	public String saveDept(){
+		this.departmentService.save(code);
+		return "INSERT_DEPT";	
+	}
+	
+	public String updateDept(){
+		this.departmentService.update(code);
+		return "UPDATE_DEPT";
+	}
+	
+	public String deleteDept(){
+		this.departmentService.delete(code);
+		return "DELETE_DEPT";
+	}
+
+}

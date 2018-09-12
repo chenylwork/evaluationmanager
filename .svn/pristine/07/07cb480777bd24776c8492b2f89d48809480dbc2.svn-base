@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：张鼎瑜 -->
+<!--创建时间：2018年7月27日-下午16:30:45-->
+<!--配置信息：院系模块的配置信息 -->
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	
+	<package name="default" namespace="/" extends="struts-default,json-default">
+		<action name="dept_*" class="DeptAction" method="{1}">
+			<!-- 添加院系 -->
+			<result name="saveDept"></result>
+			<!-- 删除院系 -->
+			<result name="deleteDept"></result>
+			<!-- 修改院系-->
+			<result name="updateDept"></result>
+		</action>
+	</package>
+</struts>

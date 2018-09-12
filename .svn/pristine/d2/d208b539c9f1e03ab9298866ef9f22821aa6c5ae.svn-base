@@ -1,0 +1,38 @@
+package com.evaluationmanager.test;
+
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.DepartmentDao;
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.service.LogService;
+import com.evaluationmanager.service.TeacherService;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"classpath:applicationContext.xml", "classpath:applicationContext-bean.xml" })
+public class DeptTest{
+	
+	@Autowired
+	private TeacherService teacherService;
+	@Autowired
+	private LogService logService;
+	@Autowired
+	private DepartmentDao departmentDao;
+	
+	@Test
+	public void test() {
+		 String hql=" this.typeNo=1 ";
+		 Pagin pagin = new Pagin(1,10);
+		// 获取数据
+		 departmentDao.paginGetMapDatas(pagin, hql);
+	}
+	public static void main(String[] args) {
+	}
+}

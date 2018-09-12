@@ -1,0 +1,32 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.dao.PermisTypeDao;
+import com.evaluationmanager.entiy.PermissionType;
+import com.evaluationmanager.service.PermisTypeService;
+import com.evaluationmanager.support.AbstractService;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:27:05
+ * @Description 描述信息：权限类别业务操作实现
+ *
+ */
+@org.springframework.stereotype.Service("PermisTypeService")
+public class PermisTypeServiceImpl extends AbstractService<PermissionType> implements PermisTypeService{
+	
+	@Autowired
+	private PermisTypeDao permisTypeDao;
+
+	@Override
+	@Transactional
+	public List<PermissionType> select() {
+		return this.permisTypeDao.getDatas("");
+	}
+
+}

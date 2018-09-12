@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：邢燕蕊 -->
+<!--创建时间：2018年7月27日-下午2:21:42 -->
+<!--配置信息：student学生模块的配置信息 -->
+<struts>
+	<package name="student" namespace="/admin/student" extends="myStruts">
+		<!-- 学生模块 -->
+		<action name="*" class="studentAction" method="{1}">
+			<result name="classStu">student_list.jsp</result>
+			<!--下拉框 -->
+			<result name="seltype">student_add.jsp</result>
+			<!--分页列表 -->
+			<result name="all">student_list.jsp</result>
+			<!--详情 -->
+			<result name="details">student_details.jsp</result>
+			<!--修改-根据No查 -->
+			<result name="byNo">student_add.jsp</result>
+			<!-- 上传配置 -->
+			<result name="importPage">import.jsp</result>
+			<!-- 下载配置 -->
+			<result name="input" type="stream">
+				<!-- 设置一些下载的参数配置 -->
+				<!-- contentType表示设置response的响应类型,这里设置为流类型 -->
+				<param name="contentType">application/octet-stream</param>
+				<!-- contentDisposition指定响应回客户端的下载的文件名, ${fileName}引用action中定义的fileName属性 -->
+				<param name="contentDisposition">attachment;filename="${fileName}"</param>
+				<!-- inputName指定action中定义的getXxx方法，去掉get并将首字母改成小写 -->
+				<param name="inputName">inputStream</param>
+				<!-- 下载文件的缓冲大小(可选) -->
+				<param name="bufferSize">4096</param>
+			</result>
+			<!-- 错误 -->
+			<result name="error">/error.jsp</result>
+		</action>
+
+	</package>
+</struts>

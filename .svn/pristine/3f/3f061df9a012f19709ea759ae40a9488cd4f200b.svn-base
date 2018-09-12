@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>excl导入</title>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+   <link rel="stylesheet" href="../../css/style.css">
+    
+	<script type="text/javascript" src="../../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+	<script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+</head>
+<body>
+<br><br>
+<ul id="myTab" class="nav nav-tabs" style="">  
+		<li class="active" style="width:250px;text-align:center;"><a href="#z1" data-toggle="tab" style="font-weight:bold;">正确数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#66D841" id="successSize">0</span></a> 
+		</li>  
+		<li style="width:250px;text-align:center;"><a href="#z2" data-toggle="tab" style="font-weight:bold;">错误数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#EC5E3E;" id="failSize">0</span></a></li>  
+		<li style="width:250px;text-align:center;padding-left:15px;">
+			<form action="" method="">
+				<button type="button" id="chooseFileBtn" class="btn btn-primary">选择文件</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" class="btn btn-primary" id="importBtn">导入数据</button>
+				<input type="file" id="file" style="display: none;" />
+			</form>
+		</li> 
+	</ul>
+<div id="myTabContent" class="tab-content"> 
+<!--导入按钮 重新填入-->
+<!--///////////////////////////////////////正确数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade in active" id="z1">     
+		<table class="layui-table" class="table_box">
+	        <thead class="table_header"></thead>
+	        <tbody id="successBodyID"></tbody>
+	    </table>
+	</div>
+<!--///////////////////////////////////////错误数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade" id="z2">   
+	<table class="layui-table">
+        <thead class="table_header">
+        </thead>
+        <tbody id="failBodyID">
+        </tbody>
+      </table>
+	</div>
+
+</div>
+</body>
+<!-- excel操作 -->
+    <script type="text/javascript" src="../../js/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="../../js/common/excel.js"></script>
+    <script type="text/javascript" src="../../js/common/egExcel.js"></script>
+<script type="text/javascript">
+	$(function(){excelImportLoad();});
+	/**
+	 * excel导入使用示例
+	 */
+	function excelImportLoad() {
+		// 文件改变时间
+		$("#file").change(function(){
+			var tes;
+			readExcelShowData(this,{
+				// 正确数据填充到的table的tbody的id属性值
+				successBodyID : "successBodyID",
+				// 错误数据填充到的table的tbody的id属性值
+				failBodyID : "failBodyID",
+				// 成功数id
+				successSizeID : "successSize",
+				// 失败数id
+				failSizeID : "failSize",
+				success : function(data) {
+					submit(data);
+				},
+				// 页面表格字段集合对象
+				fields : { 
+					studentNo : {
+						// 对应的Excel文件的列名称
+						name : "学号",
+						// Excel中对应的该数据的检查，必须返回true或false,确保方法有返回值，
+						// 若无返回值将按照返回false处理
+						check : function(checkChar) {
+							if(checkChar != "") {
+								return true;
+							}
+						},
+						// 数据检查错误提示信息
+						message : "学生名称不能为空"
+					},
+					name : {
+						name : "名称"
+					},
+					sex :{
+						name : "性别",
+					},
+					age : {
+						name : "年龄"
+					},
+					pid :{
+						name : "身份证号"
+					},
+					major : {
+						name : "专业"
+					},
+					joinTime : {
+						name : "入学日期"
+					},
+					endTime : {
+						name : "毕业日期"
+					},
+					state : {
+						name : "现状态"
+					},
+					class : {
+						name : "班级"
+					},
+				}
+			});
+		});
+		$("#chooseFileBtn").click(function(){
+			$("#file").click();
+		});
+	}
+	/**
+	 * 
+	 */
+	function submit(subData) {
+		var failSize = parseInt($("#failSize").text());
+		if(failSize > 0) {
+			alert("请修改完之后重新上传后再提交！！");
+		} else {
+		$.ajax({
+			url : "http://localhost:8080/evaluationmanager/admin/student/upload",
+			data: {"JSON_CHAR_DATA":subData},
+			type: "post",
+			success : function(result) {
+				console.log(result);
+			}
+		});
+		}
+	}
+
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

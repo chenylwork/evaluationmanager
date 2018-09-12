@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：邢燕蕊 -->
+<!--创建时间：2018年7月27日-下午2:21:42 -->
+<!--配置信息：student学生模块的配置信息 -->
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <package name="student" namespace="/admin/student" extends="struts-default">
+        <!-- 学生模块-->
+         <action name="*" class="studentAction" method="{1}">
+            <!--下拉框 -->
+            <result name="seltype">student_add.jsp</result>
+             <!--添加-->
+            <result name="addstu">student_add.jsp</result>
+             <!--分页列表 -->
+            <result name="all">student_list.jsp</result>
+             <!--详情-->
+            <result name="details">student_details.jsp</result>
+             <!--修改-根据No查 -->
+            <result name="byNo">student_add.jsp</result>
+         </action>
+    </package>
+</struts>

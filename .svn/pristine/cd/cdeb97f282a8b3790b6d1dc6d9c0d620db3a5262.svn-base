@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：邢燕蕊 -->
+<!--创建时间：2018年7月27日-下午4:53:42 -->
+<!--配置信息：role角色模块的配置信息 -->
+<struts>
+    <constant name="struts.devMode" value="true" />
+    <package name="myPack" namespace="/" extends="json-default">
+        <!-- 学生模块-->
+         <action name="role_*" class="RoleAction" method="{1}">
+            <result name=""></result>
+            <result name=""></result>
+            <result name=""></result>
+            <result name=""></result>
+            <result name=""></result>
+            <result name=""></result>
+         </action>
+    </package>
+</struts>

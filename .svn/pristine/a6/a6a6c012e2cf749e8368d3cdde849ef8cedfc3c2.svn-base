@@ -1,0 +1,98 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+import java.util.Map;
+
+import com.evaluationmanager.entiy.PowerInfo;
+import com.evaluationmanager.entiy.PowerRole;
+import com.evaluationmanager.entiy.PowerType;
+import com.evaluationmanager.entiy.PowerUser;
+import com.evaluationmanager.exception.DataException;
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:25:30
+ * @Description 描述信息：权限业务操作接口
+ *
+ */
+public interface PowerService {
+	/**
+	 * 获取全部权限类别信息
+	 * @Author 韩笑
+	 * @DateTime 2018年8月20日-上午12:06:46
+	 *
+	 * @return List<PowerType>
+	 */
+	public List<PowerType> getAllPowerType();
+	
+	public List<PowerInfo> getAllPowerInfo();
+	/**
+	 * 保存角色权限
+	 * @Author 韩笑
+	 * @DateTime 2018年8月20日-上午12:08:20
+	 *
+	 * @param powerRole 权限角色关系实体
+	 * @return
+	 */
+	public boolean savePowerRole(PowerRole powerRole);
+	/**
+	 * 保存用户权限
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月20日-上午12:09:23
+	 * 
+	 * @param powerUser 权限用户实体
+	 * @return
+	 */
+	public boolean savePowerUser(PowerUser powerUser);
+	/**
+	 * 获取全部权限信息
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月20日-上午12:10:12
+	 * @Description 作用描述
+	 * @return
+	 */
+	public List<PowerInfo> getAllPower();
+	
+	/**
+	 * 根据权限类别查询权限信息
+	 * @author 韩笑
+	 * @DateTime 2018年8月20日-上午09:32:35
+	 * @return
+	 */
+	public Map<String,Object> getTypeByInfo(String type);
+	
+	/**
+	 * 根据user查询权限
+	 * @param user
+	 * @return
+	 */
+	public List<Map<String,Object>> getInfoByUser(String user);
+	
+	
+	/**
+     * 清除角色权限
+     * @Author 邢燕蕊
+     */
+	public int remove(PowerRole powerRole);
+	/**
+	 * 获取角色权限
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月25日-下午11:48:59
+	 * @Description 作用描述
+	 *
+	 * @param powerRole
+	 * @return
+	 */
+	public PowerRole getPowerRole(PowerRole powerRole);
+	/**
+	 * 根据用户账户获取权限
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月26日-下午7:37:41
+	 *
+	 * @param userNo
+	 * @return
+	 * @throws DataException
+	 */
+	public String getPowerByUser(String userNo) throws DataException;
+
+}

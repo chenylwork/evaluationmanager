@@ -1,0 +1,33 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+body{
+background:#f7f3f0;
+}
+center{
+padding-top:60px;
+}
+center img{
+}
+a{
+color:#999;
+text-decoration:none;
+}
+a:hover{
+color:#ccc;
+}
+</style>
+</head>
+<body>
+<center>
+<img src="images/500.jpg">
+<br>
+<a href="">返回首页</a>
+</center>
+</body>
+</html>

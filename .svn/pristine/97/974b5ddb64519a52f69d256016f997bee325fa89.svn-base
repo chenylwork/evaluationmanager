@@ -1,0 +1,67 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.dao.CodeDao;
+import com.evaluationmanager.dao.RoleDao;
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.Role;
+import com.evaluationmanager.service.CodeService;
+import com.evaluationmanager.support.AbstractService;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月2日-下午2:49:13
+ * @Description 描述信息：
+ *
+ */
+@org.springframework.stereotype.Service("codeService")
+public class CodeServiceImpl extends AbstractService<Code> implements CodeService {
+	
+	@Autowired
+	private CodeDao codeDao;
+	@Autowired
+	private RoleDao roleDao;
+	
+
+	@Override
+	@Transactional
+	public List<Code> getRole() {
+		return codeDao.getRole();
+	}
+	
+	@Override
+	@Transactional
+	public List<Code> getSex() {
+		return codeDao.getSex();
+	}
+
+	
+
+	@Override
+	@Transactional
+	public List<Code> getTeacherState() {
+		return codeDao.getTeacherState();
+	}
+	
+	@Override
+	@Transactional
+	public List<Code> getStudentState() {
+		return codeDao.getStudentState();
+	}
+
+	@Override
+	public List<Role> getTeacherRole() {
+		return roleDao.getTeacherRole();
+	}
+
+	@Override
+	public List<Code> getPaperType() {
+		return codeDao.getpaperType();
+	}
+	
+}

@@ -1,0 +1,21 @@
+package com.evaluationmanager.dao;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-上午10:38:46
+ * @Description 描述信息：试卷信息操作接口
+ *
+ */
+public interface PaperDao extends DataDao<Paper> {
+	
+	public List<Question> getRand();
+	
+	
+}

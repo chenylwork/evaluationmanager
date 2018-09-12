@@ -1,0 +1,101 @@
+/**
+ * 
+ */
+$(function() {
+	initPowerTypes();
+	initPowerInfos();
+});
+// 类别图标
+var powerIcon = {
+		"01":"&#xe696;",
+		"02":"&#xe6b5;",
+		"03":"&#xe70c;",
+		"04":"&#xe6c7;",
+		"05":"&#xe6b8;",
+		"06":"&#xe726;",
+		"07":"&#xe6f5;",
+		"08":"&#xe74e;",
+		"09":"&#xe69e;",
+		"10":"&#xe6ba;",
+		"11":"&#xe70b;",
+		"12":"&#xe744;",
+		"13":"&#xe812;",
+		"14":"&#xe6a9;",
+};
+
+function getInfoByUser(account) {
+	var info = "";
+	$.ajax({//allPower("${LOGINED_USER.account}").split(",");
+		url : "http://localhost:8080/evaluationmanager/admin/power/power",
+		data : {
+			"data" : account
+		},
+		type : "post",
+		async : false,
+		success : function(data) {
+			//data json字符串
+			info = data;
+		}
+	});
+	return info;
+}
+function allPower() {
+	var info = "";
+	$.ajax({
+		url : "http://localhost:8080/evaluationmanager/admin/power/allPower",
+		type : "post",
+		async : false,
+		success : function(data) {
+			info = data;
+		}
+	});
+	return info;
+}
+function allPowerType() {
+	var info = "";
+	$.ajax({
+		url : "http://localhost:8080/evaluationmanager/admin/power/allPowerType",
+		type : "post",
+		async : false,
+		success : function(data) {
+			info = data;
+		}
+	});
+	return info;
+}
+
+function initPowerTypes() {
+	//将json字符串转换成json对象
+	var data =  eval('('+allPowerType()+')');
+	//遍历json对象data.powerInfo
+	$(".nav_li").remove;
+	for(var i in data) {
+		initPowerType(data[i]);
+	} 
+}
+
+//填充功能类别
+function initPowerType(info) {
+	var initHtml = "<li class='nav_li'><a href='javascript:;'>";
+	initHtml += "<i class='iconfont'>"+powerIcon[info.powerTypeNo]+"</i>";
+	initHtml += "<cite>" + info.name+"</cite><i class='iconfont nav_right'>&#xe697;</i></a>";
+	initHtml += "<ul class='sub-menu' id='powerType_"+info.powerTypeNo+"'></ul></li>";
+	$("#nav").append(initHtml);
+}
+function initPowerInfos() {
+	//将json字符串转换成json对象
+	var data =  eval('('+allPower()+')');
+	//遍历json对象data.powerInfo
+	//$(".nav_li").remove;
+	for(var i in data) {
+		initPowerInfo(data[i]);
+	}
+}
+// 填充功能信息
+function initPowerInfo(powerInfo) {
+	var initHtml = "";
+	initHtml += "<li id='power_"+powerInfo.powerInfoNo+"'><a _href='"+getRootUrl()+powerInfo.uri+"'>";
+	initHtml += "<i class='iconfont'>&#xe6a7;</i><cite>"
+			+ powerInfo.name + "</cite></a></li>";
+	$("#powerType_"+powerInfo.type).append(initHtml);
+}

@@ -1,0 +1,22 @@
+package com.evaluationmanager.service;
+
+import com.evaluationmanager.entiy.Option;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-下午3:52:59
+ * @Description 描述信息：试题选项信息业务操作接口
+ *
+ */
+public interface OptionService {
+	
+	//添加试题选项信息
+	public boolean add(Option o);
+	
+	//修改试题选项信息
+	public boolean update(Option o);
+	
+	//删除试题选项信息
+	public boolean delete(Option o);
+}

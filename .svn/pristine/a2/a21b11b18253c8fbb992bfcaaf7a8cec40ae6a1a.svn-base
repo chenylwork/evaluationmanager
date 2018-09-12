@@ -1,0 +1,19 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.TeacherDao;
+import com.evaluationmanager.entiy.Teacher;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:10:05
+ * @Description 描述信息：教师操作实现类
+ *
+ */
+@Repository("teacherDao")
+public class TeacherDaoImpl extends DataDaoImpl<Teacher> implements TeacherDao {
+
+}

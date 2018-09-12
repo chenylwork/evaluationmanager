@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>查看数据页面</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+	<script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<style type="text/css">
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+
+
+</style>
+<script type="text/javascript">
+
+
+</script>
+</head>
+<body>
+<br><br>
+<ul id="myTab" class="nav nav-tabs" style="">  
+		<li class="active" style="width:250px;text-align:center;"><a href="#z1" data-toggle="tab" style="font-weight:bold;">正确数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#66D841">42</span></a> 
+		</li>  
+		<li style="width:250px;text-align:center;"><a href="#z2" data-toggle="tab" style="font-weight:bold;">错误数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#EC5E3E;">42</span></a></li>  
+		<li style="width:250px;text-align:center;padding-left:15px;">
+			<form action="" method="">
+				<button type="button" class="btn btn-primary">导入按钮</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" class="btn btn-primary">重新按钮</button>
+			</form>
+		</li> 
+	</ul>
+<div id="myTabContent" class="tab-content"> 
+<!--导入按钮 重新填入-->
+<!--///////////////////////////////////////正确数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade in active" id="z1">     
+		<table class="layui-table">
+	        <thead>
+	          <tr>
+	            <th>
+	              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+	            </th>
+	            <th>正确数据</th>
+	            <th>操作用户</th>
+	            <th>操作时间</th>
+	            <th>操作信息</th>
+	            <th>操作状态</th>
+	         </tr>
+	        </thead>
+	        <tbody>
+	          <tr>
+	            <td>
+	              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+	            </td>
+	            <td>01234</td>
+	            <td>张三</td>
+	            <td>2018-01-01</td>
+	            <td>192.168.2</td>
+	            <td>成功</td>
+	          </tr>
+	         
+	         <tr>
+	              <td>
+	              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+	            </td>
+	            <td>01234</td>
+	            <td>张三</td>
+	            <td>2018-01-01</td>
+	            <td>192.168.2</td>
+	            <td>成功</td>
+	          </tr>
+
+	          <tr>
+	              <td>
+	              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+	            </td>
+	            <td>01234</td>
+	            <td>张三</td>
+	            <td>2018-01-01</td>
+	            <td>192.168.2</td>
+	            <td>失败</td>
+	          </tr>
+
+	          <tr>
+	              <td>
+	              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+	            </td>
+	            <td>01234</td>
+	            <td>张三</td>
+	            <td>2018-01-01</td>
+	            <td>192.168.2</td>
+	            <td>成功</td>
+	          </tr>
+	        </tbody>
+	      </table>
+	</div>
+<!--///////////////////////////////////////错误数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade" id="z2">   
+	<table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>错误数据</th>
+            <th>操作用户</th>
+            <th>操作时间</th>
+            <th>操作信息</th>
+            <th>操作状态</th>
+         </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>01234</td>
+            <td>张三</td>
+            <td>2018-01-01</td>
+            <td>192.168.2</td>
+            <td>成功</td>
+          </tr>
+         
+         <tr>
+              <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>01234</td>
+            <td>张三</td>
+            <td>2018-01-01</td>
+            <td>192.168.2</td>
+            <td>成功</td>
+          </tr>
+
+          <tr>
+              <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>01234</td>
+            <td>张三</td>
+            <td>2018-01-01</td>
+            <td>192.168.2</td>
+            <td>失败</td>
+          </tr>
+
+          <tr>
+              <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>01234</td>
+            <td>张三</td>
+            <td>2018-01-01</td>
+            <td>192.168.2</td>
+            <td>成功</td>
+          </tr>
+        </tbody>
+      </table>
+	</div>
+
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+

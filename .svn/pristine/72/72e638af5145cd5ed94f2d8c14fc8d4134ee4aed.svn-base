@@ -1,0 +1,13 @@
+package com.evaluationmanager.dao;
+
+import com.evaluationmanager.support.DataDao;
+import com.evaluationmanager.entiy.Class;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午1:51:21
+ * @description 班级信息操作接口
+ */
+public interface ClassDao extends DataDao<Class> {
+
+}

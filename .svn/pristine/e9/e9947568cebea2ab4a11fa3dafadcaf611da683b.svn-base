@@ -1,0 +1,39 @@
+package com.evaluationmanager.dao.impl;
+
+import java.util.List;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.query.Query;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.PaperDao;
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.support.DataDaoImpl;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-上午10:39:58
+ * @Description 描述信息：试卷操作实现类
+ *
+ */
+@Repository("paperDao")
+public class PaperDaoImpl extends DataDaoImpl<Paper> implements PaperDao {
+	
+	@Override
+	public List<Question> getRand() {
+		return template.execute(new HibernateCallback<List<Question>>() {
+			@Override
+			public List<Question> doInHibernate(Session session) throws HibernateException {
+				String hql = " from Question order by rand()";
+				Query<Question> createQuery = session.createQuery(hql);
+				createQuery.setMaxResults(5);
+				return createQuery.list();
+			}
+		});
+	}
+
+}

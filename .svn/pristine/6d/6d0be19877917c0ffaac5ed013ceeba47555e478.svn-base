@@ -1,0 +1,87 @@
+package com.evaluationmanager.action;
+
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.service.RoleService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-下午4:31:22
+ * @Description 描述信息：
+ *
+ */
+public class RoleAction extends Action<Code>{
+	
+	private static final long serialVersionUID = 423709953794339294L;
+	@Autowired
+	private RoleService roleService;
+	private long id;
+	private Code code=new Code();
+	private List<Code> codeList;
+
+	@Override
+	public Code getModel() {
+		return code;
+	}
+	
+	public String add(){
+		this.roleService.add(code);
+		return INSERT_ROLE;
+	}
+	public String update(){
+		this.roleService.update(code);
+		return UPDATE_ROLE;
+	}
+	public String delete(){
+		this.roleService.delete(code);
+		return DELETE_ROLE;
+	}
+	public String getAll(){
+		codeList=roleService.getAll();
+		return GETALL_ROLE;
+	}
+	public long getRoleByID(){
+		return id;
+	}
+	
+	//get、set方法
+	public RoleService getRoleService() {
+		return roleService;
+	}
+
+	public void setRoleService(RoleService roleService) {
+		this.roleService = roleService;
+	}
+
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public Code getCode() {
+		return code;
+	}
+
+	public void setCode(Code code) {
+		this.code = code;
+	}
+
+	public List<Code> getCodeList() {
+		return codeList;
+	}
+
+	public void setCodeList(List<Code> codeList) {
+		this.codeList = codeList;
+	}
+	
+
+}

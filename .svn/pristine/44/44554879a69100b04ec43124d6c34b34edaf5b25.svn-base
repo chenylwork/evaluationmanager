@@ -1,0 +1,63 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.evaluationmanager.annotation.Foreignkey;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:15:02
+ * @Description 描述信息：权限-角色关系表
+ *
+ */
+@Entity
+@Table(name="role_power")
+public class PowerRole {
+	@Id
+	private int id;
+	@Foreignkey(foreignClass=PowerInfo.class,column="powerInfoNo")
+	@Column(name="powerInfo")
+	private String powerInfoNo;
+	@Foreignkey(foreignClass=Role.class,column="No")
+	private String role;
+	
+	public PowerRole() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public PowerRole(String powerInfoNo, String role) {
+		super();
+		this.powerInfoNo = powerInfoNo;
+		this.role = role;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPowerInfoNo() {
+		return powerInfoNo;
+	}
+	public void setPowerInfoNo(String powerInfoNo) {
+		this.powerInfoNo = powerInfoNo;
+	}
+	public String getRole() {
+		return role;
+	}
+	public void setRole(String role) {
+		this.role = role;
+	}
+	@Override
+	public String toString() {
+		return "PowerRole [id=" + id + ", powerInfoNo=" + powerInfoNo + ", role=" + role + "]";
+	}
+	
+	
+
+}

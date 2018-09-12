@@ -1,0 +1,133 @@
+package com.evaluationmanager.action;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Option;
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.service.PaperService;
+import com.evaluationmanager.support.Action;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-上午10:48:57
+ * @Description 描述信息：试卷操作action类
+ *
+ */
+@Controller("paperAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class PaperAction extends Action<Paper> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	@Autowired
+	private PaperService paperService;
+	
+	private Paper paper = new Paper();
+	private List<Question> questionRandList;
+	private List<Option> optionList;
+	private List<Question> questionList;
+	
+	private String data;
+	
+	/**
+	 * 随机抽取试题
+	 * @return
+	 */
+	public String randPap(){
+		questionRandList=this.paperService.getRand();
+		optionList = this.paperService.getAllOption();
+		return RAND_PAPER;
+	}
+	/**
+	 * 查询全部试题
+	 * @return
+	 */
+	public String getAllQues(){
+		questionList = this.paperService.getAllQues();
+		return GETALLQUES;
+	}
+	
+	/**
+	 * 添加试卷信息
+	 * @return
+	 */
+	public String add(){
+//		this.paperService.add(paper);
+		System.err.println(data);
+		JSON_CHAR_DATA = paperService.add(data) ? "1" : "0";
+		return JSONOCHAR;
+	}
+	/**
+	 * 删除试卷信息
+	 * @return
+	 */
+	public String delete(){
+		this.paperService.delete(paper);
+		return DELETE_PAPER;
+	}
+	/**
+	 * 修改试卷信息
+	 * @return
+	 */
+	public String update(){
+		this.paperService.update(paper);
+		return UPDATE_PAPER;
+	}
+
+	public String paperType() {
+		JSON_CHAR_DATA  = paperService.getPaperType();
+		return JSONOCHAR;
+	}
+	public List<Question> getQuestionRandList() {
+		return questionRandList;
+	}
+	
+	public void setQuestionRandList(List<Question> questionRandList) {
+		this.questionRandList = questionRandList;
+	}
+	
+	public List<Option> getOptionList() {
+		return optionList;
+	}
+
+	public void setOptionList(List<Option> optionList) {
+		this.optionList = optionList;
+	}
+
+	public Paper getPaper() {
+		return paper;
+	}
+
+	public void setPaper(Paper paper) {
+		this.paper = paper;
+	}
+
+	public List<Question> getQuestionList() {
+		return questionList;
+	}
+	public void setQuestionList(List<Question> questionList) {
+		this.questionList = questionList;
+	}
+	@Override
+	public Paper getModel() {
+		return paper;
+	}
+	public String getData() {
+		return data;
+	}
+	public void setData(String data) {
+		this.data = data;
+	}
+	
+
+}

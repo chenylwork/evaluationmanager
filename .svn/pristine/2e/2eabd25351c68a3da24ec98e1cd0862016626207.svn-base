@@ -1,0 +1,19 @@
+package com.evaluationmanager.dao;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:13:39
+ * @Description 描述信息：
+ *
+ */
+public interface StudentDao extends DataDao<Student>{
+	//学生单条、批量删除
+	public int delete(List<String[]> params);
+
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：任少华 -->
+<!--创建时间：2018年7月30日-上午:11:15:10 -->
+<!--配置信息：major问题模块的配置信息 -->
+<struts>
+    <package name="major" namespace="/admin/major" extends="struts-default,json-default">
+         <action name="*" class="majorAction" method="{1}">
+         
+         	<result name="doPage" type="chain">pagin</result>
+         	<!-- 添加专业 -->
+             <result name="addMaj">/admin/major/major_add.jsp</result>
+            <!-- 删除专业 -->
+            <!-- <result name="deleteMaj">/admin/major/major_list.jsp</result>-->
+            <!-- 修改专业 -->
+            <!-- <result name="updateMaj">/admin/major/major_list.jsp</result>-->
+            <!-- 查询全部专业 -->
+            <result name="allMaj">major_list.jsp</result>
+            <!-- 查看详情操作 -->
+			<result name="detail">/admin/major/major_details.jsp</result>
+			<!-- 根据ID查询 -->
+			<result name="getByIdMaj">/admin/major/major_add.jsp</result>
+			
+			<result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+			
+			<result name="qt">/111111.jsp</result>
+         </action>
+    </package>
+</struts>

@@ -1,0 +1,110 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.dao.CodeDao;
+import com.evaluationmanager.dao.OptionDao;
+import com.evaluationmanager.dao.PaperDao;
+import com.evaluationmanager.dao.PaperQuestionDao;
+import com.evaluationmanager.dao.QuestionDao;
+import com.evaluationmanager.entiy.Option;
+import com.evaluationmanager.entiy.Paper;
+import com.evaluationmanager.entiy.PaperQuestion;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.service.PaperService;
+import com.evaluationmanager.support.AbstractService;
+import com.evaluationmanager.unit.NoEnum;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-上午10:43:56
+ * @Description 描述信息：试卷信息操作业务实现类
+ *
+ */
+@org.springframework.stereotype.Service("paperService")
+public class PaperServiceImpl extends AbstractService<Paper> implements PaperService {
+	
+	@Autowired
+	private PaperDao paperDao;
+	@Autowired
+	private OptionDao optionDao;
+	@Autowired
+	private QuestionDao questionDao;
+	@Autowired
+	private CodeDao codeDao;
+	@Autowired
+	private PaperQuestionDao paperQuestionDao;
+	
+	@Autowired
+	private Gson gson;
+	@Override
+	@Transactional
+	@SuppressWarnings("unchecked")
+	public boolean add(String data) {
+		Map<String,Object> map = gson.fromJson(data, new TypeToken<Map<String,Object>>(){}.getType());
+		Map<String, Object> paperMap = (Map<String, Object>) map.get("paper");
+		List<Map<String, String>> questionsMap = (List<Map<String, String>>) map.get("questions");
+		Paper paper = new Paper();
+		String paperNo = NoEnum.Paper.getNo();
+		paper.setPaperNo(paperNo);
+		paper.setType((String)paperMap.get("type"));
+		paper.setDescription((String)paperMap.get("description"));
+		paperDao.add(paper);
+		int successSize = 0;
+		int questionSize = questionsMap.size();
+		for(int i=0; i<questionSize; i++) {
+			Map<String, String> questionMap = questionsMap.get(i);
+			PaperQuestion paperQuestion = new PaperQuestion();
+			paperQuestion.setQuestion(questionMap.get("question"));
+			paperQuestion.setPaper(paperNo);
+			paperQuestion.setNumber(Integer.parseInt(questionMap.get("number")));
+			paperQuestion.setScore(Integer.parseInt(questionMap.get("score")));
+			successSize = paperQuestionDao.add(paperQuestion) ? ++successSize : successSize;
+		}
+		return successSize == questionSize;
+	}
+
+	@Override
+	@Transactional
+	public boolean update(Paper p) {
+		return this.paperDao.update(p);
+	}
+
+	@Override
+	@Transactional
+	public boolean delete(Paper p) {
+		return this.paperDao.delete(p);
+	}
+
+	@Override
+	@Transactional
+	public List<Question> getRand() {
+		return this.paperDao.getRand();
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public String getPaperType() {
+		return gson.toJson(codeDao.getPaperType());
+	}
+
+	@Override
+	public List<Option> getAllOption() {
+		return this.optionDao.getDatas("");
+	}
+	
+	@Override
+	public List<Question> getAllQues() {
+		return this.questionDao.getDatas("");
+	}
+	
+	
+
+}

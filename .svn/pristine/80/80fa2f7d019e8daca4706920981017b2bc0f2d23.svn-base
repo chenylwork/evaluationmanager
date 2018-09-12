@@ -1,0 +1,13 @@
+package com.evaluationmanager.service;
+import com.evaluationmanager.entiy.Class;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午2:21:36
+ * @description 班级信息业务操作接口
+ */
+public interface ClassService {
+   public Class add(Class classes);
+   public Class update(Class classes);
+   public Class delete(Class classes);
+ }

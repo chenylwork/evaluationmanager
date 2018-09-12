@@ -1,0 +1,169 @@
+package com.evaluationmanager.support;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.query.Query;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.annotation.EntityNo;
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.exception.DataException;
+
+
+/**
+ * 数据操作抽象类
+ * @author chenyl
+ * @Date 2018年7月12日
+ * @Description  
+ *
+ */
+@Repository("dataDao")
+public abstract class DataDaoImpl<T> extends HibernateDaoSupport implements DataDao<T>{
+	/**
+	 * 数据操作对象
+	 */
+	protected HibernateTemplate template;
+	
+	@Autowired
+	public void setSuperSessionFactory(SessionFactory sessionFactory) {
+		super.setSessionFactory(sessionFactory);
+		this.template = super.getHibernateTemplate();
+	}
+	/**
+	 * 数据操作表映射Hql操作的表名称
+	 */
+	private String HTable;
+	/**
+	 * 当前对象的泛型类
+	 */
+	private Class<T> entityClass;
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月26日-上午10:04:40
+	 * @Description 获取泛型类
+	 * @return Class<? extends Object>
+	 */
+	@SuppressWarnings("unchecked")
+	public Class<? extends Object> getEntityClass() {
+		if(entityClass == null) {
+			this.entityClass =  (Class<T>)(((ParameterizedType)(this.getClass().getGenericSuperclass())).getActualTypeArguments()[0]);
+		}
+		return entityClass;
+	}
+	/**
+	 * 无参构造，获取泛型类
+	 */
+	public DataDaoImpl() {
+		getEntityClass();
+	}
+
+	@Override
+	public Map<String, Collection<T>> batchInsert(Collection<T> Collection) {
+		return null;
+	}
+
+	@Override
+	public Map<String, Collection<T>> batchDelete(Collection<T> Collection) {
+		return null;
+	}
+
+	@Override
+	public boolean add(T t) {
+		return template.save(t) != null;
+	}
+
+	@Override
+	public boolean update(T t) {
+		try {
+			template.update(t);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delete(T t) {
+		try {
+			template.delete(t);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	@Override
+	public T getDataByID(long id) {
+		return (T) template.get(entityClass, id);
+	}
+	@Override
+	public T getDataByNo(String no) throws DataException {
+		String entityNoFieldName = getFieldNameByAnnotation(entityClass,EntityNo.class);
+		if(entityNoFieldName == null) {
+			throw new DataException("该对象没有no属性。可能原因：entity实体类中对应的no属性中没有添加EntityNo注解");
+		}
+		return template.execute(new HibernateCallback<T>() {
+			@Override
+			public T doInHibernate(Session session) throws HibernateException {
+				// 获取对象no属性的名称
+				String hql = "from "+HTable+" where "+entityNoFieldName+" = ?";
+				@SuppressWarnings("unchecked")
+				Query<T> query = session.createQuery(hql);
+				query.setParameter(0, no);
+				return query.uniqueResult();
+			}
+		});
+	}
+	@Override
+	@SuppressWarnings("unchecked")
+	public List<T> getAll() {
+		return (List<T>) template.find("from "+HTable);
+	}
+	@Override
+	public List<Map<String,Object>> paginSearchData(Pagin<T> pagin,String hql,String... params) {
+		return null;
+	}
+	@Override
+	public Map<String, Object> getDataById(long id, String hql, String[] mapKeys) {
+		return null;
+	}
+	@Override
+	public List<Map<String, Object>> getDataByQueryConditions(String hql, String[] mapKeys, String... params) {
+		return null;
+	}
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月27日-下午3:46:42
+	 * @Description 根据属性是否含有某Annotation注解获取该属性名称
+	 * @param entityClass 需要获取的对象
+	 * @param annotationClass 含有的注解
+	 * @return String 需要获取的对象属性名称
+	 */
+	public String getFieldNameByAnnotation(Class<? extends Object> entityClass,Class<? extends Annotation> annotationClass) {
+		Field[] fields = entityClass.getDeclaredFields();
+		for(Field field : fields) {
+			field.setAccessible(true);
+			if(field.getAnnotation(annotationClass) != null) {
+				return field.getName();
+			}
+		}
+		return null;
+	}
+
+}

@@ -1,0 +1,310 @@
+package com.evaluationmanager.entiy.view;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+/**
+ * 测评结果视图
+ * @Author 陈彦磊
+ * @DateTime 2018年8月24日-上午3:14:29
+ * @Description 作用描述
+ *
+ */
+@Entity
+@Table(name="v_evaluation")
+public class EvaluationView implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1931551108195765864L;
+	@Id
+	private String paper;//试卷
+	@Id
+	private String user;//用户
+	@Id
+	private String teacher;//教师
+	private String time;//时间
+	private String options;//选项
+	private String score;//分数
+	private String username;//用户名
+	private String userSex;//性别
+	private String userRole;//角色
+	private String userRoleName;//角色名称
+	private String userRoleTypeName;//角色类别名称
+	private String teacherAccount;//教师工号
+	private String teacherRole;//教师职务
+	private String teacherMajor;//教师专业
+	private String teacherRoleName;//教师职务名称
+	private String teacherRoleTypeName;//教师职务类别名称
+	private String teacherMajorName;//教师专业名称
+	private String teacherDept;//教师院系
+	private String teacherDeptName;//教师院系名称
+	
+	public EvaluationView() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public String getPaper() {
+		return paper;
+	}
+	public void setPaper(String paper) {
+		this.paper = paper;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getTeacher() {
+		return teacher;
+	}
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getOptions() {
+		return options;
+	}
+	public void setOptions(String options) {
+		this.options = options;
+	}
+	public String getScore() {
+		return score;
+	}
+	public void setScore(String score) {
+		this.score = score;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getUserSex() {
+		return userSex;
+	}
+	public void setUserSex(String userSex) {
+		this.userSex = userSex;
+	}
+	public String getUserRole() {
+		return userRole;
+	}
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+	public String getUserRoleName() {
+		return userRoleName;
+	}
+	public void setUserRoleName(String userRoleName) {
+		this.userRoleName = userRoleName;
+	}
+	public String getUserRoleTypeName() {
+		return userRoleTypeName;
+	}
+	public void setUserRoleTypeName(String userRoleTypeName) {
+		this.userRoleTypeName = userRoleTypeName;
+	}
+	public String getTeacherAccount() {
+		return teacherAccount;
+	}
+	public void setTeacherAccount(String teacherAccount) {
+		this.teacherAccount = teacherAccount;
+	}
+	public String getTeacherRole() {
+		return teacherRole;
+	}
+	public void setTeacherRole(String teacherRole) {
+		this.teacherRole = teacherRole;
+	}
+	public String getTeacherMajor() {
+		return teacherMajor;
+	}
+	public void setTeacherMajor(String teacherMajor) {
+		this.teacherMajor = teacherMajor;
+	}
+	public String getTeacherRoleName() {
+		return teacherRoleName;
+	}
+	public void setTeacherRoleName(String teacherRoleName) {
+		this.teacherRoleName = teacherRoleName;
+	}
+	public String getTeacherRoleTypeName() {
+		return teacherRoleTypeName;
+	}
+	public void setTeacherRoleTypeName(String teacherRoleTypeName) {
+		this.teacherRoleTypeName = teacherRoleTypeName;
+	}
+	public String getTeacherMajorName() {
+		return teacherMajorName;
+	}
+	public void setTeacherMajorName(String teacherMajorName) {
+		this.teacherMajorName = teacherMajorName;
+	}
+	public String getTeacherDept() {
+		return teacherDept;
+	}
+	public void setTeacherDept(String teacherDept) {
+		this.teacherDept = teacherDept;
+	}
+	public String getTeacherDeptName() {
+		return teacherDeptName;
+	}
+	public void setTeacherDeptName(String teacherDeptName) {
+		this.teacherDeptName = teacherDeptName;
+	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((options == null) ? 0 : options.hashCode());
+		result = prime * result + ((paper == null) ? 0 : paper.hashCode());
+		result = prime * result + ((score == null) ? 0 : score.hashCode());
+		result = prime * result + ((teacher == null) ? 0 : teacher.hashCode());
+		result = prime * result + ((teacherAccount == null) ? 0 : teacherAccount.hashCode());
+		result = prime * result + ((teacherDept == null) ? 0 : teacherDept.hashCode());
+		result = prime * result + ((teacherDeptName == null) ? 0 : teacherDeptName.hashCode());
+		result = prime * result + ((teacherMajor == null) ? 0 : teacherMajor.hashCode());
+		result = prime * result + ((teacherMajorName == null) ? 0 : teacherMajorName.hashCode());
+		result = prime * result + ((teacherRole == null) ? 0 : teacherRole.hashCode());
+		result = prime * result + ((teacherRoleName == null) ? 0 : teacherRoleName.hashCode());
+		result = prime * result + ((teacherRoleTypeName == null) ? 0 : teacherRoleTypeName.hashCode());
+		result = prime * result + ((time == null) ? 0 : time.hashCode());
+		result = prime * result + ((user == null) ? 0 : user.hashCode());
+		result = prime * result + ((userRole == null) ? 0 : userRole.hashCode());
+		result = prime * result + ((userRoleName == null) ? 0 : userRoleName.hashCode());
+		result = prime * result + ((userRoleTypeName == null) ? 0 : userRoleTypeName.hashCode());
+		result = prime * result + ((userSex == null) ? 0 : userSex.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EvaluationView other = (EvaluationView) obj;
+		if (options == null) {
+			if (other.options != null)
+				return false;
+		} else if (!options.equals(other.options))
+			return false;
+		if (paper == null) {
+			if (other.paper != null)
+				return false;
+		} else if (!paper.equals(other.paper))
+			return false;
+		if (score == null) {
+			if (other.score != null)
+				return false;
+		} else if (!score.equals(other.score))
+			return false;
+		if (teacher == null) {
+			if (other.teacher != null)
+				return false;
+		} else if (!teacher.equals(other.teacher))
+			return false;
+		if (teacherAccount == null) {
+			if (other.teacherAccount != null)
+				return false;
+		} else if (!teacherAccount.equals(other.teacherAccount))
+			return false;
+		if (teacherDept == null) {
+			if (other.teacherDept != null)
+				return false;
+		} else if (!teacherDept.equals(other.teacherDept))
+			return false;
+		if (teacherDeptName == null) {
+			if (other.teacherDeptName != null)
+				return false;
+		} else if (!teacherDeptName.equals(other.teacherDeptName))
+			return false;
+		if (teacherMajor == null) {
+			if (other.teacherMajor != null)
+				return false;
+		} else if (!teacherMajor.equals(other.teacherMajor))
+			return false;
+		if (teacherMajorName == null) {
+			if (other.teacherMajorName != null)
+				return false;
+		} else if (!teacherMajorName.equals(other.teacherMajorName))
+			return false;
+		if (teacherRole == null) {
+			if (other.teacherRole != null)
+				return false;
+		} else if (!teacherRole.equals(other.teacherRole))
+			return false;
+		if (teacherRoleName == null) {
+			if (other.teacherRoleName != null)
+				return false;
+		} else if (!teacherRoleName.equals(other.teacherRoleName))
+			return false;
+		if (teacherRoleTypeName == null) {
+			if (other.teacherRoleTypeName != null)
+				return false;
+		} else if (!teacherRoleTypeName.equals(other.teacherRoleTypeName))
+			return false;
+		if (time == null) {
+			if (other.time != null)
+				return false;
+		} else if (!time.equals(other.time))
+			return false;
+		if (user == null) {
+			if (other.user != null)
+				return false;
+		} else if (!user.equals(other.user))
+			return false;
+		if (userRole == null) {
+			if (other.userRole != null)
+				return false;
+		} else if (!userRole.equals(other.userRole))
+			return false;
+		if (userRoleName == null) {
+			if (other.userRoleName != null)
+				return false;
+		} else if (!userRoleName.equals(other.userRoleName))
+			return false;
+		if (userRoleTypeName == null) {
+			if (other.userRoleTypeName != null)
+				return false;
+		} else if (!userRoleTypeName.equals(other.userRoleTypeName))
+			return false;
+		if (userSex == null) {
+			if (other.userSex != null)
+				return false;
+		} else if (!userSex.equals(other.userSex))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "EvaluationView [paper=" + paper + ", user=" + user + ", teacher=" + teacher + ", time=" + time
+				+ ", options=" + options + ", score=" + score + ", username=" + username + ", userSex=" + userSex
+				+ ", userRole=" + userRole + ", userRoleName=" + userRoleName + ", userRoleTypeName=" + userRoleTypeName
+				+ ", teacherAccount=" + teacherAccount + ", teacherRole=" + teacherRole + ", teacherMajor="
+				+ teacherMajor + ", teacherRoleName=" + teacherRoleName + ", teacherRoleTypeName=" + teacherRoleTypeName
+				+ ", teacherMajorName=" + teacherMajorName + ", teacherDept=" + teacherDept + ", teacherDeptName="
+				+ teacherDeptName + "]";
+	}
+
+}

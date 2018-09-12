@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>excl导入</title>
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+	
+    <link rel="stylesheet" href="../css/style.css">
+    
+	<script type="text/javascript" src="../js/jquery.min.js"></script>
+	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/font.css">
+    <link rel="stylesheet" href="../css/xadmin.css">
+    
+	<script type="text/javascript" src="../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/xadmin.js"></script>
+    
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<style type="text/css">
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+</style>
+</head>
+<body>
+<br><br>
+<ul id="myTab" class="nav nav-tabs" style="">  
+		<li class="active" style="width:250px;text-align:center;"><a href="#z1" data-toggle="tab" style="font-weight:bold;">正确数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#66D841" id="successSize">0</span></a> 
+		</li>  
+		<li style="width:250px;text-align:center;"><a href="#z2" data-toggle="tab" style="font-weight:bold;">错误数据&nbsp;&nbsp;&nbsp;&nbsp;
+		<span class="badge" style="background:#EC5E3E;" id="failSize">0</span></a></li>  
+		<li style="width:250px;text-align:center;padding-left:15px;">
+			<form action="" method="">
+				<button type="button" id="chooseFileBtn" class="btn btn-primary">选择文件</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<button type="button" class="btn btn-primary" id="importBtn">导入数据</button>
+				<input type="file" id="file" style="display: none;" />
+			</form>
+		</li> 
+	</ul>
+<div id="myTabContent" class="tab-content"> 
+<!--导入按钮 重新填入-->
+<!--///////////////////////////////////////正确数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade in active" id="z1">     
+		<table class="layui-table" class="table_box">
+	        <thead class="table_header"></thead>
+	        <tbody id="successBodyID"></tbody>
+	    </table>
+	</div>
+<!--///////////////////////////////////////错误数据///////////////////////////////////////////////////-->
+	<div class="tab-pane fade" id="z2">   
+	<table class="layui-table">
+        <thead class="table_header">
+        </thead>
+        <tbody id="failBodyID">
+        </tbody>
+      </table>
+	</div>
+
+</div>
+</body>
+<!-- excel操作 -->
+    <script type="text/javascript" src="../js/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="../js/common/excel.js"></script>
+    <script type="text/javascript" src="../js/common/egExcel.js"></script>
+<script type="text/javascript">
+	$(function(){excelImportLoad();});
+</script>
+</html>
+
+
+
+
+
+
+
+
+
+
+

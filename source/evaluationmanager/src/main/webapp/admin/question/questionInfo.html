@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>试题修改页面</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="../../css/admin/question/question.css">
+</head>
+<body>
+<div class="top" style="margin-top:10px;">
+	<div class="nav">
+	      <span class="layui-breadcrumb">
+	        <a href="">首页</a>&nbsp;&nbsp;/&nbsp;&nbsp;
+	        	添加评教试题
+	      </span>
+	      <a class="layui-btn" href="javascript:location.replace(location.href);" title="刷新" style="float:right;" >
+        	<span style="width:30px;height:80px; color:#fff;padding-top:10px;" class="glyphicon glyphicon-refresh"> </span>
+     	  </a>
+	</div>
+</div>
+<div class="main">
+	<div class="right">
+		<form action="" method="post" id="question_form" data-type="">
+			<input type="hidden" value="" id="questionNo" name="questionNo" />
+			<input type="hidden" value="" id="old_question_info" class="question_info" />
+			<span style="padding-left:20px;">评试题:</span>&nbsp;&nbsp;
+			<input type="text" id="question_info" name="question" class="required question_info" style="width:80%;">
+			<ul id="options_box" data-options="0" data-option-selected="0" data-ratio-selected="0">
+			</ul>
+			<div class="tt" style="width:100%;text-align:left;padding-left:150px;">
+				<input type="button" value="保存" id="submit_btn" class="btn1">
+			</div>
+			<!-- <div class="left"><img src="../../images/b7.jpg" width="60%;"></div> -->
+		</form>
+	</div>
+</div>
+</body>
+<script type="text/javascript" src="../../js/jquery.min.js"></script>
+<script type="text/javascript" src="../../js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../../js/common/common.js"></script>
+<script type="text/javascript" src="../../js/admin/question/question.js"></script>
+</html>

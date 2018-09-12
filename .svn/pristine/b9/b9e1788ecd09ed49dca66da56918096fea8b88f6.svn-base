@@ -1,0 +1,148 @@
+package com.evaluationmanager.action;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.support.Action;
+import com.evaluationmanager.unit.DatabaseUnit;
+import com.opensymphony.xwork2.ActionSupport;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年8月26日-下午3:22:15
+ * @description 数据库备份和恢复操作action类
+ */
+@Controller("dataBaseAction")
+public class DataBaseAction extends Action<String> {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String hostIP="localhost";//MySQL数据库所在服务器地址IP
+	private String userName="root";//进入数据库所需要的用户名
+	private String password="";//进入数据库所需要的密码
+	
+	private String savePath="D:/backupDatabase";//数据库导出文件保存路径
+	private String fileName="db.sql";//数据库导出文件文件名
+	
+	private String databaseName="evaluationmanager";//要导出的数据库名
+	private String message;//提示信息
+	private String importFilePath="D:/backupDatabase/"; //数据库文件名 
+	private String sqlFileName="db.sql"; //要导入的文件名 
+	
+	@Autowired
+	private DatabaseUnit databaseUnit;
+//	String hostIP="localhost";//MySQL数据库所在服务器地址IP
+//	String userName="root";//进入数据库所需要的用户名
+//	String password="ROOT";//进入数据库所需要的密码
+//    String savePath="D:/backupDatabase";//数据库导出文件保存路径
+//    String fileName="2018-8-23.sql";//数据库导出文件文件名
+//    String databaseName="evaluationmanager";//要导出的数据库名
+	public String getHostIP() {
+		return hostIP;
+	}
+	public void setHostIP(String hostIP) {
+		this.hostIP = hostIP;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getSavePath() {
+		return savePath;
+	}
+	public void setSavePath(String savePath) {
+		this.savePath = savePath;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+	public String getDatabaseName() {
+		return databaseName;
+	}
+	public void setDatabaseName(String databaseName) {
+		this.databaseName = databaseName;
+	}
+	public String getMessage() {
+		return message;
+	}
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	public String getImportFilePath() {
+		return importFilePath;
+	}
+	public void setImportFilePath(String importFilePath) {
+		this.importFilePath = importFilePath;
+	}
+	public String getSqlFileName() {
+		return sqlFileName;
+	}
+	public void setSqlFileName(String sqlFileName) {
+		this.sqlFileName = sqlFileName;
+	}
+	public DatabaseUnit getDatabaseUnit() {
+		return databaseUnit;
+	}
+	public void setDatabaseUnit(DatabaseUnit databaseUnit) {
+		this.databaseUnit = databaseUnit;
+	}
+	/**
+	 * 数据库备份
+	 * 
+	 * @return
+	 */
+	public String exportDatabase(){
+		boolean exportDatabaseTool = DatabaseUnit.exportDatabaseTool(hostIP, userName, password, savePath, fileName, databaseName);
+		if (exportDatabaseTool) {
+			message="数据库备份成功";
+		}else{
+			message="数据库备份失败";
+		}
+		JSON_CHAR_DATA=super.gson.toJson(message);
+		return JSONOCHAR;
+		
+	}
+	/** 
+     * 实现MySQL数据库导入 
+     *  
+     * @author 耿佳康 
+     * @param hostIP MySQL数据库所在服务器地址IP 
+     * @param userName 数据库用户名 
+     * @param password 进入数据库所需要的密码 
+     * @param importFilePath 数据库文件路径 
+     * @param sqlFileName 数据库文件名 
+     * @param databaseName 要导入的数据库名 
+     * @return 返回true表示导入成功，否则返回false。 
+     */  
+	@SuppressWarnings("static-access")
+	public String importDatabase(){
+		boolean importDatabase = databaseUnit.importDatabase(hostIP, userName, password, importFilePath, sqlFileName, databaseName);
+		if (importDatabase) {
+			message="数据库恢复成功";
+		}else{
+			message="数据库恢复失败";
+		}
+		JSON_CHAR_DATA=super.gson.toJson(message);
+		return JSONOCHAR;
+	}
+	@Override
+	public String getModel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+    
+}

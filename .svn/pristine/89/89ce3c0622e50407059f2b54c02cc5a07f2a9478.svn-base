@@ -1,0 +1,172 @@
+package com.evaluationmanager.action;
+
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Code;
+import com.evaluationmanager.entiy.PermissRole;
+import com.evaluationmanager.entiy.PermissUser;
+import com.evaluationmanager.entiy.PermissionInfo;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.service.PermisInfoService;
+import com.evaluationmanager.service.RoleService;
+import com.evaluationmanager.service.UserService;
+import com.evaluationmanager.support.Action;
+
+@Controller("permissionAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class PermissionAction extends Action<PermissionInfo> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@Autowired
+	private PermisInfoService permisInfoService;
+	@Autowired
+	private RoleService roleService;
+	@Autowired
+	private UserService userService;
+	
+	private PermissionInfo pinfo = new PermissionInfo();
+	private PermissRole pr = new PermissRole();
+	private PermissUser pu = new PermissUser();
+	private List<Code> roleList;
+	private Map<String,Object> rolelist;
+	private List<PermissionInfo> infoList;
+	private List<Map<String, Object>> userList;
+	private Map<String,Object> userlist;
+	
+	//User
+	private User user = new User();
+	//Role
+	private String codeNo;
+	
+	/**
+	 * 遍历所有的角色
+	 * @return
+	 */
+	public String getAllRole(){
+		roleList = this.roleService.getAll();
+		return GETALLROLE;
+	}
+	/**
+	 * 遍历所有的权限信息以及角色名字
+	 * @return
+	 */
+	public String getRoleName(){
+		infoList = this.permisInfoService.getAll();
+		rolelist = this.roleService.getRoleByNo(codeNo);
+		return GETALLINFO;
+	}
+	/**
+	 * 遍历所有的权限信息以及用户名字
+	 * @return
+	 */
+	public String getUserName(){
+		infoList = this.permisInfoService.getAll();
+		userlist = this.userService.getMapById(user.getId());
+		return GETALLINFO;
+	}
+	/**
+	 * 遍历所有用户信息
+	 * @return
+	 */
+	public String getAllUser(){
+		userList = this.userService.paginGet(paginMap,"");
+		return GETALLUSER;
+	}
+	/**
+	 * 添加角色权限
+	 * @return
+	 */
+	public String addPr(){
+		this.permisInfoService.addPr(pr);
+		return UPDATEPERMISSION;
+	}
+	/**
+	 * 添加用户权限
+	 * @return
+	 */
+	public String addPu(){
+		this.permisInfoService.addPu(pu);
+		return UPDATEPERMISSION;
+	}
+
+	@Override
+	public PermissionInfo getModel() {
+		return pinfo;
+	}
+
+	public PermissionInfo getPinfo() {
+		return pinfo;
+	}
+
+	public void setPinfo(PermissionInfo pinfo) {
+		this.pinfo = pinfo;
+	}
+
+	public List<Code> getRoleList() {
+		return roleList;
+	}
+
+	public void setRoleList(List<Code> roleList) {
+		this.roleList = roleList;
+	}
+
+	public List<PermissionInfo> getInfoList() {
+		return infoList;
+	}
+
+	public void setInfoList(List<PermissionInfo> infoList) {
+		this.infoList = infoList;
+	}
+	public List<Map<String, Object>> getUserList() {
+		return userList;
+	}
+	public void setUserList(List<Map<String, Object>> userList) {
+		this.userList = userList;
+	}
+	public String getCodeNo() {
+		return codeNo;
+	}
+	public void setCodeNo(String codeNo) {
+		this.codeNo = codeNo;
+	}
+	public Map<String, Object> getRolelist() {
+		return rolelist;
+	}
+	public void setRolelist(Map<String, Object> rolelist) {
+		this.rolelist = rolelist;
+	}
+	public Map<String, Object> getUserlist() {
+		return userlist;
+	}
+	public void setUserlist(Map<String, Object> userlist) {
+		this.userlist = userlist;
+	}
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
+	public PermissRole getPr() {
+		return pr;
+	}
+	public void setPr(PermissRole pr) {
+		this.pr = pr;
+	}
+	public PermissUser getPu() {
+		return pu;
+	}
+	public void setPu(PermissUser pu) {
+		this.pu = pu;
+	}
+
+}

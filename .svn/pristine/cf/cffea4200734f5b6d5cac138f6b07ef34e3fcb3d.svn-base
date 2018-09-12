@@ -1,0 +1,68 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月25日-下午5:37:30
+ * @description 院系专业关系表
+ */
+@Entity
+@Table(name="dept_major",uniqueConstraints={@UniqueConstraint(columnNames="deptNo")})
+public class DeptMajor {
+  @Id
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  public int id;//编号
+  public String deptNo;//系别编号
+  public String name;//专业名称
+  public String description;//描述信息
+  
+public DeptMajor() {
+	super();
+	// TODO Auto-generated constructor stub
+}
+public DeptMajor(int id, String deptNo, String name, String description) {
+	super();
+	this.id = id;
+	this.deptNo = deptNo;
+	this.name = name;
+	this.description = description;
+}
+public int getId() {
+	return id;
+}
+public void setId(int id) {
+	this.id = id;
+}
+public String getDeptNo() {
+	return deptNo;
+}
+public void setDeptNo(String deptNo) {
+	this.deptNo = deptNo;
+}
+public String getName() {
+	return name;
+}
+public void setName(String name) {
+	this.name = name;
+}
+public String getDescription() {
+	return description;
+}
+public void setDescription(String description) {
+	this.description = description;
+}
+@Override
+public String toString() {
+	return "DeptMajor [id=" + id + ", deptNo=" + deptNo + ", name=" + name + ", description=" + description + "]";
+}
+  
+  
+  
+}

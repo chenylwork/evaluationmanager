@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：耿佳康-->
+<!--创建时间：2018年7月30日-下午17:10:00-->
+<!--配置信息：班级 模块的配置信息 -->
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <package name="class" namespace="/admin/class" extends="json-default">
+        <!-- 学生模块-->
+         <action name="*" class="classAction" method="{1}">
+           <result name="add">/admin/class/class-add.jsp</result>
+            <result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+         </action>
+    </package>
+</struts>

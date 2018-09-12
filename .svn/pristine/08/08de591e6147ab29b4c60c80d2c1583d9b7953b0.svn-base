@@ -1,0 +1,11 @@
+package com.evaluationmanager.service;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午5:03:07
+ * @description 描述信息
+ */
+public class UserService {
+
+}

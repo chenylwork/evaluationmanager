@@ -1,0 +1,16 @@
+#data
+jdbc.driverClassName=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/evaluationmanager?characterEncoding=utf8
+#jdbc.url=jdbc:mysql://47.95.6.234:3306/evaluationmanager?characterEncoding=utf8
+jdbc.username=root
+jdbc.password=flzx3qc
+#jdbc.password=ROOT
+#jdbc.password=
+
+# c3p0
+c3p0.minPoolSize=3
+c3p0.maxPoolSize=20
+c3p0.initialPoolSize=5
+c3p0.maxIdleTime=120
+c3p0.acquireIncrement=5
+c3p0.idleConnectionTestPeriod=60

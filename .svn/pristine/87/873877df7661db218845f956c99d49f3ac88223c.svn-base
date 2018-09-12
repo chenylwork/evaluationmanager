@@ -1,0 +1,15 @@
+package com.evaluationmanager.dao;
+
+import com.evaluationmanager.entiy.PermissionType;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:15:33
+ * @Description 描述信息：权限类别操作接口
+ *
+ */
+public interface PermisTypeDao extends DataDao<PermissionType> {
+
+}

@@ -1,0 +1,9 @@
+/* css通用样式设置文件 */
+/*
+ * @Author 陈彦磊 
+ */
+@CHARSET "UTF-8";
+/*红色文字*/
+.c_red{color: red;}
+
+.cursor_default{cursor: default;}

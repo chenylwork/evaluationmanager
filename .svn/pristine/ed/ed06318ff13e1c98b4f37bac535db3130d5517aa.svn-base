@@ -1,0 +1,122 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.TeacherDao;
+import com.evaluationmanager.dao.UserDao;
+import com.evaluationmanager.entiy.Teacher;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.service.TeacherService;
+import com.evaluationmanager.support.AbstractService;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:12:30
+ * @Description 描述信息：教师信息操作业务实现类
+ *
+ */
+@org.springframework.stereotype.Service("teacherService")
+public class TeacherServiceImpl extends AbstractService<Teacher> implements TeacherService {
+	
+	@Autowired
+	private TeacherDao teacherDao;
+	@Autowired
+	private UserDao userDao;
+	
+
+	/**
+	 * 添加教师信息
+	 * 同时添加教师、用户、以及教师课程关系
+	 */
+	@Override
+	@Transactional
+	public boolean add(User u,Teacher t) {
+		return (this.userDao.add(u) && this.teacherDao.add(t));
+	}
+
+	/**
+	 * 修改教师信息
+	 */
+	@Override
+	@Transactional
+	public boolean update(User u,Teacher t) {
+		return (this.userDao.update(u) && this.teacherDao.update(t));
+	}
+
+	/**
+	 * 删除教师信息
+	 */
+	@Override
+	@Transactional
+	public boolean delete(Teacher t) {
+		return this.teacherDao.delete(t);
+	}
+
+	/**
+	 * 获取全部教师信息
+	 */
+	@Override
+	@Transactional
+	public List<Teacher> getAll() {
+		return this.teacherDao.getDatas("");
+	}
+	
+	/**
+	 * 根据Id查找教师
+	 */
+	@Override
+	@Transactional
+	public Teacher getTeacherByID(long id) {
+		return this.teacherDao.getDataByID(id);
+	}
+
+
+	/**
+	 * 查询全部老师(连外键)
+	 */
+	@Override
+	@Transactional(readOnly=true)
+	public List<Map<String, Object>> teacherListbyMap() {
+		return this.teacherDao.teacherListbyMap();
+	}
+	
+	/**
+	 * 根据teacherNo查询教师（连外键）
+	 */
+	@Override
+	@Transactional
+	public Map<String, Object> teacherNobyMap(String teacherNo){
+		return this.teacherDao.teacherNobyMap(teacherNo);
+	}
+
+	/**
+	 * 老师批量删除
+	 */
+	@Override
+	@Transactional
+	public int BatchDelete(String[] params) {
+		List<String[]> paramList = new ArrayList<>();
+		for(String string : params) {
+			//System.out.println(string);
+			paramList.add(new String[]{string});
+		}
+		return this.teacherDao.BatchDelete(paramList);
+	}
+
+	/**
+	 * 分页多条件查询
+	 */
+	@Override
+	@Transactional
+	public List<Map<String, Object>> paginSearchTeacher(Pagin<Map<String, Object>> pagin, Teacher teacher, User user) {
+		return this.teacherDao.paginSearchTeacher(pagin, teacher, user);
+	}
+
+}

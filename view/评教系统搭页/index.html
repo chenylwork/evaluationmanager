@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>评教登陆界面</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<!--验证码插件-->
+		<link rel="stylesheet" href="yzm/jquery.idcode.css" />
+		<script src="yzm/jquery.idcode.js"></script>
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+
+<style type="text/css">
+*{
+	margin: 0px;
+	padding: 0px;
+}
+body{
+	background: #e9f2ff;
+}
+.height{
+	 width: 100%;
+	 height:350px;
+	 margin:0 auto;
+
+}
+.top{
+	width: 100%;
+	height: 180px;
+	padding-top: 10px;
+	background: #afceef;
+	position: relative;
+
+}
+.left{
+	margin-left:50px;
+	padding-top: 100px;
+	float:left;
+}
+.right{
+	padding-right: 50px;
+	padding-top: 110px;
+	float: right;
+}
+
+.tu{
+
+	width: 100%;
+	height:270px;
+	padding-top: 10px;
+	background: url(images/bg.png) repeat-x;
+	text-align: center;
+	position: absolute; 
+	overflow: hidden;
+}
+.tu img{
+border:3px solid #fff;
+border-radius: 5px;
+}
+#zz{
+    position: absolute;
+    top: 220px;
+    left: 150px;
+    z-index: 9999;
+}
+.dl ul li{
+	list-style: none;
+	width: 380px;
+	height: 40px;
+}
+.dl ul li input{
+	vertical-align: middle;
+}
+.required{
+	border-radius: 3px;
+	border:#333;
+	height:25px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+.select{
+	border-radius: 3px;
+	border:#333;
+	height:22px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+
+.deng{
+	padding-right: 62px;
+	text-align:center;
+}
+.deng a{
+	font-weight: bold;
+	text-shadow:1PX 1PX 10PX #FFFFFF;
+	color:#5d98ec;
+}
+.footer{
+	margin-top: 130px;
+	width: 100%;
+	height: 100px;
+	text-align: center;
+	font-size: 12px;
+	color: #999;
+}
+.formtips{
+	font-size: 12px;
+	color: #666;
+}
+.formtips{
+	font-size: 12px;
+	color: #666;
+}
+.onError{
+	color: #666;
+    background: url(images/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+	color: #fff;
+    background: url(images/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+</style>
+
+</head>
+<body>
+<div class="height">
+	<div class="top">
+		<div class="left">
+			<img src="images/logo1.png">
+		</div>
+		<div class="right">
+			<img src="images/text.png">
+		</div>
+	</div>
+	<div class="tu">
+		<img src="images/banner.gif">
+	</div>
+
+	<div class="dl" id="zz">
+	<form action="" method="post">
+		<ul>
+			<li>
+				<span class="glyphicon glyphicon-book"></span>
+				身&nbsp;&nbsp;&nbsp;份:&nbsp;&nbsp;
+				<select class="select" id="select" style="color:#999;">
+					<option>请选择</option>
+					<option>学生</option>
+					<option>老师</option>
+				</select>
+			</li>
+			<li class="user">
+				<span class="glyphicon glyphicon-user"></span>
+				用户名:&nbsp;&nbsp;
+				<input type="text" name="username" class="required" placeholder="请输入你的用户名" id="username">
+			</li>
+			<li class="pass">
+				<span class="glyphicon glyphicon-lock"></span>
+				密&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;
+				<input type="text" name="" class="required" placeholder="请输入你的密码" id="password">
+				<!--&nbsp;&nbsp; <a href="" style="font-size:12px;color:#999;">忘记密码?</a>-->
+			</li>
+			<!--<li><a href="">忘记密码</a></li>-->
+			<li style="width:375px;">
+			<span class="glyphicon glyphicon-send"></span>
+				<label class="lblVerification" style="font-weight:500;">验证码:</label>&nbsp;&nbsp;
+				<input type="text" id="Txtidcode" class="required" placeholder="请输入你的验证码" />
+				<span id="idcode"></span>
+				<script>
+					$.idcode.setCode();
+					
+					$("#btns").click(function (){
+						var IsBy = $.idcode.validateCode(); 
+						alert(IsBy);
+						console.log(IsBy);
+					});
+				</script>
+			</li>
+			<li class="deng">
+				<input type="button" name="" value="登陆" id="zxc" style="">
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="button" name="" value="注册">
+				&nbsp;&nbsp;
+				<a href="" style="color:#666;font-size:12px;font-weight:500;">忘记密码？</a>
+			</li>
+		</ul>
+	
+	</form>
+	</div>
+</div>
+<div class="footer">
+ Copyright © 2004-2017 评教登陆（le.com）All rights reserved.<br>
+电话:0575 - 66611168   0371 - 56565656 <br>
+地址:河北省 石家庄市 石家庄职业技术学院 技术支持:吉利信息
+</div>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+$(function(){
+	//如果是必填的，则加红星表标识
+	$("form :input.required").each(function() {
+        var $required=$("<strong class='high'>*</strong>");//创建元素
+		$(this).parent().append($required);//然后将它追加到文档中
+    });
+	//文本框失去焦点后
+	$('form :input').blur(function(){
+		var $parent=$(this).parent();
+		$parent.find(".formtips").remove();
+
+		if($(this).is('#username')){
+			if(this.value==""||this.value.length<6){
+				var errorMsg='请输入至少6位的用户名.';
+				$parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+			}else{
+				var okMsg='输入正确';
+				$parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+				}
+				}
+	
+
+			//验证密码
+		if($(this).is('#password')){
+			if(this.value==""|| (this.value!="" && !/^(\w){6,20}$/.test(this.value) )){
+				var errorMsg='请输入正确的密码.';
+				$parent.append('<span class="formtips onError">'+errorMsg+'</span>');
+			}else{
+				var okMsg='输入正确';
+				$parent.append('<span class="formtips onSuccess">'+okMsg+'</span>');
+				}
+				}
+				
+		}).keyup(function(){
+			$(this).triggerHandler("blur");
+		}).focus(function(){
+			$(this).triggerHandler("blur");
+		});
+			//提交
+		$('#zxc').click(function(){
+			$("form :input.required").trigger('blur');
+			var numError=$('form.onError').length;
+			if(numError){
+				return false;
+			}
+		if(($(".onError").length)>0){
+				console.log($(".onSuccess").length);
+			} else{
+				$("form").submit();
+			}
+		
+			});
+			
+	})
+</script>

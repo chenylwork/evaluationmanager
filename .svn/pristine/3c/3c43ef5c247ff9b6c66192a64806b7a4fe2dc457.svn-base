@@ -1,0 +1,71 @@
+package com.evaluationmanager.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.evaluationmanager.entiy.QuestionOption;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 陈彦磊
+ * @DateTime 2018年7月27日-下午3:46:42
+ * @Description 试题-试题选项 关系操作接口
+ *
+ */
+public interface QuestionOptionDao extends DataDao<QuestionOption>{
+	/**
+	 * 添加问题信息，根据传入的问题选项关系信息实体对象进行添加
+	 * 该方法也可传入多个问题选项实体对象进行批量添加
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月9日-下午5:09:31
+	 * @param questionOptions 需要添加问题选项关系信息实体对象可变数组
+	 * @return 添加成功的条数 出现异常将返回为0
+	 */
+	public int insert(QuestionOption... questionOptions);
+	
+	/**
+	 * 删除问题信息，根据传入的问题编号进行删除
+	 * 该方法也可传入多个问题编号进行批量删除
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月7日-下午10:45:27
+	 * @param questionNos 需要删除的问题选项关系信息，对应的问题编号可变数组
+	 * @return 成功删除的记录数 出现异常将返回为0
+	 */
+	public int delete(String... questionNos);
+	/**
+	 * 修改问题信息，根据传入的问题选项关系信息实体对象进行修改
+	 * 该方法也可传入多个问题选项实体对象进行批量修改
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月9日-下午3:52:31
+	 * @param questionOptions 需要修改的关系信息
+	 * @return 返回修改成功个数,若出现异常将返回0
+	 */
+	public int update(QuestionOption... questionOptions);
+	/**
+	 * 根据问题编号获取问题选项关系信息列表
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月10日-上午1:00:25
+	 * @param questionNo 问题编号
+	 * @return 返回查询到的问题选项关系List<QuestionOption>集合
+	 */
+	public Map<String, Object> getDataByQuestionNo(String questionNo);
+	/**
+	 * 随机获取问题选项关系信息
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午12:12:14
+	 * @param randomSize 随机个数
+	 * @return
+	 */
+	public List<Map<String, Object>> randomGetQo(int randomSize);
+	
+	/**
+	 * 根据试卷编号获取试卷问题
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午9:37:27
+	 * @param paperNo 试卷编号
+	 * @return 
+	 */
+	public List<Map<String, Object>> getDataByPaperNo(String paperNo);
+	
+}

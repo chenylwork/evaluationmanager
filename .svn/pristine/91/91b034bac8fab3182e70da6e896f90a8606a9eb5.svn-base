@@ -1,0 +1,39 @@
+package com.evaluationmanager.action;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.service.QuestionService;
+import com.evaluationmanager.support.Action;
+import com.google.gson.Gson;
+
+/**
+ * @Author 陈彦磊
+ * @DateTime 2018年7月26日-上午10:23:40
+ * @Description 问题操作action类
+ */
+public class QuestionAction extends Action<Question> {
+	
+	@Autowired
+	private QuestionService questionService;
+	@Autowired
+	private Gson gson;
+	
+	private Question question = new Question();
+	/**
+	 * @Author 陈彦磊
+	 * @DateTime 2018年7月26日-上午10:23:50
+	 * @Description 作用描述
+	 */
+	private static final long serialVersionUID = 423709953794339294L;
+
+	@Override
+	public Question getModel() {
+		return question;
+	}
+	
+	public String add() {
+		RESULT_JSON_DATA = gson.toJson(questionService.save(question));
+		return JSONDATA;
+	}
+}

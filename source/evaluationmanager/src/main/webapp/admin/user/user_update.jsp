@@ -1,0 +1,152 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>用户修改</title>
+<link rel="shortcut icon" href="${pageContext.request.contextPath}/favicon.ico" type="image/x-icon" />
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/user/user_update.css">
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/admin/user/user_update.js"></script>	
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<script type="text/javascript">
+//获取性别信息
+function getSex(){
+	var sex="";
+	$.ajax({
+		  url:"http://localhost:8080/evaluationmanager/admin/user/getUserSex",
+			type:"post",
+			async:false,
+			success:function(data){
+				sex = data;
+			}
+	  });
+	return sex;
+}
+//获取角色信息
+function getRole(){
+	var roles;
+	  $.ajax({
+		 url:"http://localhost:8080/evaluationmanager/admin/role/getAllRole",
+		 data:{},
+		 async:false,
+		 success:function(data){
+			roles=data;
+			console.log(roles);
+		}
+	});
+	 return roles;
+}
+//获取用户信息
+function getUser(id){
+	  var user="";
+	  $.ajax({
+		  url:"http://localhost:8080/evaluationmanager/admin/user/getuserById",
+			data:{"user.id":id},
+			type:"post",
+			async:false,
+			success:function(data){
+				user = data;
+			}
+	  });
+	  return user;
+}
+//初始化界面
+function initUpdate(){
+	var data=eval('('+getUser("${param.id}")+')');
+	$("#userId").val(data.user.id);
+	$("#useraccount").val(data.user.account);
+	$("#userpwd").val(data.user.password);
+	$("#account").val(data.user.account);
+	$("#password").val(data.user.password);
+	$("#name").val(data.user.name);
+	$("#age").val(data.user.age);
+	initSexs();
+	initRoles();
+	$("#pid").val(data.user.pid);
+}
+//初始化性别框
+function initSexs(){
+	var data=eval('('+getSex()+')');
+	var initHtml = "<option value=''>请选择</option>";
+	$("#sex").append(initHtml);
+	for(var i in data.sex) {
+		initSex(data.sex[i]);
+	}
+}
+//初始化角色信息
+function initRoles(){
+	var data=eval('('+getRole()+')');
+	console.log(data);
+	var initHtml = "<option value=''>请选择</option>";
+	$("#role").append(initHtml);
+	for(var i in data) {
+		initRole(data[i]);
+	}
+}
+function initSex(sex){
+	var data=eval('('+getUser("${param.id}")+')');
+	if(data.user.sex.name==sex.name){
+		 var initHtml="<option value="+sex.name+" selected >"+sex.name+"</option>";
+	}else{
+    var initHtml="<option value="+sex.name+">"+sex.name+"</option>";
+	}
+    $("#sex").append(initHtml);
+}
+function initRole(role){
+	var data=eval('('+getUser("${param.id}")+')');
+	if(data.user.role.name==role.name){
+		var initHtml = "<option value="+role.no+" selected>"+role.name+"</option>";
+	}else{		
+		var initHtml = "<option value="+role.no+">"+role.name+"</option>";
+	}
+	$("#role").append(initHtml);
+}
+$(function(){
+	initUpdate();
+});
+</script>
+</head>
+<body>
+<div class="top" style="margin-top:10px;">
+	<div class="nav">
+	      <span class="layui-breadcrumb">
+	        <a href="">首页</a>&nbsp;&nbsp;/&nbsp;&nbsp;
+	 		 修改用户信息
+	      </span>
+	</div>
+</div>
+
+<div class="main">
+<div class="left"><img src="${pageContext.request.contextPath}/images/b5.jpg"></div>
+	<!---->
+	<div class="right">
+		<form action="admin/user/updateUser" method="post">
+             <input type="hidden" value="" name="id" id="userId">
+             <input type="hidden" value="" name="account" id="useraccount">
+             <input type="hidden" value="" name="password" id="userpwd">
+			 <input type="hidden" name="pwd" id="password" class="required">
+		<ul>
+ 			<li>&nbsp;&nbsp;&nbsp;&nbsp;账号:&nbsp;<input type="text" name="name" id="account" class="required" disabled></li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;名称:&nbsp;<input type="text" name="name" id="name" class="required" placeholder="请输入用户名称"></li>
+			<li>&nbsp;&nbsp;&nbsp;&nbsp;年龄:&nbsp;<input type="text" name="age" id="age" class="required" placeholder="请输入你的年龄"></li>
+			<li style="padding-left:23px;">&nbsp;&nbsp;&nbsp;&nbsp;性别:
+				<select class="required" name="sex" id="sex" style="color:#999;">
+				</select>
+			</li>
+			<li style="padding-left:23px;">&nbsp;&nbsp;&nbsp;&nbsp;角色:
+				<select class="required" id="role" name="role" style="color:#999;">
+				</select>
+			</li>
+			<li>身份证:&nbsp;<input type="text" name="pid" id="pid" class="required" placeholder="请输入描述信息"></li>
+			<li style="text-ailgn:left;padding-left:150px;"><input type="button" name="" id="zxc" class="btn1" value="提交">
+			&nbsp;&nbsp;&nbsp;&nbsp;</li>
+		</ul>
+		</form>
+		</div>
+</div>
+</body>
+</html>

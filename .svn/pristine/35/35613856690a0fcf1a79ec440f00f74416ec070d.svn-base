@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：韩笑 -->
+<!--创建时间：2018年7月27日-下午15:29:42 -->
+<!--配置信息：teacher模块的配置信息 -->
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <package name="teacher" namespace="/admin/teacher" extends="struts-default">
+		<action name="*" class="teacherAction" method="{1}">
+			<!-- 添加教师页面遍历性别、专业、角色、状态 -->
+			<result name="selectType">teacher_add.jsp</result>
+			<!-- 修改查询信息 -->
+			<result name="updateSelect">teacher_add.jsp</result>
+			<!-- 修改教师信息 -->
+		  	<result name="updateTea">teacher_add.jsp</result>
+			<!-- 查询全部教师信息 -->
+			<result name="selectTea">teacher_list.jsp</result>
+			<!-- 查看详情操作 -->
+			<result name="detail">teacher_details.jsp</result>
+		</action>
+	</package>
+</struts>

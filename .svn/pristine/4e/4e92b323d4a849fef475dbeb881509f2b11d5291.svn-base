@@ -1,0 +1,36 @@
+package com.evaluationmanager.service;
+
+import java.util.List;
+
+import com.evaluationmanager.entiy.PermissRole;
+import com.evaluationmanager.entiy.PermissUser;
+import com.evaluationmanager.entiy.PermissionInfo;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月9日-上午11:22:23
+ * @Description 描述信息：权限信息业务操作接口
+ *
+ */
+public interface PermisInfoService {
+	
+	/**
+	 * 添加角色权限
+	 * @param pr
+	 * @return
+	 */
+	public boolean addPr(PermissRole pr);
+	/**
+	 * 添加用户权限
+	 * @param pu
+	 * @return
+	 */
+	public boolean addPu(PermissUser pu);
+	/**
+	 * 遍历全部权限信息
+	 * @return
+	 */
+	public List<PermissionInfo> getAll();
+	
+}

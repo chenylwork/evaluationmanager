@@ -1,0 +1,94 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>试卷信息列表</title>
+	<link rel="shortcut icon" href="/favicon.ico" type="../../image/x-icon" />
+    <link rel="stylesheet" href="../../css/font.css">
+    <link rel="stylesheet" href="../../css/xadmin.css">
+    <script type="text/javascript" src="../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../../js/xadmin.js"></script>
+    
+    <!-- 分页样式 -->
+    <link rel="stylesheet" href="../../css/pager.css">
+    <script type="text/javascript" src="../../js/pager.js"></script>
+</head>
+<body class="layui-anim layui-anim-up">
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">试卷管理</a>
+        <a>
+          <cite>试卷信息列表</cite></a>
+      </span>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+    <div class="x-body">
+      <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so">
+          <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+          <button class="layui-btn"  lay-submit="" lay-filter="sreach">
+          <i class="layui-icon">&#xe615;</i></button>
+        </form>
+      </div>
+      <xblock>
+        <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
+        <span class="x-right" style="line-height:40px">共有数据：88 条</span>
+      </xblock>
+      <table class="layui-table">
+        <thead>
+          <tr>
+            <th>
+              <div class="layui-unselect header layui-form-checkbox" lay-skin="primary"><i class="layui-icon">&#xe605;</i></div>
+            </th>
+            <th>编号</th>
+            <th>试卷编号</th>
+            <th>试卷描述</th>
+            <th>操作</th>
+         </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <div class="layui-unselect layui-form-checkbox" lay-skin="primary" data-id='2'><i class="layui-icon">&#xe605;</i></div>
+            </td>
+            <td>1</td>
+            <td>01234</td>
+            <td>请问老师是否...</td>
+            <td>
+            <a href="" target="frame">详情</a>
+            &nbsp;&nbsp;<a href="" target="frame">修改密码</a>
+            &nbsp;&nbsp;<a href="stuPc.html">删除</a>
+            &nbsp;&nbsp;<a href="" target="frame">修改</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- 分页 -->
+		<div class="page">
+			<ul class="pagination" id="page2">
+			</ul>
+			<div class="pageJump">
+				<span>跳转到</span>
+				<input type="text"/>
+				<span>页</span>
+				<button type="button" class="button">确定</button>
+			</div>
+		</div>
+		<script>
+			Page({
+				num:100,				//页码数
+				startnum:1,				//指定页码
+				elem:$('#page2'),		//指定的元素
+				callback:function(n){	//回调函数
+					console.log(n);
+				}
+			});
+		</script>
+    </div>
+  </body>
+</html>

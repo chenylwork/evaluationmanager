@@ -1,0 +1,15 @@
+package com.evaluationmanager.dao;
+
+import com.evaluationmanager.entiy.PermissUser;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年8月10日-上午11:06:56
+ * @Description 描述信息：用户权限操作接口
+ *
+ */
+public interface PermissUserDao extends DataDao<PermissUser> {
+
+}

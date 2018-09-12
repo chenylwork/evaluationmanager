@@ -1,0 +1,96 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+/**
+ * 
+ * @author chenyl
+ * @Date 2018年7月19日-下午4:21:55
+ * @Description  学生信息表
+ *
+ */
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月26日-上午10:19:57
+ * @description 学生信息表
+ */
+@Entity
+@Table(name="student",uniqueConstraints = {@UniqueConstraint(columnNames="stuNo")})
+public class Student{
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private int id; // 编号
+	private String stuNo; // 学号
+	private String user; // 用户信息
+	private String major; // 所属专业
+	private String joinTime; // 入学日期
+	private String overTime; // 结业日期
+	private String state; // 当前状态，在校学习、休学离校、服兵役离校、已毕业...等情况
+	public Student() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Student(int id, String stuNo, String user, String major, String joinTime, String overTime, String state) {
+		super();
+		this.id = id;
+		this.stuNo = stuNo;
+		this.user = user;
+		this.major = major;
+		this.joinTime = joinTime;
+		this.overTime = overTime;
+		this.state = state;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getStuNo() {
+		return stuNo;
+	}
+	public void setStuNo(String stuNo) {
+		this.stuNo = stuNo;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getMajor() {
+		return major;
+	}
+	public void setMajor(String major) {
+		this.major = major;
+	}
+	public String getJoinTime() {
+		return joinTime;
+	}
+	public void setJoinTime(String joinTime) {
+		this.joinTime = joinTime;
+	}
+	public String getOverTime() {
+		return overTime;
+	}
+	public void setOverTime(String overTime) {
+		this.overTime = overTime;
+	}
+	public String getState() {
+		return state;
+	}
+	public void setState(String state) {
+		this.state = state;
+	}
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", stuNo=" + stuNo + ", user=" + user + ", major=" + major + ", joinTime="
+				+ joinTime + ", overTime=" + overTime + ", state=" + state + "]";
+	}
+	
+}

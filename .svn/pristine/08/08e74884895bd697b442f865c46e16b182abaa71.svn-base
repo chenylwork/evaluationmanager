@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+    "http://struts.apache.org/dtds/struts-2.3.dtd">
+<!--创建人：韩笑 -->
+<!--创建时间：2018年8月9日-下午13:40:03 -->
+<!--配置信息：teacher模块的配置信息 -->
+<struts>
+	<constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+	<constant name="struts.enable.DynamicMethodInvocation" value="true" />
+	<package name="power" namespace="/admin/power" extends="json-default">
+		<action name="*" class="powerAction" method="{1}">
+			<result name="allRole">power_role.jsp</result>
+			<result name="allInfo">power_role_edit.jsp</result>
+			<result name="allUser">power_user.jsp</result>
+			<result name="addall">power_role_edit.jsp</result>
+			<result name="addUser">power_user_edit.jsp</result>
+			<result name="addRole">power_role_edit.jsp</result>
+			<result name="updatePr">power_role_edit.jsp</result>
+			<result name="allPt">../index2.jsp</result>
+			<result name="allPi">../index2.jsp</result>
+			<result name="json" type="json">
+				<param name="root">JSON_CHAR_DATA</param>
+			</result>
+		</action>
+	</package>
+</struts>

@@ -1,0 +1,99 @@
+package com.evaluationmanager.entiy;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.evaluationmanager.annotation.Foreignkey;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月30日-下午4:07:53
+ * @Description 描述信息：评测结果详情信息表对应类
+ *
+ */
+@Entity
+@Table(name="evaluation_info")
+public class Evaluation {
+	@Id
+	private int id; // 编号
+	
+	@Foreignkey(foreignClass=Paper.class,column="paperNo")
+	private String paper; // 测试试卷
+	
+	@Foreignkey(foreignClass=User.class,column="account")
+	private String user; // 测评人编号
+	
+	@Foreignkey(foreignClass=Teacher.class,column="teacherNo")
+	private String teacher; // 被测教师
+	
+	private String time;//测评时间
+	private String options;//试题选项
+	private double score; // 测评分数
+	public Evaluation() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Evaluation(int id, String paper, String user, String teacher, String time, String options, double score) {
+		super();
+		this.id = id;
+		this.paper = paper;
+		this.user = user;
+		this.teacher = teacher;
+		this.time = time;
+		this.options = options;
+		this.score = score;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getPaper() {
+		return paper;
+	}
+	public void setPaper(String paper) {
+		this.paper = paper;
+	}
+	public String getUser() {
+		return user;
+	}
+	public void setUser(String user) {
+		this.user = user;
+	}
+	public String getTeacher() {
+		return teacher;
+	}
+	public void setTeacher(String teacher) {
+		this.teacher = teacher;
+	}
+	public String getTime() {
+		return time;
+	}
+	public void setTime(String time) {
+		this.time = time;
+	}
+	public String getOptions() {
+		return options;
+	}
+	public void setOptions(String options) {
+		this.options = options;
+	}
+	public double getScore() {
+		return score;
+	}
+	public void setScore(double score) {
+		this.score = score;
+	}
+	@Override
+	public String toString() {
+		return "Evaluation [id=" + id + ", paper=" + paper + ", user=" + user + ", teacher=" + teacher + ", time="
+				+ time + ", options=" + options + ", score=" + score + "]";
+	}
+	
+	
+}

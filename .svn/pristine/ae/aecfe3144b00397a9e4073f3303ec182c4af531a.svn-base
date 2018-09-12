@@ -1,0 +1,171 @@
+package com.evaluationmanager.action;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Controller;
+
+import com.evaluationmanager.entiy.Class;
+import com.evaluationmanager.service.ClassService;
+import com.evaluationmanager.support.Action;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午3:22:15
+ * @description 班级信息操作action类
+ */
+@Controller("classAction")
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+public class ClassAction extends Action<Class>{
+	@Autowired
+    private ClassService classService;
+	private Map<String, Object> classMap;
+	private List<Map<String, Object>> classmapList;
+	private List<Class> classList;
+    private Class classes;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Override
+	public Class getModel() {
+		if (classes==null) {
+			classes=new Class();
+		}
+		return classes;
+	}
+	
+   public ClassService getClassService() {
+		return classService;
+	}
+
+	public void setClassService(ClassService classService) {
+		this.classService = classService;
+	}
+
+	public Map<String, Object> getClassMap() {
+		return classMap;
+	}
+
+	public void setClassMap(Map<String, Object> classMap) {
+		this.classMap = classMap;
+	}
+
+	public List<Map<String, Object>> getClassmapList() {
+		return classmapList;
+	}
+
+	public void setClassmapList(List<Map<String, Object>> classmapList) {
+		this.classmapList = classmapList;
+	}
+
+	public List<Class> getClassList() {
+		return classList;
+	}
+
+	public void setClassList(List<Class> classList) {
+		this.classList = classList;
+	}
+
+	public Class getClasses() {
+		return classes;
+	}
+
+	public void setClasses(Class classes) {
+		this.classes = classes;
+	}
+/**
+ * 单个添加班级
+ * @return
+ */
+public String add(){
+	   //JSON_CHAR_DATA = super.gson.toJson(classService.add(classes));
+	   //return JSONOCHAR;
+	classService.add(classes);
+	return "add";
+   }
+
+/**
+ * 修改班级
+ * @return
+ */
+   public String update(){
+	   JSON_CHAR_DATA = super.gson.toJson(classService.update(classes));
+	   return JSONOCHAR;
+   }
+  /**
+   * 单个删除 
+   * @return
+   */
+   public String delete(){
+	try {
+		classService.delete(classes);
+		return "delete";
+	} catch (Exception e) {
+		e.printStackTrace();
+		return "error";
+	}
+   }
+   /**
+    * 根据班级编号查询班级
+    * @return
+    */
+  public String ClassMap(){
+	  classMap=classService.classbyNo(classes.getClassNo());
+	  Map<String, Object> map= new HashMap<>();
+	  map.put("classes", classMap);
+	  JSON_CHAR_DATA = super.gson.toJson(map);
+	  return JSONOCHAR;
+  }
+  /**
+   * 查询全部班级
+   * @return
+   */
+  public String ClassMapList(){
+	  classmapList=classService.classMapList();
+	  System.out.println(classmapList.size());
+	  Map<String, Object> map=new HashMap<>();
+	  map.put("classes", classmapList);
+	  map.put("size",classmapList.size());
+	  JSON_CHAR_DATA = super.gson.toJson(map);
+	  //return "allClass";
+	  return JSONOCHAR;
+  }
+  /**
+   * 分页条件查询
+   * @return
+   */
+  public String search(){
+  	System.out.println(paginMap);
+  	System.out.println("****************"+classes);
+  	classmapList=classService.paginSearch(paginMap, classes);
+  	Map<String, Object> map=new HashMap<>();
+      map.put("classes", classmapList);
+      map.put("pagin", paginMap);
+      JSON_CHAR_DATA = super.gson.toJson(map);
+  	return JSONOCHAR;
+  } 
+  
+ public String renameClassbyNo(){
+	 boolean hasClass = classService.renameClassbyNo(classes.getClassNo());
+	 if (hasClass==true) {
+		 JSON_CHAR_DATA = 0+"";		
+	}else{
+	     JSON_CHAR_DATA = 1+"";
+	 }
+	 return JSONOCHAR;
+ }
+ public String classByMajor(){
+	 classmapList=classService.classByMajor(classes.getMajor());
+	 Map<String, Object> map=new HashMap<>();
+	 map.put("classes",classmapList);
+	 JSON_CHAR_DATA=super.gson.toJson(map);
+	 return JSONOCHAR;
+ }
+  
+}

@@ -1,0 +1,72 @@
+package com.evaluationmanager.dao.impl;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.MajorDao;
+import com.evaluationmanager.entiy.Major;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.support.DataDaoImpl;
+/**
+ * 
+ * 
+ * @Author 任少华
+ * @Datetime 2018年7月30日-上午10:20:06
+ * @Description 描述信息：
+ *
+ */
+@Repository("MajorDao")
+public class MajorDaoImpl extends DataDaoImpl<Major> implements MajorDao {
+
+	public int batchDelete(List<String[]> params) {
+		String sql = "delete from major where id = ?";
+		try {
+			return batchModification(sql, params);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	@Override
+	public List<Map<String, Object>> paginSearchMajor(Pagin<Map<String, Object>> pagin, Major major) {
+		String moditions = "1=1 ";
+		List<String> paramsList = new ArrayList<>();
+		if(major !=null && major.getName() != null 
+				&& !"".equals(major.getName())) {
+			moditions += " and this.name like ? ";
+			paramsList.add("%"+major.getName()+"%");
+		}
+		if(major !=null && major.getDeptNo() !=null && !"".equals(major.getDeptNo())){
+			
+			moditions += " and this.deptNo = ? ";
+			paramsList.add(major.getDeptNo());
+		}
+		System.err.println(major);
+		return super.paginGetMapDatas(pagin, moditions, paramsList.toArray(new String[]{}));
+			
+	}
+	@Override
+	public long size(Major major) {
+		String moditions = "1=1 ";
+		System.err.println(major);
+		List<String> paramsList = new ArrayList<>();
+		if(major !=null && major.getName() != null 
+				&& !"".equals(major.getName())) {
+			moditions += " and name like ? ";
+			paramsList.add("%"+major.getName()+"%");
+		}
+		if(major !=null && major.getDeptNo() !=null && !"".equals(major.getDeptNo())){
+			
+			moditions += " and deptNo = ? ";
+			paramsList.add(major.getDeptNo());
+		}
+		return super.size(moditions, paramsList.toArray(new String[]{}));
+	}
+	
+}

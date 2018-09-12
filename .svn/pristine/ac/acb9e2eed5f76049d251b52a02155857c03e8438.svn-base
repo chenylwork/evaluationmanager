@@ -1,0 +1,61 @@
+function getClassList(paginNo,display) {
+	    	var ClassList;
+	    	$.ajax({
+	    		url:"http://localhost:8080/evaluationmanager/admin/class/search",
+	    		data:{"paginMap.pageNo":paginNo,"paginMap.display":display},
+	    		type:"post",
+	    		async:false,
+	    		success:function(data){
+	    			ClassList = data;
+	    			console.log(ClassList);
+	    		}
+	    	});
+	    	return ClassList;
+	    }
+	    function initClassList(paginNo,display){
+	    	$(".class_row").remove();
+	    	var data=eval('('+getClassList(paginNo,display)+')');
+	    	console.log(data);
+	    	var pagin=data.pagin;
+	    	Page({
+	    		num:pagin.pages,		//页码数
+	    		startnum:pagin.pageNo,	//指定页码
+	    		elem:$('#page2'),		//指定的元素
+	    		callback:function(n){	//回调函数
+	    			console.log(n);
+	    			initClassList(n,display);
+	    		}
+	    	});
+	    	
+	    	for(var i in data.classes) {
+        		initClass(data.classes[i]);
+        	}
+	    	
+	    	$("#class_size").remove();
+	    	var initHtml = " <span class='x-right' id='class_size' style='line-height:40px'>共有数据："+data.size+" 条</span>";
+	    	$("#class_sizebox").append(initHtml);
+	    	console.log(data.size);
+	    	
+	    }
+	    function initClass(classes){
+	    	var initHtml = "<tr class='class_row' id='"+classes.id+"'><td>";
+	    	initHtml+="<div class='layui-unselect layui-form-checkbox' lay-skin='primary' data-id='2'><i class='layui-icon'>&#xe605;</i></div></td>";
+	    	initHtml+="<td>"+classes.classNo+"</td>";
+	    	initHtml+="<td>"+classes.name+"</td>";
+	    	initHtml+="<td>"+classes.major.name+"</td>";
+	    	initHtml+="<td>";
+	    	initHtml+="<a href='' target='frame'>详情</a>";
+	    	initHtml+="&nbsp;&nbsp;<a href='class_list.jsp' oncilck='' id='"+classes.id+"' >删除</a>";
+	    	initHtml+="&nbsp;&nbsp;<a href='' target='frame'>修改</a>";
+	    	initHtml+="</td></tr>";
+	    	$("#classAll").append(initHtml);
+	    }
+	    $(function(){
+	    	initClassList(1,10);
+	    })
+	    
+//	    function delClass(id){
+//	    	$.ajax({
+//	    	});
+//	    }
+	    

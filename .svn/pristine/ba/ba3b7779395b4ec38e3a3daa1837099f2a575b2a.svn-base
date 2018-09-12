@@ -1,0 +1,37 @@
+package com.evaluationmanager.unit;
+
+
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Collection;
+
+import org.springframework.stereotype.Component;
+/**
+ * 
+ * @author chenyl
+ * @Date 2018年7月19日-下午12:49:16
+ * @Description  分页对象，主要用来对数据分页操作
+ * @param <T> 对象中存储的数据对应的实体类对应的类
+ */
+@Component("excelUnit")
+public class ExcelUnit<T> {
+	/**
+	 * 导入Excel文件
+	 * @param fileInputStream 需要导入的Excel文件输入流
+	 * @return Collection<T>
+	 * 返回Excel文件内数据对应的数据集合
+	 */
+	public Collection<T> importExcel(FileInputStream fileInputStream){
+		return null;
+	}
+	/**
+	 * 导出Excel文件
+	 * @param collection 需要导出为Excel文件的数据集合
+	 * @param title 导出的Excel文件的标题
+	 * @return FileOutputStream
+	 * 返回数据集合组成的Excel文件输出流
+	 */
+	public FileOutputStream exportExcel(Collection<T> collection,String title) {
+		return null;
+	}
+}

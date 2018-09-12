@@ -1,0 +1,233 @@
+package com.evaluationmanager.service.impl;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.evaluationmanager.common.ExcelHead;
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.dao.ClassDao;
+import com.evaluationmanager.dao.MajorDao;
+import com.evaluationmanager.dao.StudentDao;
+import com.evaluationmanager.dao.UserDao;
+import com.evaluationmanager.entiy.Class;
+import com.evaluationmanager.entiy.Major;
+import com.evaluationmanager.entiy.Student;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.service.StudentService;
+import com.evaluationmanager.support.AbstractService;
+import com.evaluationmanager.unit.ExcelUnit;
+import com.evaluationmanager.unit.Md5Unit;
+import com.evaluationmanager.unit.NoMap;
+
+/**
+ * 
+ * @Author 邢燕蕊
+ * @Datetime 2018年7月27日-上午9:49:09
+ * @Description 描述信息：
+ *
+ */
+@org.springframework.stereotype.Service("studentService")
+public class StudentServiceImpl  extends AbstractService<Student> implements StudentService {
+
+	@Autowired
+	private StudentDao studentDao;
+	@Autowired
+	private MajorDao majorDao;
+	@Autowired
+	private ClassDao classDao;
+	@Autowired
+	private UserDao userDao;
+	
+    /**
+     * 添加学生、同时添加user
+     */
+	@Override
+	@Transactional
+	public boolean add(Student student,User user) {
+		return (studentDao.add(student)&&userDao.add(user));
+	}
+	@Override
+	@Transactional
+	public boolean batchInsert(File file,HttpServletRequest request) {
+		List<Major> allMajor = majorDao.getDatas("");
+//		List<Map<String, String>> students = importStduent(file);
+		@SuppressWarnings("unchecked")
+		List<Map<String, String>> students = (List<Map<String, String>>) request.getSession().getAttribute("studentMapList");
+		for(Map<String, String> studentMap : students) {
+			Student student = new Student();
+			String stuNo = studentMap.get("studentNo");
+			student.setStuNo(stuNo);
+			student.setUser(stuNo);
+			String majorName = studentMap.get("major");
+			for(Major major : allMajor) {
+				if (major.getName().equals(majorName)) {
+					student.setMajor(major.getMajorNo());
+				}
+			}
+			String className = studentMap.get("class");
+			List<Class> classes = classDao.getDatas("this.major = ? ", student.getMajor());
+			for(Class classInfo : classes) {
+				if (classInfo.getName().equals(className)) {
+					student.setClassNo(classInfo.getClassNo());
+				}
+			}
+			String overTime = studentMap.get("endTime");
+			student.setOverTime(overTime == null || overTime.equals("") ? null : overTime);
+			student.setJoinTime(studentMap.get("joinTime"));
+			student.setState("SS1");
+			student.setRole("0203");
+			User user = new User();
+			user.setName(studentMap.get("name"));
+			user.setAccount(stuNo);
+			user.setAge(Integer.parseInt(studentMap.get("age")));
+			user.setPid(studentMap.get("pid"));
+			user.setSex(studentMap.get("sex"));
+			user.setPassword("666666");
+			user.setRole("Y04");
+			add(student, user);
+		}
+		return false;
+	}
+	/**
+	 * 单条删除、批量删除
+	 */
+	@Override
+	@Transactional
+	public int delete(String[] params) {
+		List<String[]> paramList = new ArrayList<>();
+		for(String string : params) {
+			paramList.add(new String[]{string});
+		}
+		return studentDao.delete(paramList);
+	}
+	
+	/**
+	 * 修改学生、同时修改user
+	 */
+	@Override
+	@Transactional
+	public boolean update(Student student,User user) {
+		return (studentDao.update(student)&&userDao.update(user));
+	}
+	
+    /**
+     * 根据ID查学生
+     */
+	@Override
+	@Transactional
+	public Student getStudentByID(long id) {
+		return studentDao.getDataByID(id);
+	}
+    
+	/**
+	 * 根据stuNo查学生-外键
+	 */
+	@Override
+	@Transactional
+	public Map<String, Object> stuNobyMap(String stuNo) {
+		Map<String, Object> studentbyNo = null;
+		try {
+			studentbyNo = this.studentDao.getMapDataByNo(stuNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return studentbyNo;
+	}
+    
+	/**
+	 * 根据classNo查学生-外键
+	 */
+	@Override
+	@Transactional
+	public List<Map<String, Object>> classNobyMap(String classNo) {
+		List<Map<String, Object>> classNobyMap = null;
+		try {
+			classNobyMap = this.studentDao.getMapDatas("this.classNo = ?", classNo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return classNobyMap;
+	}
+    
+	/**
+	 * 查询全部、多条件查询
+	 */
+	@Override
+	@Transactional
+	public List<Map<String, Object>> paginSearchStudent(Pagin<Map<String, Object>> pagin, Student student, User user) {
+		return this.studentDao.paginSearchStudent(pagin, student, user);
+	}
+	/**
+	 * 数据导出
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月17日-下午4:51:03
+	 * @Description 作用描述
+	 * @param pagin
+	 * @param student
+	 * @param serchUser
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public InputStream export() {
+		String title = "学生信息";
+		String[] headNames = ExcelHead.getExportHeadNames(ExcelHead.STUDENT_FILE);
+		List<Map<String, Object>> data = studentDao.getMapDatas("");
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		List<NoMap<String,String>> dataList = new ArrayList<>(); 
+		data.forEach(dataRow -> {
+			NoMap<String,String> map = new NoMap<String,String>();
+			map.put("学号", (String)dataRow.get("stuNo"));
+			map.put("姓名", (String)((Map<String,Object>)dataRow.get("user")).get("name"));
+			Map<String,Object> user = ((Map<String,Object>)dataRow.get("user"));
+			Map<String,Object> sex = (Map<String,Object>)user.get("sex");
+			map.put("性别", (String)sex.get("name"));
+			map.put("年龄", String.valueOf(user.get("age")));
+			map.put("身份证号", (String)user.get("pid"));
+			map.put("专业", (String)((Map<String,Object>)dataRow.get("major")).get("name"));
+			map.put("入学日期", (String)dataRow.get("joinTime"));
+			map.put("结业日期", (String)dataRow.get("overTime"));
+			map.put("现状态", (String)((Map<String,Object>)dataRow.get("state")).get("name"));
+			map.put("班级", (String)((Map<String,Object>)dataRow.get("classNo")).get("name"));
+			dataList.add(map);
+		});
+		ExcelUnit.export(outputStream, title, headNames, dataList);
+		return new ByteArrayInputStream(outputStream.toByteArray());
+	}
+	/**
+	 * 导入excel文件
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月17日-下午4:50:53
+	 * @Description 作用描述
+	 * @param file
+	 */
+	public List<Map<String, String>> importStduent(File file,HttpServletRequest request) {
+		String[] headNames = ExcelHead.getImportHeadNames(ExcelHead.STUDENT_FILE);
+		//	
+		InputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		List<Map<String, String>> load = ExcelUnit.load(inputStream, headNames);
+		request.getSession().setAttribute("studentMapList", load);
+		return load;
+	}
+	@Override
+	public List<Map<String, Object>> getStudentsByClass(String classNo) {
+		return studentDao.getMapDatas("this.classNo = ?", classNo);
+	}
+
+}

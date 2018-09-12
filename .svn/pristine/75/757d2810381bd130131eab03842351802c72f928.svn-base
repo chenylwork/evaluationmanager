@@ -1,0 +1,103 @@
+@charset "UTF-8";
+
+*{
+	margin: 0 auto;
+	padding: 0;
+}
+body{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+.u1{
+	width:480px;
+	height:450px;
+	float:left;
+}
+ul li{
+	width: 700px;
+	height: 48px;
+	list-style: none;
+	padding-left: 25px;
+}
+	
+.main{
+	width: 100%;
+	height: 500px;
+	padding-top:20px;
+	float: left;	
+}
+.left{
+	width:200px;
+	height: 300px;
+	padding-left: 50px;
+	padding-top: 230px;
+	float: left;
+}
+.right{
+	width:600px;
+	height: 350px;
+	padding-top:30px;
+	padding-left:50px;
+	float: left;
+}
+span{
+	font-size:14px;
+}
+.required{
+	width: 257px;
+	height:32px;
+	border:1px solid #ccc;
+	border-radius: 3px;
+	font-size: 12px;
+	padding-left: 5px;
+}
+
+.onError{
+	color: #666;
+    background: url(../../../images/reg3.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.onSuccess{
+	color: #fff;
+    background: url(../../../images/reg4.gif) no-repeat 0 center;
+	padding-left:25px;
+}
+.btn1{
+	width:80px;
+	height:25px;
+	background-color:#000;
+	color:#FFFFFF;
+	border-radius:5px;
+	font-size:14px;
+	font-weight:bold;
+}
+.nav{
+	width:100%;
+	height:30px;
+	padding-left:15px;
+	border-bottom: 1px solid #ccc;
+}
+.nav a{
+	color:#999;
+	text-decoration:none;
+}
+.nav a:hover{
+     color:#36C706;
+}
+.nav span{
+	color:#999;
+}
+.layui-btn {
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+    padding: 0 15px;
+    background-color: #009688;
+    color: #fff;
+    white-space: nowrap;
+    text-align: center;
+    font-size: 14px;
+    border: none;
+    border-radius: 2px;
+    margin-top:-8px;
+   margin-right:15px;
+}

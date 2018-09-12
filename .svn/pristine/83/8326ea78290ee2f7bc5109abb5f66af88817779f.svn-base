@@ -1,0 +1,37 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>院系下的专业</title>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/admin/department/dept_detail.css"></link>
+</head>
+<body>
+<h3 style="background: #e9f2ff;padding-left:10px;">Look at the Department's personal information</h3>
+<span style="font-size:18px;padding-left:10px;">查看院系具体信息</span>
+<div class="top">
+	<div class="left">
+	<img src="${pageContext.request.contextPath}/images/b2.jpg"> 
+	<table>
+	<tr>
+            <th>专业编号</th>
+            <th>专业名称</th>
+            <th>专业简介</th>
+         </tr>
+      <c:forEach var="m" items="${majorList}">
+          <tr>
+           
+            <td>${m.majorNo}</td>
+            <td>${m.name}</td>
+            <td>${m.description}</td>
+          </tr>
+	</c:forEach>
+	</table>
+	</div>
+</div>
+</body>
+
+</html>

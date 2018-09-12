@@ -1,0 +1,92 @@
+package com.evaluationmanager.service;
+
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.entiy.Question;
+import com.evaluationmanager.support.Service;
+
+/**
+ * @author chenyl
+ * @Date 2018年7月19日-下午1:31:09
+ * @Description  问题信息业务操作接口
+ *
+ */
+public interface QuestionService extends Service{
+	/**
+	 * 检查某问题信息是否存在
+	 * 若存在将返回 SUCCESS 若失败将返回 FAIL
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月9日-下午2:40:50
+	 * @param question
+	 * @return int
+	 */
+	public int check(Question question);
+	/**
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月5日-下午10:49:23
+	 * @Description 作用描述:添加试题信息
+	 * @param data 添加的试题信息，及其选项之间的信息对应的json字符串
+	 * @return 成功返回 1 失败 返回 0
+	 */
+	public int add(String data);
+	/**
+	 * 多条件分页查询question的数据信息
+	 * 该方法已将pagin对象中的data属性赋值
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月7日-上午3:28:41
+	 * @param pagin 分页对象
+	 * @param conditions 查询条件
+	 * @param params 为查询条件赋值的参数
+	 * @return 查询到的pagin对象对应的数据，积分也对象
+	 */
+	public String paginSearch(Pagin<Question> pagin,Question question);
+	/**
+	 * 根据问题编号查询问题详细信息，包括选项信息。
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月7日-下午10:25:09
+	 * @param no 需要查询的问题编号
+	 * @return 返回查询到的信息的json字符串
+	 */
+	public String getQuestionByNo(String no);
+	/**
+	 * 根据问题编号删除问题信息
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月7日-下午10:41:43
+	 * @param nos 问题编号，多个的话即为批量删除
+	 * @return 成功删除记录数
+	 */
+	public int delete(String... nos);
+	/**
+	 * 根据问题编号修改问题
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月7日-下午11:22:14
+	 * @param data 提交的问题信息
+	 * @return 返回修改成功后的question
+	 */
+	public int update(String data);
+	/**
+	 * 随机抽取试题
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午10:13:56
+	 * @param randomSize 随机抽取的个数
+	 * @return
+	 */
+	public String randomGetQuestionO(int randomSize);
+	/**
+	 * 获取全部试题信息
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午10:13:29
+	 * @Description 作用描述
+	 *
+	 * @return
+	 */
+	public String getAllQuestion();
+	/**
+	 * 
+	 * @Author 陈彦磊
+	 * @DateTime 2018年8月12日-下午10:13:04
+	 * @param paperNo
+	 * @return
+	 */
+	public String getQuestionByPaperNo(String paperNo);
+}

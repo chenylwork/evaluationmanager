@@ -1,0 +1,66 @@
+package com.evaluationmanager.service.impl;
+
+import java.util.List;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.evaluationmanager.dao.TeacherDao;
+import com.evaluationmanager.entiy.Teacher;
+import com.evaluationmanager.service.TeacherService;
+import com.evaluationmanager.support.Service;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:12:30
+ * @Description 描述信息：教师信息操作业务实现类
+ *
+ */
+@org.springframework.stereotype.Service("teacherService")
+public class TeacherServiceImpl extends Service<Teacher> implements TeacherService {
+	
+	
+	private TeacherDao teacherDao;
+	
+	@Autowired
+	public void setTeacherDao(TeacherDao teacherDao) {
+		super.setDataDao(teacherDao);
+	}
+
+	//添加教师信息
+	@Override
+	@Transactional
+	public boolean add(Teacher t) {
+		return this.teacherDao.add(t);
+	}
+
+	//修改教师信息
+	@Override
+	@Transactional
+	public boolean update(Teacher t) {
+		return this.teacherDao.update(t);
+	}
+
+	//删除教师信息
+	@Override
+	@Transactional
+	public boolean delete(Teacher t) {
+		return this.teacherDao.delete(t);
+	}
+
+	//获取全部教师信息
+	@Override
+	public List<Teacher> getAll() {
+		return this.teacherDao.getAll();
+	}
+	
+	//根据Id查找教师
+	@Override
+	public Teacher getTeacherByID(long id) {
+		return this.teacherDao.getDataByID(id);
+	}
+
+		
+}

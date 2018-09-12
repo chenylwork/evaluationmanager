@@ -1,0 +1,15 @@
+package com.evaluationmanager.dao;
+
+import com.evaluationmanager.entiy.Teacher;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @Author 韩笑
+ * @Datetime 2018年7月27日-上午11:07:54
+ * @Description 描述信息：教师信息操作接口
+ *
+ */
+public interface TeacherDao extends DataDao<Teacher> {
+
+}

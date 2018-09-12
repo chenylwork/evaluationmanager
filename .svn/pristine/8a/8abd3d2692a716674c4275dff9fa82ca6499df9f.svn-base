@@ -1,0 +1,126 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>评教登陆界面</title>
+     <!-- 网页左侧小图标 -->
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+	<!--验证码插件-->
+		<link rel="stylesheet" href="yzm/jquery.idcode.css" />
+		<script src="yzm/jquery.idcode.js"></script>
+	<script type="text/javascript">
+	       //页面加载执行，接收json串
+          function getAllrole(){
+        	  var roles;
+        	  $.ajax({
+        		 url:"admin/role/getAllLogin",
+        		 data:{},
+  	    		 async:false,
+  	    		 success:function(data){
+  	    			roles=data;
+  	    			console.log(roles);
+  	    		}
+  	    	});
+  	    	 return roles;
+          }
+	    //初始化下拉框，将json串转成json对象 
+        function initRoles(){
+        	var data=eval('('+getAllrole()+')');
+        	console.log(data);
+        	var initHtml = "<option value=''>请选择</option>";
+    		$("#role").append(initHtml);
+    		//遍历json对象
+        	for(var i in data) {
+        		initRole(data[i]);
+        	}
+        }
+	    //添加信息
+        function initRole(role) {
+        	var initHtml = "<option value="+role.codeNo+">"+role.name+"</option>";
+        	$("#role").append(initHtml);
+        }  
+          $(function(){
+        	  initRoles();
+  	    })
+	</script>
+
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+</head>
+<body>
+<div class="height">
+	<div class="top">
+		<div class="left">
+			<img src="images/logo1.png">
+		</div>
+		<div class="right">
+			<img src="images/text.png">
+		</div>
+	</div>
+	<div class="tu">
+		<img src="images/banner.gif">
+	</div>
+
+	<div class="dl" id="zz">
+	<form action="admin/user/login" method="post">
+		<ul>
+			<li>
+				<span class="glyphicon glyphicon-book"></span>
+				身&nbsp;&nbsp;&nbsp;份:&nbsp;&nbsp;
+				<select class="select" name="role" id="role" style="color:#999;">
+				</select>
+			</li>
+			<li class="user">
+				<span class="glyphicon glyphicon-user"></span>
+				用户名:&nbsp;&nbsp;
+				<input type="text" name="account" class="required" placeholder="请输入你的用户名" id="account">
+			</li>
+			<li class="pass">
+				<span class="glyphicon glyphicon-lock"></span>
+				密&nbsp;&nbsp;&nbsp;码:&nbsp;&nbsp;
+				<input type="password" name="password" class="required" placeholder="请输入你的密码" id="password">
+				<!--&nbsp;&nbsp; <a href="" style="font-size:12px;color:#999;">忘记密码?</a>-->
+			</li>
+			<li style="width:390px;">
+			<span class="glyphicon glyphicon-send"></span>
+				<label class="lblVerification" style="font-weight:500;">验证码:</label>&nbsp;&nbsp;
+				<input type="text" id="Txtidcode" class="required" placeholder="请输入你的验证码" />
+				<span id="idcode"></span>
+				<script>
+					$.idcode.setCode();
+					
+					$("#btns").click(function (){
+						var IsBy = $.idcode.validateCode(); 
+						alert(IsBy);
+						console.log(IsBy);
+					});
+				</script>
+			</li>
+			<li class="deng">
+			
+				<input type="button" name="" value="登陆" id="submitBtn" style="">
+				&nbsp;&nbsp;&nbsp;&nbsp;
+				<input type="button" name="" value="忘记密码">
+				&nbsp;&nbsp;
+				<a href="" style="color:#666;font-size:12px;font-weight:500;">忘记密码？</a>
+			</li>
+		</ul>
+	
+	</form>
+	</div>
+</div>
+<div class="footer">
+ Copyright © 2004-2017 评教登陆（le.com）All rights reserved.<br>
+电话:0575 - 66611168   0371 - 56565656 <br>
+地址:河北省 石家庄市 石家庄职业技术学院 技术支持:吉利信息
+</div>
+
+</body>
+
+</html>

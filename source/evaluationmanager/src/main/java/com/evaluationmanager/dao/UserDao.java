@@ -1,0 +1,63 @@
+package com.evaluationmanager.dao;
+
+import java.util.List;
+import java.util.Map;
+
+import com.evaluationmanager.common.Pagin;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.support.DataDao;
+
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午4:48:04
+ * @description 用户信息操作接口
+ */
+public interface UserDao extends DataDao<User>{
+	/**
+	 * 登录验证
+	 * @param account 账号
+	 * @param password 密码
+	 * @param role 用户类型
+	 * @return
+	 */
+   public User loginUser(String account,String password,String role);
+   
+   /**
+    * 修改密码
+    * @param account
+    * @param password
+    * @return
+    */
+   public int updatePwd(String account,String password,String oldPwd,String newPwd);
+   /**
+    * 重置密码
+    * @param account
+    * @return
+    */
+   public int resetPwd(String account);
+    /**
+     * 用户根据account批量删除
+     * @param params
+     * @return
+     */
+ 	public int BatchDelete(List<String[]> params);
+ 	/**
+ 	 * 后台界面数据统计
+ 	 * @return
+ 	 */
+ 	public Map<String, Object>  translate();
+ 	/**
+ 	 * 多条件查询用户
+ 	 * @param pagin
+ 	 * @param user
+ 	 * @return
+ 	 */
+ 	public List<Map<String,Object>> paginSearchUser(Pagin<Map<String, Object>> pagin, User user);
+ 	/**
+ 	 * 获取符合条件的总数
+ 	 * @param user
+ 	 * @return
+ 	 */
+ 	public long size(User user);
+}

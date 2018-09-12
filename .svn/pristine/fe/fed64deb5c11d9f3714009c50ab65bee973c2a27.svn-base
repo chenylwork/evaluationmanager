@@ -1,0 +1,18 @@
+package com.evaluationmanager.dao.impl;
+
+import org.springframework.stereotype.Repository;
+
+import com.evaluationmanager.dao.UserDao;
+import com.evaluationmanager.entiy.User;
+import com.evaluationmanager.support.DataDaoImpl;
+/**
+ * 
+ * @author 耿佳康
+ * @date 2018年7月27日-下午4:57:10
+ * @description 用户信息操作实现
+ */
+@Repository("userDao")
+public class UserDaoImpl extends DataDaoImpl<User> implements UserDao{
+
+	
+}
